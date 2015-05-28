@@ -61,7 +61,7 @@
 			<if test="out_published != null">
 				AND a.out_published = #{out_published}
 			</if>
-			<if test="classify_id != null">
+			<if test="classify_id gt 0">
 				AND a.classify_id = #{classify_id}
 			</if>
 		</where>

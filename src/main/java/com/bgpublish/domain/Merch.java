@@ -21,6 +21,7 @@ public class Merch  implements Serializable{
 	private static final long serialVersionUID = 92033792007790789L;
 	private @Getter @Setter int merch_id;
 	private @Getter @Setter int store_id;
+	private @Getter @Setter int user_id;
 	private @Getter @Setter String name;
 	private @Getter @Setter int classify_id;
 	private @Getter @Setter float price;

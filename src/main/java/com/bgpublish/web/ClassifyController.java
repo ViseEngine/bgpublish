@@ -41,15 +41,31 @@ public class ClassifyController {
 		
 		return list;
 	}
-	
-	@RequestMapping(value="/queryby.do", method = RequestMethod.GET)
+
+	@RequestMapping(value="/countclassifymerch.do", method = RequestMethod.GET)
 	@ResponseBody
-	public List<Classify> queryClassifyBy(String classify_type){
-		List<Classify> list = this.classifyService.queryClassifyBy(classify_type);
+	public List<Classify> countClassifyMerch(){
+		List<Classify> list = this.classifyService.countClassifyMerch();
 		
 		return list;
 	}
-	
+
+	@RequestMapping(value="/querybytype.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Classify> queryClassifyByType(String classify_type){
+		List<Classify> list = this.classifyService.queryClassifyByType(classify_type);
+		
+		return list;
+	}
+
+	@RequestMapping(value="/queryby.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Classify> queryClassifyBy(@RequestBody Classify classify){
+		List<Classify> list = this.classifyService.queryClassifyBy(classify);
+		
+		return list;
+	}
+
 	@RequestMapping(value="/add.do", method = RequestMethod.POST)
 	public ResponseEntity<String> addClassify(@RequestBody Classify classify){
 		try{
@@ -61,7 +77,7 @@ public class ClassifyController {
 		
 		return HttpUtil.createResponseEntity("新增分类成功!", HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value="/delete.do", method = RequestMethod.GET)
 	public ResponseEntity<String> deleteClassifyById(String classify_id){
 		try{

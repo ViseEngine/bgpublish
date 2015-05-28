@@ -29,9 +29,20 @@ public interface ClassifyService {
 	 */
 	public List<Classify> queryClassify();
 	/**
+	 * 查询所有商品分类和数量
+	 * @return 分类
+	 */
+	public List<Classify> countClassifyMerch();
+	/**
+         * 查询所有分类
+         * @param classify 分类条件
+         * @return 分类
+         */
+        public List<Classify> queryClassifyBy(Classify classify);
+	/**
 	 * 根据分类类型查询所有分类
 	 * @param classify_type
 	 * @return 分类
 	 */
-	public List<Classify> queryClassifyBy(String classify_type);
+	public List<Classify> queryClassifyByType(String classify_type);
 }

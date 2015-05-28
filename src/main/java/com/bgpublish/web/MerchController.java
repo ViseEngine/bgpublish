@@ -105,7 +105,7 @@ public class MerchController {
 		return list;
 	}
 	
-	@RequestMapping(value="/queryby.do", method = RequestMethod.GET)
+	@RequestMapping(value="/queryby.do", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Merch> queryMerchBy(@RequestBody Merch merch){
 		List<Merch> list = this.merchService.queryMerchBy(merch);

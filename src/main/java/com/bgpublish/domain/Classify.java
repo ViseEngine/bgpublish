@@ -22,4 +22,6 @@ public class Classify implements Serializable{
 
 	private @Getter @Setter int classify_id;
 	private @Getter @Setter String name;
+	private @Getter @Setter String classify_type;
+	private @Getter @Setter int classify_num;
 }

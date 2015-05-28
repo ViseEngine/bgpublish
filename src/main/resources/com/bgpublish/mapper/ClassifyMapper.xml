@@ -19,6 +19,28 @@
 		select * from tbl_classify_info
 	</select>
 	
+	<!-- 查询分类  -->
+	<select id="countClassifyMerch" resultType="Classify">
+		select a.*,ifnull(b.classify_num,0) classify_num from  tbl_classify_info a
+		left join (select classify_id,count(1) classify_num from tbl_merch_info group by classify_id)b
+		on a.classify_id=b.classify_id where a.classify_type='1'
+	</select>
+
+	<!-- 根据分类类型查询分类  -->
+	<select id="queryClassifyBy" resultType="Classify" parameterType="Classify">
+		select * from tbl_classify_info
+		<where>
+                    <if test="classify_id gt 0">
+                        classify_id = #{classify_id}
+                    </if>
+                    <if test="name != null">
+                        AND name = #{name}
+                    </if>
+                    <if test="classify_type != null">
+                        AND classify_type = #{classify_type}
+                    </if>
+                </where>
+	</select>
 	<!-- 根据分类类型查询所有分类  -->
 	<select id="queryClassifyByType" resultType="Classify" parameterType="String">
 		select * from tbl_classify_info where classify_type=#{classify_type}
