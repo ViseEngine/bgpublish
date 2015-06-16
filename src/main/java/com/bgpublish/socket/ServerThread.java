@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.bgpublish.util.SpringUtil;
+import com.bgpublish.domain.ChatOffLineMsg;
+import com.bgpublish.service.ChatOffLineMsgService;
 
 /**
  * 服务线程
@@ -36,9 +37,9 @@ public class ServerThread implements Runnable {
 	private ObjectInputStream ois = null;
 	private ObjectOutputStream oos = null;
 	private boolean bConnected = false;
-	private String sendmsg = null;
-	private String getnameString = null;
 	public List<Map<Object, Object>> getList;
+	
+	private ChatOffLineMsgService chatOffLineMsgService;
 
 	public ServerThread(Socket socket) {
 		this.socket = socket;
@@ -50,6 +51,10 @@ public class ServerThread implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	public ServerThread(Socket socket,ChatOffLineMsgService chatOffLineMsgService) {
+		this(socket);
+		this.chatOffLineMsgService = chatOffLineMsgService;
+	}
 
 	public void run() {
 		try {
@@ -57,15 +62,31 @@ public class ServerThread implements Runnable {
 				Object obj = ois.readObject();
 				FileSerial fileSerial = (FileSerial) obj;
 				String fromUser = fileSerial.getFromUser();
+				String toUser = fileSerial.getToUser();
 
 				switch (fileSerial.getType()) {
 				case FileSerial.TYPE_OFFLINE_MSG:
 					ChatServer.socketMap.put(fromUser, socket);
 
 					// 查询离线信息
-
+					List<ChatOffLineMsg> offLineList = this.chatOffLineMsgService.queryByMobile(fileSerial.getToUser(), fromUser);
 					// 发送离线信息
-
+					//TODO 还有语音和文件的离线信息未作处理
+					for (ChatOffLineMsg chatOffLineMsg : offLineList) {
+						FileSerial offLineObj = new FileSerial();
+						offLineObj.setFileName(chatOffLineMsg.getChat_content());
+						int chatType = Integer.parseInt(chatOffLineMsg.getChat_type());
+						int type = FileSerial.TYPE_TEXT;
+						if(chatType == 1){
+							type = FileSerial.TYPE_AUDIO;
+						}else if(chatType == 2){
+							type = FileSerial.TYPE_PICTURE;
+						}
+						offLineObj.setType(type);
+						offLineObj.setFromUser(chatOffLineMsg.getFrom_mobile());
+						offLineObj.setToUser(chatOffLineMsg.getTo_mobile());
+						oos.writeObject(offLineObj);
+					}
 					break;
 				case FileSerial.TYPE_OFFLINE:
 					ChatServer.onlineMap.remove(fromUser);
@@ -86,7 +107,7 @@ public class ServerThread implements Runnable {
 					while (iterator.hasNext()) {
 						Entry<String, Socket> elementEntry = iterator.next();
 						String key = elementEntry.getKey();
-						if (fromUser.equals(key)) {
+						if (toUser.equals(key)) {
 							isSend = true;
 							break;
 						}
@@ -98,6 +119,7 @@ public class ServerThread implements Runnable {
 						oos.flush();
 					} else {
 						// 保存离线信息
+						this.chatOffLineMsgService.addOffLine(fromUser,toUser,(FileSerial.TYPE_TEXT-1)+"",fileSerial.getFileName());
 					}
 
 					break;

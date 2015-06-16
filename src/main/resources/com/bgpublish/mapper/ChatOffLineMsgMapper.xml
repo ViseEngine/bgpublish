@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.bgpublish.mapper.ChatOffLineMsgMapper">
+	<!-- 离线信息 -->
+	<!-- 增加离线信息 -->
+	<insert id="addOffLineMsg" parameterType="ChatOffLineMsg">
+		INSERT INTO tbl_chat_offline_info (from_user_id,from_user_name,to_user_id,to_user_name,chat_date,chat_time,chat_type,is_read,chat_content) 
+		VALUES (#{from_user_id},#{from_user_name},#{to_user_id},#{to_user_name},#{chat_date},#{chat_time},#{chat_type},#{is_read},#{chat_content})
+	</insert>
+	
+	<!-- 删除离线信息 -->
+	<delete id="deleteOffLineMsgById" parameterType="String">
+		DELETE FROM tbl_chat_offline_info WHERE chat_id=#{chat_id}
+	</delete>
+	
+	<!-- 更新离线信息 -->
+	<update id="updateOffLineMsg" parameterType="ChatOffLineMsg">
+		UPDATE tbl_chat_offline_info
+		<set>
+	      <if test="from_user_id != null">from_user_id = #{from_user_id},</if>
+	      <if test="from_user_name != null">from_user_name = #{from_user_name},</if>
+	      <if test="to_user_id != null">to_user_id = #{to_user_id},</if>
+	      <if test="to_user_name != null">to_user_name = #{to_user_name},</if>
+	      <if test="chat_date != null">chat_date = #{chat_date},</if>
+	      <if test="chat_time != null">chat_time = #{chat_time},</if>
+	      <if test="chat_type != null">chat_type = #{chat_type},</if>
+	      <if test="is_read != null">is_read = #{is_read},</if>
+	      <if test="chat_content != null">chat_content = #{chat_content}</if>
+	    </set>
+		WHERE chat_id=#{chat_id}
+	</update>
+	
+	<!-- 根据ID查询离线信息 -->
+	<select id="queryByChatId" parameterType="String" resultType="ChatOffLineMsg">
+		SELECT * FROM tbl_chat_offline_info WHERE chat_id=#{chat_id} and is_read='0'
+	</select>
+	
+	<!-- 根据ID查询userid -->
+	<select id="queryByUserId" parameterType="String" resultType="ChatOffLineMsg">
+		SELECT a.*,(SELECT mobile FROM tbl_user WHERE user_id=a.from_user_id) from_mobile,
+		(SELECT mobile FROM tbl_user WHERE user_id=a.to_user_id) to_mobile
+		FROM tbl_chat_offline_info a
+		WHERE from_user_id=#{from_user_id} and to_user_id=#{to_user_id} and is_read='0'
+	</select>
+</mapper>

@@ -12,9 +12,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.bgpublish.service.ChatOffLineMsgService;
 import com.bgpublish.util.ServerConfig;
 
 /**
@@ -23,17 +29,32 @@ import com.bgpublish.util.ServerConfig;
  * @author ps
  *
  */
+@Service
 public class ChatServer {
 	private static final Log LOG = LogFactory.getLog(ChatServer.class);
 
+	//离线信息service
+	private @Autowired @Getter @Setter ChatOffLineMsgService chatOffLineMsgService;
+	//服务器socket
 	protected ServerSocket serverSocket = null;
 	boolean started = false;
+	//保存客户端线程
 	public static List<ServerThread> clients = new ArrayList<ServerThread>();
 	protected static Map<String, Socket> socketMap = new HashMap<String, Socket>();
 	protected static Map<String, Socket> onlineMap = new HashMap<String, Socket>();
 
-	public static void main(String[] args) {
-		new ChatServer().start(ServerConfig.PORT);
+	/*
+	 * public static void main(String[] args) { new
+	 * ChatServer().start(ServerConfig.PORT); }
+	 */
+
+	public ChatServer() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				start(ServerConfig.PORT);
+			}
+		}).start();
 	}
 
 	public void start(int port) {
@@ -53,8 +74,9 @@ public class ChatServer {
 			while (started) {
 				LOG.info(">> 等待客户端线程接入...");
 				Socket socket = serverSocket.accept();
-				LOG.info(">> 客户端线程[" + socket.getInetAddress().getHostAddress()+ "]接入成功");
-				
+				LOG.info(">> 客户端线程[" + socket.getInetAddress().getHostAddress()
+						+ "]接入成功");
+
 				ServerThread serverThread = new ServerThread(socket);
 				new Thread(serverThread).start();
 				clients.add(serverThread);
