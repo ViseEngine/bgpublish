@@ -57,4 +57,10 @@ public interface MerchService {
 	 * @return
 	 */
 	public List<Merch> queryMerchBy(Merch merch);
+	/**
+	 * 批量更新商品信息
+	 * @param merchList 商品列表
+	 * @return 更新状态
+	 */
+	public void updateMerchBatch(List<Merch> merchList);
 }

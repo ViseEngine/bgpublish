@@ -85,4 +85,14 @@ public class MerchServiceImp implements MerchService {
 	public List<Merch> queryMerchBy(Merch merch) {
 		return this.merchMapper.queryMerchBy(merch);
 	}
+
+	/**
+	 * 批量更新商品信息
+	 * @param merchList 商品列表
+	 * @return 更新状态
+	 */
+	@Override
+	public void updateMerchBatch(List<Merch> merchList) {
+		this.merchMapper.updateMerchBatch(merchList);
+	}
 }

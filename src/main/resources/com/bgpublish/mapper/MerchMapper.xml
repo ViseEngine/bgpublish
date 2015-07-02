@@ -26,6 +26,26 @@
 	    WHERE merch_id = #{merch_id}
 	</update>
 	
+	<!-- 批量更新商品信息 -->
+	<update id="updateMerchBatch" parameterType="java.util.List">
+	     <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			UPDATE tbl_merch_info 
+			<set>
+		      <if test="item.store_id != null">store_id = #{item.store_id},</if>
+		      <if test="item.name != null">name = #{item.name},</if>
+		      <if test="item.classify_id != null">classify_id = #{item.classify_id},</if>
+		      <if test="item.price != null">price = #{item.price},</if>
+		      <if test="item.in_stock != null">in_stock = #{item.in_stock},</if>
+		      <if test="item.published_date != null">published_date = #{item.published_date},</if>
+		      <if test="item.out_published != null">out_published = #{item.out_published},</if>
+		       <![CDATA[ 
+		       last_modify_time = date_format(current_time,'%Y%m%d%H%i%s') 
+		       ]]>
+		    </set>
+		    WHERE merch_id = #{item.merch_id}
+		  </foreach>
+	</update>
+	
 	<!-- 删除商品信息 -->
 	<delete id="deleteMerchById" parameterType="String">
 		DELETE FROM tbl_merch_info WHERE merch_id = #{merch_id}

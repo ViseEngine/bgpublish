@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.bgpublish.domain.ChatOffLineMsg;
 import com.bgpublish.domain.User;
@@ -21,6 +22,7 @@ import com.bgpublish.util.DateUtil;
  * @author ps
  *
  */
+@Service
 public class ChatOffLineMsgServiceImp implements ChatOffLineMsgService {
 	
 	private @Autowired @Getter @Setter ChatOffLineMsgMapper chatOffLineMsgMapper;
