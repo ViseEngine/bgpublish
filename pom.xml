@@ -111,6 +111,28 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
+		<!-- spring session -->
+		<!-- <dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-data-redis</artifactId>
+			<version>1.0.1.RELEASE</version>
+		</dependency> -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<!-- for OAuth 2.0 -->
+	    <dependency>
+	        <groupId>org.springframework.security.oauth</groupId>
+	        <artifactId>spring-security-oauth2</artifactId>
+	        <version>2.0.7.RELEASE</version>
+	    </dependency>
+	    <!-- for OAuth 1.0a -->
+	    <dependency>
+	        <groupId>org.springframework.security.oauth</groupId>
+	        <artifactId>spring-security-oauth</artifactId>
+	        <version>2.0.7.RELEASE</version>
+	    </dependency>
 	</dependencies>
 
 	<!-- Package as an executable jar -->

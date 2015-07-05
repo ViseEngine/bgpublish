@@ -31,5 +31,6 @@ public class SecureUtilTest {
 		System.err.println(sha);
 		System.err.println(sha1);
 		Assert.assertThat(sha, CoreMatchers.is("6adfb183a4a2c94a2f92dab5ade762a47889a5a1"));
+		Assert.assertThat(sha1, CoreMatchers.is("9ea87416f5a91d6ae18705fa194ef450ce790347"));
 	}
 }

@@ -37,7 +37,7 @@ public class SecureUtil {
      * @return 返回密文
      */
     public static String md5Encode(String plaintext){
-            return encode("MD5", plaintext);
+    	return encode("MD5", plaintext);
     }
     /**
      * SHA加密
@@ -45,7 +45,7 @@ public class SecureUtil {
      * @return 返回密文
      */
     public static String shaEncode(String plaintext){
-            return encode("SHA", plaintext);
+    	return encode("SHA", plaintext);
     }
 
 	private static String getFormattedText(byte[] bytes) {
