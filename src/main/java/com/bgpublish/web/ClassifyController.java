@@ -65,6 +65,14 @@ public class ClassifyController {
 		
 		return list;
 	}
+	
+	@RequestMapping(value="/querybyid.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Classify queryClassifyById(String classify_id){
+		Classify classify = this.classifyService.queryClassifyById(classify_id);
+		
+		return classify;
+	}
 
 	@RequestMapping(value="/add.do", method = RequestMethod.POST)
 	public ResponseEntity<String> addClassify(@RequestBody Classify classify){
@@ -76,6 +84,18 @@ public class ClassifyController {
 		}
 		
 		return HttpUtil.createResponseEntity("新增分类成功!", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/update.do", method = RequestMethod.POST)
+	public ResponseEntity<String> updateClassify(@RequestBody Classify classify){
+		try{
+			this.classifyService.updateClassify(classify);
+		}catch(Exception e){
+			e.printStackTrace();
+			return HttpUtil.createResponseEntity("更新分类失败!", HttpStatus.BAD_REQUEST);
+		}
+		
+		return HttpUtil.createResponseEntity("更新分类成功!", HttpStatus.OK);
 	}
 
 	@RequestMapping(value="/delete.do", method = RequestMethod.GET)

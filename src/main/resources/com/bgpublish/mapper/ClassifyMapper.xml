@@ -6,7 +6,7 @@
 <mapper namespace="com.bgpublish.mapper.ClassifyMapper">
 	<!-- 增加分类 -->
 	<insert id="addClassify" parameterType="Classify">
-		INSERT INTO tbl_classify_info (name) VALUES (#{name})
+		INSERT INTO tbl_classify_info (name,desc,classify_type) VALUES (#{name},#{desc},#{classify_type})
 	</insert>
 	
 	<!-- 删除分类 -->
@@ -14,9 +14,25 @@
 		DELETE FROM tbl_classify_info WHERE classify_id=#{classify_id}
 	</delete>
 	
+	<!-- 更新分类 -->
+	<update id="updateClassify" parameterType="Classify">
+		UPDATE tbl_classify_info 
+		<set>
+	      <if test="name != null">name = #{name},</if>
+	      <if test="desc != null">desc = #{desc},</if>
+	      <if test="classify_type != null">classify_type = #{classify_type}</if>
+	    </set>
+	    WHERE classify_id = #{classify_id}
+	</update>
+	
 	<!-- 查询分类  -->
 	<select id="queryClassify" resultType="Classify">
 		select * from tbl_classify_info
+	</select>
+	
+	<!-- 查询分类根据Id  -->
+	<select id="queryClassifyById" resultType="Classify" parameterType="String">
+		select * from tbl_classify_info WHERE classify_id = #{classify_id}
 	</select>
 	
 	<!-- 查询分类  -->
@@ -30,16 +46,16 @@
 	<select id="queryClassifyBy" resultType="Classify" parameterType="Classify">
 		select * from tbl_classify_info
 		<where>
-                    <if test="classify_id gt 0">
-                        classify_id = #{classify_id}
-                    </if>
-                    <if test="name != null">
-                        AND name = #{name}
-                    </if>
-                    <if test="classify_type != null">
-                        AND classify_type = #{classify_type}
-                    </if>
-                </where>
+            <if test="classify_id gt 0">
+                classify_id = #{classify_id}
+            </if>
+            <if test="name != null">
+                AND name = #{name}
+            </if>
+            <if test="classify_type != null">
+                AND classify_type = #{classify_type}
+            </if>
+        </where>
 	</select>
 	<!-- 根据分类类型查询所有分类  -->
 	<select id="queryClassifyByType" resultType="Classify" parameterType="String">

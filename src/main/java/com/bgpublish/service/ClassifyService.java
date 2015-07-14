@@ -24,21 +24,32 @@ public interface ClassifyService {
 	 */
 	public void deleteClassifyById(String classify_id);
 	/**
+	 * 更新分类
+	 * @param classify
+	 */
+	public void updateClassify(Classify classify);
+	/**
 	 * 查询所有分类
 	 * @return 分类
 	 */
 	public List<Classify> queryClassify();
+	/**
+	 * 根据Id查询分类
+	 * @param classify_id
+	 * @return 分类
+	 */
+	public Classify queryClassifyById(String classify_id);
 	/**
 	 * 查询所有商品分类和数量
 	 * @return 分类
 	 */
 	public List<Classify> countClassifyMerch();
 	/**
-         * 查询所有分类
-         * @param classify 分类条件
-         * @return 分类
-         */
-        public List<Classify> queryClassifyBy(Classify classify);
+     * 查询所有分类
+     * @param classify 分类条件
+     * @return 分类
+     */
+    public List<Classify> queryClassifyBy(Classify classify);
 	/**
 	 * 根据分类类型查询所有分类
 	 * @param classify_type

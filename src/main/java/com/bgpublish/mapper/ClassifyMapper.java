@@ -24,10 +24,21 @@ public interface ClassifyMapper {
 	 */
 	public void deleteClassifyById(String classify_id);
 	/**
+	 * 更新分类
+	 * @param classify
+	 */
+	public void updateClassify(Classify classify);
+	/**
 	 * 查询所有分类
 	 * @return 分类
 	 */
 	public List<Classify> queryClassify();
+	/**
+	 * 根据Id查询分类
+	 * @param classify_id
+	 * @return 分类
+	 */
+	public Classify queryClassifyById(String classify_id);
 	/**
 	 * 查询所有商品分类和商品数
 	 * @return 分类
