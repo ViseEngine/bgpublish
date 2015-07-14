@@ -6,8 +6,8 @@
 <mapper namespace="com.bgpublish.mapper.MerchMapper">
 	<!-- 增加商品信息 -->
 	<insert id="addMerch" parameterType="Merch">
-		INSERT INTO tbl_merch_info (store_id,name,classify_id,price,in_stock,published_date,out_published,last_modify_time,create_time)
-		VALUES (#{store_id},#{name},#{classify_id},#{price},#{in_stock},#{published_date},#{out_published},#{last_modify_time},#{create_time})
+		INSERT INTO tbl_merch_info (store_id,name,desc,classify_id,price,in_stock,published_date,out_published,last_modify_time,create_time)
+		VALUES (#{store_id},#{name},#{desc},#{classify_id},#{price},#{in_stock},#{published_date},#{out_published},#{last_modify_time},#{create_time})
 	</insert>
 	
 	<!-- 更新商品信息 -->
@@ -16,6 +16,7 @@
 		<set>
 	      <if test="store_id != null">store_id = #{store_id},</if>
 	      <if test="name != null">name = #{name},</if>
+	      <if test="desc != null">desc = #{desc},</if>
 	      <if test="classify_id != null">classify_id = #{classify_id},</if>
 	      <if test="price != null">price = #{price},</if>
 	      <if test="in_stock != null">in_stock = #{in_stock},</if>
@@ -33,6 +34,7 @@
 			<set>
 		      <if test="item.store_id != null">store_id = #{item.store_id},</if>
 		      <if test="item.name != null">name = #{item.name},</if>
+		      <if test="item.desc != null">desc = #{item.desc},</if>
 		      <if test="item.classify_id != null">classify_id = #{item.classify_id},</if>
 		      <if test="item.price != null">price = #{item.price},</if>
 		      <if test="item.in_stock != null">in_stock = #{item.in_stock},</if>
