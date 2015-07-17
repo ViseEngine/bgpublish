@@ -92,7 +92,7 @@ public class OrderController {
 	
 	
 	/**
-	 * 生成订单以及订单明细
+	 * 获取订单信息（订单明细）
 	 * @param order
 	 * @return
 	 */
@@ -101,7 +101,25 @@ public class OrderController {
 		Order order = this.orderService.getOrderInfoById(orderId);
 		List<OrderDetail> otailList = this.orderService.getOrderDetailsById(orderId);
 		order.setOrderDetails(otailList);
-		return this.orderService.getOrderInfoById(orderId);
+		return order;
+	}
+	
+	/**
+	 * 获取已完成的订单
+	 * @return
+	 */
+	@RequestMapping(value="/getCompletedOrderInfo.do", method = RequestMethod.GET)
+	public List<Order> getCompletedOrderInfo(){
+		return this.orderService.getCompletedOrderInfo();
+	}
+	
+	/**
+	 * 获取进行中的订单（不包括订单完成和取消的订单）
+	 * @return
+	 */
+	@RequestMapping(value="/getInOrderInfo.do", method = RequestMethod.GET)
+	public List<Order> getInOrderInfo(){
+		return this.orderService.getInOrderInfo();
 	}
 	
 	/**

@@ -33,6 +33,16 @@ public interface OrderService {
 	 * @return Order对象
 	 */
 	public Order getOrderInfoById(String orderId);
+	/**
+	 * 获取已完成的订单
+	 * @return
+	 */
+	public List<Order> getCompletedOrderInfo();
+	/**
+	 * 获取进行中的订单
+	 * @return
+	 */
+	public List<Order> getInOrderInfo();
 	
 	/**
 	 * 通过订单ID获取订单明细信息

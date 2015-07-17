@@ -34,6 +34,16 @@ public interface OrderMapper {
 	 * @return
 	 */
 	public Order getOrderInfoById(String orderId);
+	/**
+	 * 获取已完成的订单
+	 * @return
+	 */
+	public List<Order> getCompletedOrderInfo();
+	/**
+	 * 获取进行中的订单
+	 * @return
+	 */
+	public List<Order> getInOrderInfo();
 
 	/**
 	 * 根据订单ID获取订单明细信息
@@ -54,6 +64,10 @@ public interface OrderMapper {
 	 */
 	public void updateOrderInfo(Order order);
 
+	/**
+	 * 逻辑删除订单
+	 * @param order
+	 */
 	public void logicDeleteOrder(Order order);
 	
 }

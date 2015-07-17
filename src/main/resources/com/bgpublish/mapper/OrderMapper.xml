@@ -36,6 +36,21 @@
 	    select * from tbl_order_detail where order_id = #{orderId}
 	</select>
 	
+	<!-- 获取已完成订单基本信息 -->
+	<select id="getCompletedOrderInfo" resultMap="orderResultMap" >
+	    select * from tbl_order_info  where status='4'
+	</select>
+	
+	<!-- 获取进行中订单基本信息 -->
+	<select id="getInOrderInfo" resultMap="orderResultMap"  >
+	    select * from tbl_order_info where status not in ('4','5','6')
+	</select>
+	
+	<resultMap type="Order" id="orderResultMap">
+		<id column="order_id" property="order_id"/>
+		<!-- 使用select属性这种方式，性能上有问题，以后需要优化的地方 -->
+		<collection property="orderDetails" column="order_id" ofType="OrderDetail" select="getOrderDetailsById"></collection>
+	</resultMap>
 	
 	<!-- 更新订单信息 -->
 	<update id="updateOrderInfo" parameterType="Order">

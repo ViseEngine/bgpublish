@@ -68,6 +68,23 @@ public class OrderServiceImp implements OrderService {
 	}
 
 	/**
+	 * 获取已完成的订单
+	 * @return
+	 */
+	public List<Order> getCompletedOrderInfo(){
+		List<Order> completedOrderList = this.orderMapper.getCompletedOrderInfo();
+		return completedOrderList;
+	}
+	/**
+	 * 获取进行中的订单
+	 * @return
+	 */
+	public List<Order> getInOrderInfo(){
+		List<Order> inOrderList = this.orderMapper.getInOrderInfo();
+		return inOrderList;
+	}
+	
+	/**
 	 * 根据订单ID删除订单
 	 * @param orderId
 	 */

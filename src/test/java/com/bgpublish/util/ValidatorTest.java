@@ -68,4 +68,14 @@ public class ValidatorTest {
 		
 		Assert.assertEquals(false, Validator.isIDcard("140982198610034958"));
 	}
+	
+	@Test
+	public void testIsNumber(){
+		Assert.assertEquals(true, Validator.isNumber("13598462345"));
+		Assert.assertEquals(true, Validator.isNumber("13598462345.001"));
+		Assert.assertEquals(true, Validator.isNumber("13598462345L"));
+		Assert.assertEquals(true, Validator.isNumber("3e10"));
+		
+		Assert.assertEquals(false, Validator.isNumber("a3e10"));
+	}
 }

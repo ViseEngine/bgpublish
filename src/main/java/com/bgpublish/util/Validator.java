@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 /**
@@ -233,8 +234,7 @@ public class Validator {
 	}
 
 	public static boolean isNumber(String str) {
-		String regex = "^[0-9]*$";
-		return match(regex, str);
+		return NumberUtils.isNumber(str);
 	}
 
 	public static boolean isIntNumber(String str) {
