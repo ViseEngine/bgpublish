@@ -108,18 +108,18 @@ public class OrderController {
 	 * 获取已完成的订单
 	 * @return
 	 */
-	@RequestMapping(value="/getCompletedOrderInfo.do", method = RequestMethod.GET)
-	public List<Order> getCompletedOrderInfo(){
-		return this.orderService.getCompletedOrderInfo();
+	@RequestMapping(value="/getCompletedOrderInfo.do", method = RequestMethod.POST)
+	public List<Order> getCompletedOrderInfo(@RequestBody Order order){
+		return this.orderService.getCompletedOrderInfo(order);
 	}
 	
 	/**
 	 * 获取进行中的订单（不包括订单完成和取消的订单）
 	 * @return
 	 */
-	@RequestMapping(value="/getInOrderInfo.do", method = RequestMethod.GET)
-	public List<Order> getInOrderInfo(){
-		return this.orderService.getInOrderInfo();
+	@RequestMapping(value="/getInOrderInfo.do", method = RequestMethod.POST)
+	public List<Order> getInOrderInfo(@RequestBody Order order){
+		return this.orderService.getInOrderInfo(order);
 	}
 	
 	/**

@@ -9,10 +9,10 @@
 	    <selectKey keyProperty="order_id" resultType="String" order="BEFORE">  
              select getOrderId()  
    		 </selectKey> 
-	    <![CDATA[ 
-	    INSERT INTO TBL_ORDER_INFO (ORDER_ID,AMOUNT_MONEY,CURRENCY_UNIT, BUYER_NAME,BUYER_ADDR_ID,BUYER_PHONE,BUYER_MOBILE,
-	    SEND_TYPE,FREIGHT,INVOICE_NEED,INVOICE_TITLE,PAY_TYPE,BUYER_PAY_TIME,TRAD_TIME,UPDATE_TIME,STATUS) 
-	    VALUES(#{order_id},#{amount_money},#{currency_unit},#{buyer_name},#{buyer_addr_id},#{buyer_phone},#{buyer_mobile},
+	    <![CDATA[
+	    INSERT INTO tbl_order_info (order_id,amount_money,buyer_user_id,buyer_user_name,seller_user_id,seller_user_name,currency_unit, buyer_name,buyer_addr_id,buyer_phone,buyer_mobile,
+	    send_type,freight,invoice_need,invoice_title,pay_type,buyer_pay_time,trad_time,update_time,status) 
+	    VALUES(#{order_id},#{amount_money},#{buyer_user_id},#{buyer_user_name},#{seller_user_id},#{seller_user_name},#{currency_unit},#{buyer_name},#{buyer_addr_id},#{buyer_phone},#{buyer_mobile},
 				#{send_type},#{freight},#{invoice_need},#{invoice_title},#{pay_type},#{buyer_pay_time},date_format(current_time,'%Y%m%d%H%i%s'),
 				#{update_time},#{status})
 		]]>
@@ -20,7 +20,7 @@
 	
 	<!-- 批量生成订单明细 -->
 	<insert id="createOrderDetailBatch" parameterType="java.util.List">
-		INSERT INTO TBL_ORDER_DETAIL (ORDER_ID,MERCH_ID,MERCH_NAME,AMOUNT,UNIT,PRICE) values 
+		INSERT INTO tbl_order_detail (order_id,merch_id,merch_name,amount,unit,price) values 
 		<foreach collection="list" item="otail" index="index" separator="," >
 			(#{otail.order_id},#{otail.merch_id},#{otail.merch_name},#{otail.amount},#{otail.unit},#{otail.price})
 		</foreach>
@@ -32,18 +32,38 @@
 	</select>
 	
 	<!-- 获取订单明细信息 -->
-	<select id="getOrderDetailsById"  resultType="OrderDetail" parameterType="String">
+	<select id="getOrderDetailsById"  resultType="OrderDetail" parameterType="Order">
 	    select * from tbl_order_detail where order_id = #{orderId}
 	</select>
 	
 	<!-- 获取已完成订单基本信息 -->
-	<select id="getCompletedOrderInfo" resultMap="orderResultMap" >
-	    select * from tbl_order_info  where status='4'
+	<select id="getCompletedOrderInfo" resultMap="orderResultMap" parameterType="Order">
+	    select * from tbl_order_info
+	    <where>
+	    	<![CDATA[ status='4'  ]]>
+			<if test="buyer_user_id gt 0">
+				AND buyer_user_id = #{buyer_user_id}
+			</if>
+			<if test="seller_user_id gt 0">
+				AND seller_user_id = #{seller_user_id}
+			</if>
+		</where>
+	    order by order_id desc
 	</select>
 	
 	<!-- 获取进行中订单基本信息 -->
-	<select id="getInOrderInfo" resultMap="orderResultMap"  >
-	    select * from tbl_order_info where status not in ('4','5','6')
+	<select id="getInOrderInfo" resultMap="orderResultMap" parameterType="Order">
+	    select * from tbl_order_info  
+	    <where>
+	    	<![CDATA[ status not in ('4','5','6')  ]]>
+			<if test="buyer_user_id gt 0">
+				AND buyer_user_id = #{buyer_user_id}
+			</if>
+			<if test="seller_user_id gt 0">
+				AND seller_user_id = #{seller_user_id}
+			</if>
+		</where>
+	    order by order_id desc
 	</select>
 	
 	<resultMap type="Order" id="orderResultMap">
@@ -56,33 +76,37 @@
 	<update id="updateOrderInfo" parameterType="Order">
 		UPDATE tbl_order_info 
 		<set>
-	      <if test="amount_money != null">AMOUNT_MONEY = #{amount_money},</if>
-	      <if test="currency_unit != null">CURRENCY_UNIT = #{currency_unit},</if>
-	      <if test="buyer_name != null">BUYER_NAME = #{buyer_name},</if>
-	      <if test="buyer_addr_id != null">BUYER_ADDR_ID = #{buyer_addr_id},</if>
-	      <if test="buyer_phone != null">BUYER_PHONE = #{buyer_phone},</if>
-	      <if test="buyer_mobile != null">BUYER_MOBILE = #{buyer_mobile},</if>
-	      <if test="send_type != null">SEND_TYPE = #{send_type}</if>
-	      <if test="send_no != null">SEND_NO = #{send_no},</if>
-	      <if test="send_time != null">SEND_TIME = #{send_time},</if>
-	      <if test="freight != null">FREIGHT = #{freight},</if>
-	      <if test="invoice_need != null">INVOICE_NEED = #{invoice_need},</if>
-	      <if test="invoice_title != null">INVOICE_TITLE = #{invoice_title}</if>
-	      <if test="pay_type != null">PAY_TYPE = #{pay_type},</if>
-	      <if test="buyer_pay_time != null">BUYER_PAY_TIME = #{buyer_pay_time},</if>
-	      <if test="trad_time != null">TRAD_TIME = #{trad_time},</if>
-	      <if test="seller_deliver_time != null">SELLER_DELIVER_TIME = #{seller_deliver_time}</if>
-	      <if test="buyer_confirm_time != null">BUYER_CONFIRM_TIME = #{buyer_confirm_time},</if>
-	      <if test="buyer_del != null">BUYER_DEL = #{buyer_del},</if>
-	      <if test="seller_del != null">SELLER_DEL = #{seller_del},</if>
-	      <if test="buyer_del_time != null">BUYER_DEL_TIME = #{buyer_del_time}</if>
-	      <if test="seller_del_time != null">SELLER_DEL_TIME = #{seller_del_time},</if>
-	      <if test="buyer_score != null">BUYER_SCORE = #{buyer_score},</if>
-	      <if test="seller_score != null">SELLER_SCORE = #{seller_score},</if>
-	      <if test="status != null">STATUS = #{status},</if>
+	      <if test="amount_money != null">amount_money = #{amount_money},</if>
+	      <if test="buyer_user_id  gt  0">buyer_user_id = #{buyer_user_id},</if>
+	      <if test="buyer_user_name != null">buyer_user_name = #{buyer_user_name},</if>
+	      <if test="seller_user_id gt 0">seller_user_id = #{seller_user_id},</if>
+	      <if test="seller_user_name != null">seller_user_name = #{seller_user_name},</if>
+	      <if test="currency_unit != null">currency_unit = #{currency_unit},</if>
+	      <if test="buyer_name != null">buyer_name = #{buyer_name},</if>
+	      <if test="buyer_addr_id != null">buyer_addr_id = #{buyer_addr_id},</if>
+	      <if test="buyer_phone != null">buyer_phone = #{buyer_phone},</if>
+	      <if test="buyer_mobile != null">buyer_mobile = #{buyer_mobile},</if>
+	      <if test="send_type != null">send_type = #{send_type}</if>
+	      <if test="send_no != null">send_no = #{send_no},</if>
+	      <if test="send_time != null">send_time = #{send_time},</if>
+	      <if test="freight != null">freight = #{freight},</if>
+	      <if test="invoice_need != null">invoice_need = #{invoice_need},</if>
+	      <if test="invoice_title != null">invoice_title = #{invoice_title}</if>
+	      <if test="pay_type != null">pay_type = #{pay_type},</if>
+	      <if test="buyer_pay_time != null">buyer_pay_time = #{buyer_pay_time},</if>
+	      <if test="trad_time != null">trad_time = #{trad_time},</if>
+	      <if test="seller_deliver_time != null">seller_deliver_time = #{seller_deliver_time}</if>
+	      <if test="buyer_confirm_time != null">buyer_confirm_time = #{buyer_confirm_time},</if>
+	      <if test="buyer_del != null">buyer_del = #{buyer_del},</if>
+	      <if test="seller_del != null">seller_del = #{seller_del},</if>
+	      <if test="buyer_del_time != null">buyer_del_time = #{buyer_del_time}</if>
+	      <if test="seller_del_time != null">seller_del_time = #{seller_del_time},</if>
+	      <if test="buyer_score != null">buyer_score = #{buyer_score},</if>
+	      <if test="seller_score != null">seller_score = #{seller_score},</if>
+	      <if test="status != null">status = #{status},</if>
 	      <![CDATA[ UPDATE_TIME = date_format(current_time,'%Y%m%d%H%i%s') ]]>
 	    </set>
-	    WHERE ORDER_ID = #{order_id}
+	    WHERE order_id = #{order_id}
 	</update>
 	
 	
@@ -91,13 +115,13 @@
 	     <foreach collection="list" item="item" index="index" open="" close="" separator=";">
 			UPDATE tbl_order_detail 
 			<set>
-		      <if test="item.merch_id != null">MERCH_ID = #{item.merch_id},</if>
-		      <if test="item.merch_name != null">MERCH_NAME = #{item.merch_name},</if>
-		      <if test="item.amount != null">AMOUNT = #{item.amount},</if>
-		      <if test="item.unit != null">UNIT = #{item.unit},</if>
-		      <if test="item.price != null">PRICE = #{item.price},</if>
+		      <if test="item.merch_id != null">merch_id = #{item.merch_id},</if>
+		      <if test="item.merch_name != null">merch_name = #{item.merch_name},</if>
+		      <if test="item.amount != null">amount = #{item.amount},</if>
+		      <if test="item.unit != null">unit = #{item.unit},</if>
+		      <if test="item.price != null">price = #{item.price},</if>
 		    </set>
-		    WHERE ORDER_ID = #{item.orderId}
+		    WHERE order_id = #{item.orderId}
 		  </foreach>
 	</update>
 	
@@ -116,11 +140,11 @@
 	<update id="logicDeleteOrder" parameterType="Order">
 		UPDATE tbl_order_info 
 		<set>
-		     <if test="buyer_del != null"><![CDATA[ BUYER_DEL = #{buyer_del},BUYER_DEL_TIME=date_format(current_time,'%Y%m%d%H%i%s'), ]]> </if>
-	         <if test="seller_del != null"><![CDATA[ SELLER_DEL = #{seller_del},SELLER_DEL_TIME=date_format(current_time,'%Y%m%d%H%i%s'), ]]></if>
-    		<![CDATA[ UPDATE_TIME = date_format(current_time,'%Y%m%d%H%i%s') ]]>
+		     <if test="buyer_del != null"><![CDATA[ buyer_del = #{buyer_del},buyer_del_time=date_format(current_time,'%Y%m%d%H%i%s'), ]]> </if>
+	         <if test="seller_del != null"><![CDATA[ seller_del = #{seller_del},seller_del_time=date_format(current_time,'%Y%m%d%H%i%s'), ]]></if>
+    		<![CDATA[ update_time = date_format(current_time,'%Y%m%d%H%i%s') ]]>
     	</set>
-    	 WHERE ORDER_ID = #{order_id}
+    	 WHERE order_id = #{order_id}
 	      	
     </update>
     

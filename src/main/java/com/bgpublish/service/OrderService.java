@@ -35,14 +35,16 @@ public interface OrderService {
 	public Order getOrderInfoById(String orderId);
 	/**
 	 * 获取已完成的订单
+	 * @param order
 	 * @return
 	 */
-	public List<Order> getCompletedOrderInfo();
+	public List<Order> getCompletedOrderInfo(Order order);
 	/**
 	 * 获取进行中的订单
+	 * @param order
 	 * @return
 	 */
-	public List<Order> getInOrderInfo();
+	public List<Order> getInOrderInfo(Order order);
 	
 	/**
 	 * 通过订单ID获取订单明细信息

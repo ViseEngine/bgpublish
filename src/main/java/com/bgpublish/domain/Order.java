@@ -30,6 +30,10 @@ public class Order implements Serializable{
 	private @Getter @Setter float price;
 	*/
 	private @Getter @Setter float amount_money;
+	private @Getter @Setter int buyer_user_id;
+	private @Getter @Setter String buyer_user_name;
+	private @Getter @Setter int seller_user_id;
+	private @Getter @Setter String seller_user_name;
 	private @Getter @Setter String currency_unit;
 	private @Getter @Setter String buyer_name;
 //	private @Getter @Setter String buyer_area;

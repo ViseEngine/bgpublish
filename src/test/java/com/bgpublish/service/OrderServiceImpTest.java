@@ -35,18 +35,24 @@ public class OrderServiceImpTest {
 	
 	@Test
 	public void testGetCompletedOrderInfo(){
-		List<Order> completedOrderInfo = orderService.getCompletedOrderInfo();
-		for (Order order : completedOrderInfo) {
+		Order order = new Order();
+		order.setBuyer_user_id(3);
+		order.setBuyer_user_name("aa");
+		List<Order> completedOrderInfo = orderService.getCompletedOrderInfo(order);
+		for (Order order1 : completedOrderInfo) {
 			
-			Assert.assertNotNull(order);
+			Assert.assertNotNull(order1);
 		}
 	}
 	@Test
 	public void testGetInOrderInfo(){
-		List<Order> inOrderInfo = orderService.getInOrderInfo();
-		for (Order order : inOrderInfo) {
+		Order order = new Order();
+		order.setBuyer_user_id(4);
+		order.setBuyer_user_name("aa");
+		List<Order> inOrderInfo = orderService.getInOrderInfo(order);
+		for (Order order1 : inOrderInfo) {
 			
-			Assert.assertNotNull(order);
+			Assert.assertNotNull(order1);
 		}
 	}
 }
