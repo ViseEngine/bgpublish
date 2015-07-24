@@ -8,6 +8,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import com.bgpublish.util.HttpUtil;
 @RestController
 @RequestMapping(value="/sgams/freqa")
 public class FrequentlyAddressController {
+	private static final Log LOGGER = LogFactory.getLog(FrequentlyAddressController.class);
 
 	private @Autowired @Getter @Setter FrequentlyAddressService frequentlyAddressService;
 	
@@ -47,7 +50,7 @@ public class FrequentlyAddressController {
 		try{
 			this.frequentlyAddressService.addFrequentlyAddress(frequentlyAddress);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("新增常用地址失败!",e);
 			return HttpUtil.createResponseEntity("新增常用地址失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -59,7 +62,7 @@ public class FrequentlyAddressController {
 		try{
 			this.frequentlyAddressService.deleteFrequentlyAddressById(freqa_id);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("删除常用地址失败!",e);
 			return HttpUtil.createResponseEntity("删除常用地址失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -71,7 +74,7 @@ public class FrequentlyAddressController {
 		try{
 			this.frequentlyAddressService.updateFrequentlyAddress(frequentlyAddress);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("更新常用地址失败!",e);
 			return HttpUtil.createResponseEntity("更新常用地址失败!", HttpStatus.BAD_REQUEST);
 		}
 		

@@ -8,6 +8,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bgpublish.domain.FavoriteStat;
 import com.bgpublish.domain.StoreUserFavorite;
 import com.bgpublish.service.StoreUserFavoriteService;
 import com.bgpublish.util.HttpUtil;
@@ -29,7 +32,7 @@ import com.bgpublish.util.HttpUtil;
 @RestController
 @RequestMapping(value="/sgams/storeuf")
 public class StoreUserFavoriteController {
-
+	private static final Log LOGGER = LogFactory.getLog(StoreUserFavoriteController.class);
 	private @Autowired @Getter @Setter StoreUserFavoriteService storeUserFavoriteService;
 
 	@RequestMapping(value="/add.do", method = RequestMethod.POST)
@@ -37,7 +40,7 @@ public class StoreUserFavoriteController {
 		try{
 			this.storeUserFavoriteService.addStoreUserFavorite(storeUserFavorite);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("收藏失败!", e);
 			return HttpUtil.createResponseEntity("收藏失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -49,7 +52,7 @@ public class StoreUserFavoriteController {
 		try{
 			this.storeUserFavoriteService.deleteStoreUserFavorite(storeUserFavorite);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("取消收藏失败!", e);
 			return HttpUtil.createResponseEntity("取消收藏失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -69,5 +72,24 @@ public class StoreUserFavoriteController {
 	@RequestMapping(value="/count.do", method = RequestMethod.GET)
 	public int countUserByStoreId(String store_id){
 		return this.storeUserFavoriteService.countUserByStoreId(store_id);
+	}
+	
+	/**
+	 * 按天统计商家收藏量
+	 * @param favoriteStat
+	 * @return
+	 */
+	@RequestMapping(value="/countByDayAndUser.do", method = RequestMethod.POST)
+	public FavoriteStat countByDayAndUser(@RequestBody FavoriteStat favoriteStat){
+		return this.storeUserFavoriteService.countByDayAndUser(favoriteStat);
+	}
+	/**
+	 * 按天分时统计商家收藏量
+	 * @param favoriteStat
+	 * @return
+	 */
+	@RequestMapping(value="/countByDayHourAndUser.do", method = RequestMethod.POST)
+	public List<FavoriteStat> countByDayHourAndUser(@RequestBody FavoriteStat favoriteStat){
+		return this.storeUserFavoriteService.countByDayHourAndUser(favoriteStat);
 	}
 }

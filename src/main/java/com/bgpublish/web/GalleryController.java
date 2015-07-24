@@ -8,6 +8,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ import com.bgpublish.util.HttpUtil;
 @RestController
 @RequestMapping(value="/sgams/gallery")
 public class GalleryController {
+	private static final Log LOGGER = LogFactory.getLog(GalleryController.class);
 
 	private @Autowired @Getter @Setter GalleryService galleryService;
 	
@@ -38,7 +41,7 @@ public class GalleryController {
 		try{
 			this.galleryService.addGallery(gallery);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("新增图片失败", e);
 			return HttpUtil.createResponseEntity("新增图片失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -50,7 +53,7 @@ public class GalleryController {
 		try{
 			this.galleryService.updateGallery(gallery);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("更新图片失败", e);
 			return HttpUtil.createResponseEntity("更新图片失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -62,7 +65,7 @@ public class GalleryController {
 		try{
 			this.galleryService.deleteGallery(gallery_id);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("删除图片失败", e);
 			return HttpUtil.createResponseEntity("删除图片失败!", HttpStatus.BAD_REQUEST);
 		}
 		

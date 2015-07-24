@@ -50,6 +50,7 @@ public class Order implements Serializable{
 	private @Getter @Setter String pay_type;
 	private @Getter @Setter String buyer_pay_time;
 	private @Getter @Setter String trad_time;
+	private @Getter @Setter String trad_finish_time;
 	private @Getter @Setter String update_time;
 	private @Getter @Setter String seller_deliver_time;
 	private @Getter @Setter String buyer_confirm_time;

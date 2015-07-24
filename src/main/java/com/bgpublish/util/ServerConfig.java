@@ -10,5 +10,5 @@ package com.bgpublish.util;
  */
 public class ServerConfig {
 
-	public static final int PORT = 10000;
+	public static final int PORT = 11000;
 }

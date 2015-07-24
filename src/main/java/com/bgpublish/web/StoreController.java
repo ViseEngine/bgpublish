@@ -6,6 +6,8 @@ package com.bgpublish.web;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bgpublish.domain.Store;
 import com.bgpublish.service.StoreService;
-import com.bgpublish.util.HttpUtil;
 import com.bgpublish.util.DateUtil;
+import com.bgpublish.util.HttpUtil;
 
 /**
  * 商家信息Web Controller
@@ -29,7 +31,7 @@ import com.bgpublish.util.DateUtil;
 @RestController
 @RequestMapping(value="/sgams/store")
 public class StoreController {
-
+	private static final Log LOGGER = LogFactory.getLog(StoreController.class);
 	private @Autowired @Getter @Setter StoreService storeService;
 	
 	
@@ -54,7 +56,7 @@ public class StoreController {
 		try{
 			this.storeService.addStore(store);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("注册商店失败!", e);
 			return HttpUtil.createResponseEntity("注册商店失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -67,7 +69,7 @@ public class StoreController {
 			store.setLast_modify_time(DateUtil.today("yyyyMMddHHmmss"));
 			this.storeService.updateStore(store);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("更新商店信息失败!", e);
 			return HttpUtil.createResponseEntity("更新商店信息失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -79,7 +81,7 @@ public class StoreController {
 		try{
 			this.storeService.deleteStoreById(store_id);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("删除商店失败!", e);
 			return HttpUtil.createResponseEntity("删除商店失败!", HttpStatus.BAD_REQUEST);
 		}
 		

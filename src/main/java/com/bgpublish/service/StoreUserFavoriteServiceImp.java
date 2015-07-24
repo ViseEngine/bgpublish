@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.bgpublish.domain.FavoriteStat;
 import com.bgpublish.domain.StoreUserFavorite;
 import com.bgpublish.mapper.StoreUserFavoriteMapper;
 
@@ -63,4 +64,20 @@ public class StoreUserFavoriteServiceImp implements StoreUserFavoriteService {
 		return this.storeUserFavoriteMapper.countUserByStoreId(store_id);
 	}
 
+	/**
+	 * 按天统计商家收藏量
+	 * @param favoriteStat
+	 * @return
+	 */
+	public FavoriteStat countByDayAndUser(FavoriteStat favoriteStat){
+		return this.storeUserFavoriteMapper.countByDayAndUser(favoriteStat);
+	}
+	/**
+	 * 按天分时统计商家收藏量
+	 * @param favoriteStat
+	 * @return
+	 */
+	public List<FavoriteStat> countByDayHourAndUser(FavoriteStat favoriteStat){
+		return this.storeUserFavoriteMapper.countByDayHourAndUser(favoriteStat);
+	}
 }

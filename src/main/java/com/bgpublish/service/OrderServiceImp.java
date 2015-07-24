@@ -4,6 +4,7 @@
 package com.bgpublish.service;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.bgpublish.domain.Order;
 import com.bgpublish.domain.OrderDetail;
+import com.bgpublish.domain.OrderStat;
 import com.bgpublish.mapper.OrderMapper;
 
 /**
@@ -115,8 +117,45 @@ public class OrderServiceImp implements OrderService {
 		
 	}
 	
+	/**
+	 * 按天统计订单成交量
+	 * @param map
+	 * @return
+	 */
+	public OrderStat countByDay(Map<String,String> map){
+		return this.orderMapper.countByDay(map);
+	}
 	
-	
-	
-
+	/**
+	 * 按月统计订单成交量
+	 * @param map 年月（yyyyMM）
+	 * @return
+	 */
+	public List<OrderStat> countByMonth(Map<String,String> map){
+		return this.orderMapper.countByMonth(map);
+	}
+	/**
+	 * 按天分时统计订单成交量
+	 * @param map
+	 * @return
+	 */
+	public List<OrderStat> countByDayHour(Map<String,String> map){
+		return this.orderMapper.countByDayHour(map);
+	}
+	/**
+	 * 按天统计订单成交金额
+	 * @param map
+	 * @return
+	 */
+	public OrderStat countMoneyByDay(Map<String,String> map){
+		return this.orderMapper.countMoneyByDay(map);
+	}
+	/**
+	 * 按天分时统计订单金额
+	 * @param map
+	 * @return
+	 */
+	public List<OrderStat> countMoneyByDayHour(Map<String,String> map){
+		return this.orderMapper.countMoneyByDayHour(map);
+	}
 }

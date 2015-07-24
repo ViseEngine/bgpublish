@@ -2,10 +2,13 @@ package com.bgpublish.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bgpublish.domain.Merch;
 import com.bgpublish.domain.Order;
 import com.bgpublish.domain.OrderDetail;
+import com.bgpublish.domain.OrderStat;
 import com.bgpublish.service.MerchService;
 import com.bgpublish.service.OrderService;
 import com.bgpublish.util.HttpUtil;
@@ -24,7 +28,7 @@ import com.bgpublish.util.HttpUtil;
 @RestController
 @RequestMapping(value="/sgams/order")
 public class OrderController {
-
+	private static final Log LOGGER = LogFactory.getLog(OrderController.class);
 	
 	private @Autowired @Getter @Setter OrderService orderService;
 	private @Autowired @Getter @Setter MerchService merchService;
@@ -83,7 +87,7 @@ public class OrderController {
 			this.merchService.updateMerchBatch(merchList);
 			
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOGGER.error("订单生成失败",e);
 			return HttpUtil.createResponseEntity("订单生成失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -130,7 +134,7 @@ public class OrderController {
 		try{
 			this.orderService.logicDeleteOrder(order);
 		}catch(Exception e) {
-			e.printStackTrace();
+			LOGGER.error("订单删除失败",e);
 			return HttpUtil.createResponseEntity("订单删除失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -178,7 +182,7 @@ public class OrderController {
 		//		this.orderService.deleteOrderTailById(orderId);//删除订单明细信息
 				this.orderService.updateOrderInfo(order);//更新订单
 			}catch(Exception e) {
-				e.printStackTrace();
+				LOGGER.error("订单取消失败",e);
 				return HttpUtil.createResponseEntity("订单取消失败!", HttpStatus.BAD_REQUEST);
 			}
 			
@@ -188,5 +192,51 @@ public class OrderController {
 			return HttpUtil.createResponseEntity("商品已发货，无法取消订单!", HttpStatus.BAD_REQUEST);
 		}
 			
+	}
+	
+	/**
+	 * 按天统计订单成交量
+	 * @param stat_date
+	 * @return
+	 */
+	@RequestMapping(value="/countByDay.do",  method = RequestMethod.POST)
+	public OrderStat countByDay(@RequestBody Map<String,String> map){
+		return this.orderService.countByDay(map);
+	}
+	/**
+	 * 按月统计订单成交量
+	 * @param stat_date 年月（yyyyMM）
+	 * @return
+	 */
+	@RequestMapping(value="/countByMonth.do",  method = RequestMethod.POST)
+	public List<OrderStat> countByMonth(@RequestBody Map<String,String> map){
+		return this.orderService.countByMonth(map);
+	}
+	/**
+	 * 按天分时统计订单成交量
+	 * @param stat_date
+	 * @return
+	 */
+	@RequestMapping(value="/countByDayHour.do",  method = RequestMethod.POST)
+	public List<OrderStat> countByDayHour(@RequestBody Map<String,String> map){
+		return this.orderService.countByDayHour(map);
+	}
+	/**
+	 * 按天统计订单成交金额
+	 * @param stat_date
+	 * @return
+	 */
+	@RequestMapping(value="/countMoneyByDay.do",  method = RequestMethod.POST)
+	public OrderStat countMoneyByDay(@RequestBody Map<String,String> map){
+		return this.orderService.countMoneyByDay(map);
+	}
+	/**
+	 * 按天分时统计订单金额
+	 * @param stat_date
+	 * @return
+	 */
+	@RequestMapping(value="/countMoneyByDayHour.do",  method = RequestMethod.POST)
+	public List<OrderStat> countMoneyByDayHour(@RequestBody Map<String,String> map){
+		return this.orderService.countMoneyByDayHour(map);
 	}
 }

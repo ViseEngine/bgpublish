@@ -5,6 +5,7 @@ package com.bgpublish.service;
 
 import java.util.List;
 
+import com.bgpublish.domain.FavoriteStat;
 import com.bgpublish.domain.StoreUserFavorite;
 
 /**
@@ -41,4 +42,16 @@ public interface StoreUserFavoriteService {
 	 * @return 用户收藏数
 	 */
 	public int countUserByStoreId(String store_id);
+	/**
+	 * 按天统计商家收藏量
+	 * @param favoriteStat
+	 * @return
+	 */
+	public FavoriteStat countByDayAndUser(FavoriteStat favoriteStat);
+	/**
+	 * 按天分时统计商家收藏量
+	 * @param favoriteStat
+	 * @return
+	 */
+	public List<FavoriteStat> countByDayHourAndUser(FavoriteStat favoriteStat);
 }

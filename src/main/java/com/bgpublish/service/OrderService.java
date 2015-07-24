@@ -4,9 +4,11 @@
 package com.bgpublish.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bgpublish.domain.Order;
 import com.bgpublish.domain.OrderDetail;
+import com.bgpublish.domain.OrderStat;
 
 /**
  * 订单 服务信息接口
@@ -70,4 +72,34 @@ public interface OrderService {
 	 * @param orderId
 	 */
 	public void updateOrderInfo(Order order);
+	/**
+	 * 按天统计订单成交量
+	 * @param map
+	 * @return
+	 */
+	public OrderStat countByDay(Map<String,String> map);
+	/**
+	 * 按月统计订单成交量
+	 * @param map 年月（yyyyMM）
+	 * @return
+	 */
+	public List<OrderStat> countByMonth(Map<String,String> map);
+	/**
+	 * 按天分时统计订单成交量
+	 * @param map
+	 * @return
+	 */
+	public List<OrderStat> countByDayHour(Map<String,String> map);
+	/**
+	 * 按天统计订单成交金额
+	 * @param map
+	 * @return
+	 */
+	public OrderStat countMoneyByDay(Map<String,String> map);
+	/**
+	 * 按天分时统计订单金额
+	 * @param map
+	 * @return
+	 */
+	public List<OrderStat> countMoneyByDayHour(Map<String,String> map);
 }

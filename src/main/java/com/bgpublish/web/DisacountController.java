@@ -8,6 +8,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,7 @@ import com.bgpublish.util.HttpUtil;
 @RestController
 @RequestMapping(value="/sgams/disacount")
 public class DisacountController {
-
+	private static final Log LOGGER = LogFactory.getLog(DisacountController.class);
 	private @Autowired @Getter @Setter DisacountService disacountService;
 	
 	
@@ -47,7 +49,7 @@ public class DisacountController {
 		try{
 			this.disacountService.addDisacount(merchDisacount);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("新增商品优惠信息失败!",e);
 			return HttpUtil.createResponseEntity("新增商品优惠信息失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -59,7 +61,7 @@ public class DisacountController {
 		try{
 			this.disacountService.updateDisacount(merchDisacount);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("更新商品优惠信息失败!",e);
 			return HttpUtil.createResponseEntity("更新商店优惠信息失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -71,7 +73,7 @@ public class DisacountController {
 		try{
 			this.disacountService.deleteDisacountById(disacount_id);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("删除商品优惠信息失败!",e);
 			return HttpUtil.createResponseEntity("删除商店优惠信息失败!", HttpStatus.BAD_REQUEST);
 		}
 		

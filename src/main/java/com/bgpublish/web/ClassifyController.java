@@ -8,6 +8,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,7 @@ import com.bgpublish.util.HttpUtil;
 @RestController
 @RequestMapping(value="/sgams/classify")
 public class ClassifyController {
-
+	private static final Log LOGGER = LogFactory.getLog(ClassifyController.class);
 	private @Autowired @Getter @Setter ClassifyService classifyService;
 	
 	
@@ -79,7 +81,7 @@ public class ClassifyController {
 		try{
 			this.classifyService.addClassify(classify);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("新增分类失败!", e);
 			return HttpUtil.createResponseEntity("新增分类失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -91,7 +93,7 @@ public class ClassifyController {
 		try{
 			this.classifyService.updateClassify(classify);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("更新分类失败!", e);
 			return HttpUtil.createResponseEntity("更新分类失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -103,7 +105,7 @@ public class ClassifyController {
 		try{
 			this.classifyService.deleteClassifyById(classify_id);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("删除分类失败!", e);
 			return HttpUtil.createResponseEntity("删除分类失败!", HttpStatus.BAD_REQUEST);
 		}
 		

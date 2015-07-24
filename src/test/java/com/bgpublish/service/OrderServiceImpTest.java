@@ -3,7 +3,9 @@
  */
 package com.bgpublish.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +21,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.bgpublish.App;
 import com.bgpublish.domain.Order;
+import com.bgpublish.domain.OrderStat;
 
 /**
  * 订单服务单元测试
@@ -54,5 +57,42 @@ public class OrderServiceImpTest {
 			
 			Assert.assertNotNull(order1);
 		}
+	}
+	
+	@Test
+	public void testCountByDay(){
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("stat_date", "20150721");
+		map.put("user_id", "1");
+		OrderStat orderStat = orderService.countByDay(map);
+		Assert.assertNotNull(orderStat);
+		System.err.println(orderStat.getOrder_sell());
+	}
+	@Test
+	public void testCountByDayHour(){
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("stat_date", "20150721");
+		map.put("user_id", "1");
+		List<OrderStat> orderStat = orderService.countByDayHour(map);
+		Assert.assertNotNull(orderStat);
+		System.err.println(orderStat.size());
+	}
+	@Test
+	public void testCountMoneyByDay(){
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("stat_date", "20150721");
+		map.put("user_id", "1");
+		OrderStat orderStat = orderService.countMoneyByDay(map);
+		Assert.assertNotNull(orderStat);
+		System.err.println(orderStat.getOrder_sell());
+	}
+	@Test
+	public void testCountMoneyByDayHour(){
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("stat_date", "20150721");
+		map.put("user_id", "1");
+		List<OrderStat> orderStat = orderService.countMoneyByDayHour(map);
+		Assert.assertNotNull(orderStat);
+		System.err.println(orderStat.size());
 	}
 }

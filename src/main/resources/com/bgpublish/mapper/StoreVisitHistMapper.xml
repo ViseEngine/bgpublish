@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.bgpublish.mapper.StoreVisitHistMapper">
+	<!-- 增加商家访问信息 -->
+	<insert id="addStoreVisitHist" parameterType="StoreVisitHist">
+		INSERT INTO tbl_store_visit_hist (store_id,user_id,create_time)
+		VALUES(#{store_id},#{user_id},#{create_time})
+	</insert>
+	
+	<!-- 根据用户ID查询商家访问信息 -->
+	<select id="queryByUserId" parameterType="String" resultType="StoreVisitHist">
+		SELECT * FROM tbl_store_visit_hist WHERE user_id = #{user_id}
+	</select>
+	
+	<!-- 根据商家ID查询商家访问信息 -->
+	<select id="queryByStoreId" parameterType="String" resultType="StoreVisitHist">
+		SELECT * FROM tbl_store_visit_hist WHERE store_id = #{store_id}
+	</select>
+	
+	<!-- 按天统计商家访问数 -->
+	<select id="countByDayAndUser" parameterType="VisitStat" resultType="VisitStat">
+		SELECT SUBSTRING(a.create_time,1,8) stat_date,count(*) favorite_count
+		FROM tbl_store_visit_hist a LEFT JOIN tbl_store_info b
+		ON a.store_id = b.store_id
+		WHERE a.create_time like CONCAT(#{stat_date},'%')
+		AND a.store_id=#{store_id}
+	</select>
+	<!-- 按天分时统计商家访问数 -->
+	<select id="countByDayHourAndUser" parameterType="VisitStat" resultType="VisitStat">
+		SELECT CONCAT(SUBSTRING(a.create_time,9,2),':00') stat_date,count(*) favorite_count
+		FROM tbl_store_visit_hist a LEFT JOIN tbl_store_info b
+		ON a.store_id = b.store_id
+		WHERE a.create_time like CONCAT(#{stat_date},'%')
+		AND a.store_id=#{store_id}
+		GROUP BY SUBSTRING(a.create_time,9,2)
+	</select>
+</mapper>

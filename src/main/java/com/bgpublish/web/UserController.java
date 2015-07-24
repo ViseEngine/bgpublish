@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,6 @@ import com.bgpublish.domain.User;
 import com.bgpublish.service.UserService;
 import com.bgpublish.util.DateUtil;
 import com.bgpublish.util.HttpUtil;
-import com.bgpublish.util.Validator;
 
 /**
  * 用户 信息Web Controller
@@ -32,6 +33,7 @@ import com.bgpublish.util.Validator;
 @RestController
 @RequestMapping(value="/sgams/user")
 public class UserController {
+	private static final Log LOGGER = LogFactory.getLog(UserController.class);
 
 	//APP Status
 	private enum AppStatus{
@@ -96,20 +98,21 @@ public class UserController {
 			return HttpUtil.createResponseEntity("密码不能为空!", HttpStatus.BAD_REQUEST);
 		}
 		
-		if(!Validator.isPwdLength(user.getPassword())){
+		//密码由前端编码后传入，不再判断
+		/*if(!Validator.isPwdLength(user.getPassword())){
 			return HttpUtil.createResponseEntity("密码长度为6到20位!", HttpStatus.BAD_REQUEST);
-		}
+		}*/
 		
-		if(!Validator.isPassword(user.getPassword())){
+		/*if(!Validator.isPassword(user.getPassword())){
 			return HttpUtil.createResponseEntity("密码必须为数字和字母!", HttpStatus.BAD_REQUEST);
-		}
+		}*/
 		
 		if("".equals(StringUtils.trimToEmpty(user.getMobile()))){
 			return HttpUtil.createResponseEntity("手机号码不能为空!", HttpStatus.BAD_REQUEST);
 		}
 		
 		//如果是卖家，要判断商家名称和详细地址
-		if(AppStatus.SALERAPP.toString().equals(StringUtils.trimToEmpty(user.getUser_type()))){
+		/*if(AppStatus.SALERAPP.toString().equals(StringUtils.trimToEmpty(user.getUser_type()))){
 			if("".equals(StringUtils.trimToEmpty(user.getAddress()))){
 				return HttpUtil.createResponseEntity("商家地址不能为空!", HttpStatus.BAD_REQUEST);
 			}
@@ -117,7 +120,7 @@ public class UserController {
 			if("".equals(StringUtils.trimToEmpty(user.getShop_name()))){
 				return HttpUtil.createResponseEntity("商家名称不能为空!", HttpStatus.BAD_REQUEST);
 			}
-		}
+		}*/
 		
 		
 		user.setCreate_time(DateUtil.today("yyyyMMddHHmmss"));
@@ -130,6 +133,7 @@ public class UserController {
 		try{
 			this.userService.register(user);
 		} catch(Exception e) {
+			LOGGER.error("注册失败",e);
 			return HttpUtil.createResponseEntity("注册失败!", HttpStatus.BAD_REQUEST);
 		}
 		

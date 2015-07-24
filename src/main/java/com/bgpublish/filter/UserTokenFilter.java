@@ -19,7 +19,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @author ps
  *
  */
-@Component
+//@Component
 public class UserTokenFilter extends OncePerRequestFilter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserTokenFilter.class);
 

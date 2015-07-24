@@ -6,6 +6,8 @@ import java.util.Date;
 
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * 日期处理工具类 
@@ -13,7 +15,8 @@ import org.apache.commons.lang.time.DateUtils;
  * @since 1.0
  */
 public class DateUtil {
-	
+	private static final Log LOGGER = LogFactory.getLog(DateUtil.class);
+
 	/**
 	 * 获取当前日期，默认格式为yyyyMMdd
 	 * @return 当前日期
@@ -21,7 +24,16 @@ public class DateUtil {
 	public static String today(){
 		return today("yyyyMMdd");
 	}
-
+	
+	/**
+	 * 获取前一天日期
+	 * @return
+	 */
+	public static String yesterday(){
+		Calendar instance = Calendar.getInstance();
+		instance.add(Calendar.DAY_OF_MONTH, -1);
+		return DateFormatUtils.format(instance.getTime(), "yyyyMMdd");
+	}
 	/**
 	 * 获取当前日期
 	 * @param format 日期格式
@@ -50,9 +62,40 @@ public class DateUtil {
 		try {
 			date = DateUtils.parseDate(str, parsePatterns);
 		} catch (ParseException e) {
-			e.printStackTrace();
+			LOGGER.error("转换日期失败",e);
 		}
 		
 		return date;
+	}
+	/**
+	 * 转换Date为字符格式
+	 * @param date 时间
+	 * @param pattern 格式
+	 * @return
+	 */
+	public static String format(Date date,String pattern) {
+		return DateFormatUtils.format(date, pattern);
+	}
+	
+	/**
+	 * 转换Date为字符格式
+	 * pattern 格式默认为yyyy-MM-dd HH:mm:ss
+	 * @param date 时间
+	 * @return
+	 */
+	public static String format(Date date) {
+		return format(date, "yyyy-MM-dd HH:mm:ss");
+	}
+	/**
+	 * 获取月份的最大天数
+	 * @param month
+	 * @return
+	 */
+	public static int getDayOfMonth(String month){
+		month = month.substring(4, 6);
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.MONTH, Integer.parseInt(month) - 1);
+		int days = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		return days;
 	}
 }

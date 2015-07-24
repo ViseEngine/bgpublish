@@ -11,9 +11,9 @@
    		 </selectKey> 
 	    <![CDATA[
 	    INSERT INTO tbl_order_info (order_id,amount_money,buyer_user_id,buyer_user_name,seller_user_id,seller_user_name,currency_unit, buyer_name,buyer_addr_id,buyer_phone,buyer_mobile,
-	    send_type,freight,invoice_need,invoice_title,pay_type,buyer_pay_time,trad_time,update_time,status) 
+	    send_type,freight,invoice_need,invoice_title,pay_type,buyer_pay_time,trad_time,trad_finish_time,update_time,status) 
 	    VALUES(#{order_id},#{amount_money},#{buyer_user_id},#{buyer_user_name},#{seller_user_id},#{seller_user_name},#{currency_unit},#{buyer_name},#{buyer_addr_id},#{buyer_phone},#{buyer_mobile},
-				#{send_type},#{freight},#{invoice_need},#{invoice_title},#{pay_type},#{buyer_pay_time},date_format(current_time,'%Y%m%d%H%i%s'),
+				#{send_type},#{freight},#{invoice_need},#{invoice_title},#{pay_type},#{buyer_pay_time},date_format(current_time,'%Y%m%d%H%i%s'),#{trad_finish_time},
 				#{update_time},#{status})
 		]]>
 	</insert>
@@ -95,6 +95,7 @@
 	      <if test="pay_type != null">pay_type = #{pay_type},</if>
 	      <if test="buyer_pay_time != null">buyer_pay_time = #{buyer_pay_time},</if>
 	      <if test="trad_time != null">trad_time = #{trad_time},</if>
+	      <if test="trad_finish_time != null">trad_finish_time = #{trad_finish_time},</if>
 	      <if test="seller_deliver_time != null">seller_deliver_time = #{seller_deliver_time}</if>
 	      <if test="buyer_confirm_time != null">buyer_confirm_time = #{buyer_confirm_time},</if>
 	      <if test="buyer_del != null">buyer_del = #{buyer_del},</if>
@@ -154,4 +155,47 @@
 			delete from tbl_order_detail where  merch_id = #{merch_id} and order_id= #{orderId}
 	</delete>
 	 -->
+	 
+	 <!-- 按天统计订单成交量 -->
+	 <select id="countByDay"  resultType="OrderStat" parameterType="Map" >
+	    SELECT SUBSTRING(trad_finish_time,1,8) stat_date,COUNT(1) order_sell
+		FROM tbl_order_info 
+		WHERE status='4' AND seller_user_id=#{user_id}
+		AND trad_finish_time like CONCAT(#{stat_date},'%')
+	</select>
+	
+	 <!-- 按月统计订单成交量 -->
+	 <select id="countByMonth"  resultType="OrderStat" parameterType="Map">
+	    SELECT SUBSTRING(trad_finish_time,5,2) stat_date,COUNT(1) order_sell
+		FROM tbl_order_info 
+		WHERE status='4' AND seller_user_id=#{user_id}
+		AND trad_finish_time like CONCAT(#{stat_date},'%')
+		GROUP BY SUBSTRING(trad_finish_time,5,2)
+	</select>
+	
+	 <!-- 按天分时统计订单成交量 -->
+	 <select id="countByDayHour"  resultType="OrderStat" parameterType="Map">
+	    SELECT CONCAT(SUBSTRING(trad_finish_time,9,2),':00') stat_date,COUNT(1) order_sell
+		FROM tbl_order_info 
+		WHERE status='4' AND seller_user_id=#{user_id}
+		AND trad_finish_time like CONCAT(#{stat_date},'%')
+		GROUP BY SUBSTRING(trad_finish_time,9,2)
+	</select>
+	
+	<!-- 按天统计订单成交金额 -->
+	 <select id="countMoneyByDay"  resultType="OrderStat" parameterType="Map">
+	    SELECT SUBSTRING(trad_finish_time,1,8) stat_date,SUM(amount_money) amount_money
+		FROM tbl_order_info 
+		WHERE status='4' AND seller_user_id=#{user_id}
+		AND trad_finish_time like CONCAT(#{stat_date},'%')
+	</select>
+	
+	 <!-- 按天分时统计订单成交金额  -->
+	 <select id="countMoneyByDayHour"  resultType="OrderStat" parameterType="Map">
+	    SELECT CONCAT(SUBSTRING(trad_finish_time,9,2),':00') stat_date,SUM(amount_money) amount_money
+		FROM tbl_order_info 
+		WHERE status='4' AND seller_user_id=#{user_id}
+		AND trad_finish_time like CONCAT(#{stat_date},'%')
+		GROUP BY SUBSTRING(trad_finish_time,9,2)
+	</select>
 </mapper>

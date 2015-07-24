@@ -8,6 +8,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +31,8 @@ import com.bgpublish.util.HttpUtil;
 @RestController
 @RequestMapping(value="/sgams/merch")
 public class MerchController {
+	private static final Log LOGGER = LogFactory.getLog(MerchController.class);
+
 	private @Autowired @Getter @Setter MerchService merchService;
 	
 	@RequestMapping(value="/add.do", method = RequestMethod.POST)
@@ -37,7 +41,7 @@ public class MerchController {
 			//TODO 涉及到图片的可能会修改
 			this.merchService.addMerch(merch);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("新增商品失败", e);
 			return HttpUtil.createResponseEntity("新增商品失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -50,7 +54,7 @@ public class MerchController {
 			//TODO 涉及到图片的可能会修改
 			this.merchService.updateMerch(merch);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("更新商品失败", e);
 			return HttpUtil.createResponseEntity("更新商品失败!", HttpStatus.BAD_REQUEST);
 		}
 		
@@ -74,7 +78,7 @@ public class MerchController {
 		try{
 			this.merchService.deleteMerchByStoreId(store_id);
 		}catch(Exception e){
-			e.printStackTrace();
+			LOGGER.error("删除商品失败", e);
 			return HttpUtil.createResponseEntity("删除商品失败!", HttpStatus.BAD_REQUEST);
 		}
 		
