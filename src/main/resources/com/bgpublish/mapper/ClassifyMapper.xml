@@ -6,7 +6,7 @@
 <mapper namespace="com.bgpublish.mapper.ClassifyMapper">
 	<!-- 增加分类 -->
 	<insert id="addClassify" parameterType="Classify">
-		INSERT INTO tbl_classify_info (name,desc,classify_type) VALUES (#{name},#{desc},#{classify_type})
+		INSERT INTO tbl_classify_info (name,`desc`,classify_type) VALUES (#{name},#{desc},#{classify_type})
 	</insert>
 	
 	<!-- 删除分类 -->
@@ -19,7 +19,7 @@
 		UPDATE tbl_classify_info 
 		<set>
 	      <if test="name != null">name = #{name},</if>
-	      <if test="desc != null">desc = #{desc},</if>
+	      <if test="desc != null">`desc` = #{desc},</if>
 	      <if test="classify_type != null">classify_type = #{classify_type}</if>
 	    </set>
 	    WHERE classify_id = #{classify_id}

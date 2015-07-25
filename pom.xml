@@ -117,22 +117,39 @@
 			<artifactId>spring-session-data-redis</artifactId>
 			<version>1.0.1.RELEASE</version>
 		</dependency> -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-		<!-- for OAuth 2.0 -->
+		for OAuth 2.0
 	    <dependency>
 	        <groupId>org.springframework.security.oauth</groupId>
 	        <artifactId>spring-security-oauth2</artifactId>
 	        <version>2.0.7.RELEASE</version>
 	    </dependency>
-	    <!-- for OAuth 1.0a -->
+	    for OAuth 1.0a
 	    <dependency>
 	        <groupId>org.springframework.security.oauth</groupId>
 	        <artifactId>spring-security-oauth</artifactId>
 	        <version>2.0.7.RELEASE</version>
-	    </dependency>
+	    </dependency> -->
+	    
+	    <!-- jackson -->
+	    <dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.5.2</version>
+		</dependency>
 	</dependencies>
 
 	<!-- Package as an executable jar -->

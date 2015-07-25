@@ -13,7 +13,7 @@
 	    INSERT INTO tbl_order_info (order_id,amount_money,buyer_user_id,buyer_user_name,seller_user_id,seller_user_name,currency_unit, buyer_name,buyer_addr_id,buyer_phone,buyer_mobile,
 	    send_type,freight,invoice_need,invoice_title,pay_type,buyer_pay_time,trad_time,trad_finish_time,update_time,status) 
 	    VALUES(#{order_id},#{amount_money},#{buyer_user_id},#{buyer_user_name},#{seller_user_id},#{seller_user_name},#{currency_unit},#{buyer_name},#{buyer_addr_id},#{buyer_phone},#{buyer_mobile},
-				#{send_type},#{freight},#{invoice_need},#{invoice_title},#{pay_type},#{buyer_pay_time},date_format(current_time,'%Y%m%d%H%i%s'),#{trad_finish_time},
+				#{send_type},#{freight},#{invoice_need},#{invoice_title},#{pay_type},#{buyer_pay_time},date_format(now(),'%Y%m%d%H%i%s'),#{trad_finish_time},
 				#{update_time},#{status})
 		]]>
 	</insert>
@@ -105,7 +105,7 @@
 	      <if test="buyer_score != null">buyer_score = #{buyer_score},</if>
 	      <if test="seller_score != null">seller_score = #{seller_score},</if>
 	      <if test="status != null">status = #{status},</if>
-	      <![CDATA[ UPDATE_TIME = date_format(current_time,'%Y%m%d%H%i%s') ]]>
+	      <![CDATA[ UPDATE_TIME = date_format(now(),'%Y%m%d%H%i%s') ]]>
 	    </set>
 	    WHERE order_id = #{order_id}
 	</update>
@@ -141,9 +141,9 @@
 	<update id="logicDeleteOrder" parameterType="Order">
 		UPDATE tbl_order_info 
 		<set>
-		     <if test="buyer_del != null"><![CDATA[ buyer_del = #{buyer_del},buyer_del_time=date_format(current_time,'%Y%m%d%H%i%s'), ]]> </if>
-	         <if test="seller_del != null"><![CDATA[ seller_del = #{seller_del},seller_del_time=date_format(current_time,'%Y%m%d%H%i%s'), ]]></if>
-    		<![CDATA[ update_time = date_format(current_time,'%Y%m%d%H%i%s') ]]>
+		     <if test="buyer_del != null"><![CDATA[ buyer_del = #{buyer_del},buyer_del_time=date_format(now(),'%Y%m%d%H%i%s'), ]]> </if>
+	         <if test="seller_del != null"><![CDATA[ seller_del = #{seller_del},seller_del_time=date_format(now(),'%Y%m%d%H%i%s'), ]]></if>
+    		<![CDATA[ update_time = date_format(now(),'%Y%m%d%H%i%s') ]]>
     	</set>
     	 WHERE order_id = #{order_id}
 	      	
