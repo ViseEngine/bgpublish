@@ -77,7 +77,7 @@ public class ChatServer {
 				LOG.info(">> 客户端线程[" + socket.getInetAddress().getHostAddress()
 						+ "]接入成功");
 
-				ServerThread serverThread = new ServerThread(socket);
+				ServerThread serverThread = new ServerThread(socket,this.chatOffLineMsgService);
 				new Thread(serverThread).start();
 				clients.add(serverThread);
 			}

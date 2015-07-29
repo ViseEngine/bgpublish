@@ -158,7 +158,7 @@
 	 
 	 <!-- 按天统计订单成交量 -->
 	 <select id="countByDay"  resultType="OrderStat" parameterType="Map" >
-	    SELECT SUBSTRING(trad_finish_time,1,8) stat_date,COUNT(1) order_sell
+	    SELECT SUBSTRING(#{stat_date},1,8) stat_date,COUNT(1) order_sell
 		FROM tbl_order_info 
 		WHERE status='4' AND seller_user_id=#{user_id}
 		AND trad_finish_time like CONCAT(#{stat_date},'%')
@@ -184,7 +184,7 @@
 	
 	<!-- 按天统计订单成交金额 -->
 	 <select id="countMoneyByDay"  resultType="OrderStat" parameterType="Map">
-	    SELECT SUBSTRING(trad_finish_time,1,8) stat_date,SUM(amount_money) amount_money
+	    SELECT SUBSTRING(#{stat_date},1,8) stat_date,IFNULL(SUM(amount_money),0) amount_money
 		FROM tbl_order_info 
 		WHERE status='4' AND seller_user_id=#{user_id}
 		AND trad_finish_time like CONCAT(#{stat_date},'%')
@@ -192,7 +192,7 @@
 	
 	 <!-- 按天分时统计订单成交金额  -->
 	 <select id="countMoneyByDayHour"  resultType="OrderStat" parameterType="Map">
-	    SELECT CONCAT(SUBSTRING(trad_finish_time,9,2),':00') stat_date,SUM(amount_money) amount_money
+	    SELECT CONCAT(SUBSTRING(trad_finish_time,9,2),':00') stat_date,IFNULL(SUM(amount_money),0) amount_money
 		FROM tbl_order_info 
 		WHERE status='4' AND seller_user_id=#{user_id}
 		AND trad_finish_time like CONCAT(#{stat_date},'%')

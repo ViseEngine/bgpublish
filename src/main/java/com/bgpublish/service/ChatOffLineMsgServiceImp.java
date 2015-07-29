@@ -51,7 +51,31 @@ public class ChatOffLineMsgServiceImp implements ChatOffLineMsgService {
 		
 		ChatOffLineMsg chatOffLineMsg = new ChatOffLineMsg();
 		chatOffLineMsg.setIs_read("0");
-		chatOffLineMsg.setTo_usre_id(toUser.getUser_id());
+		chatOffLineMsg.setTo_user_id(toUser.getUser_id());
+		chatOffLineMsg.setTo_user_name(toUser.getName());
+		chatOffLineMsg.setFrom_user_id(fromUser.getUser_id());
+		chatOffLineMsg.setFrom_user_name(fromUser.getName());
+		chatOffLineMsg.setChat_type(type);
+		chatOffLineMsg.setChat_content(chatContent);
+		chatOffLineMsg.setChat_date(DateUtil.today());
+		chatOffLineMsg.setChat_time(DateUtil.today("HHmmss"));
+		
+		addOffLineMsg(chatOffLineMsg);
+	}
+	/**
+	 * 增加离线信息
+	 * @param fromUserId 发送人用户Id
+	 * @param toUserId 接收人用户Id
+	 * @param type 类型
+	 * @param chatContent 内容
+	 */
+	public void addOffLine2(String fromUserId,String toUserId,String type,String chatContent){
+		User fromUser = userMapper.selectUserById(fromUserId);
+		User toUser = userMapper.selectUserById(toUserId);
+		
+		ChatOffLineMsg chatOffLineMsg = new ChatOffLineMsg();
+		chatOffLineMsg.setIs_read("0");
+		chatOffLineMsg.setTo_user_id(toUser.getUser_id());
 		chatOffLineMsg.setTo_user_name(toUser.getName());
 		chatOffLineMsg.setFrom_user_id(fromUser.getUser_id());
 		chatOffLineMsg.setFrom_user_name(fromUser.getName());

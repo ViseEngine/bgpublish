@@ -72,7 +72,7 @@ public class GalleryController {
 		return HttpUtil.createResponseEntity("删除图片成功!", HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/querybyid.do", method = RequestMethod.GET)
+	@RequestMapping(value="/queryById.do", method = RequestMethod.GET)
 	@ResponseBody
 	public Gallery queryById(String gallery_id){
 		Gallery gallery = this.galleryService.queryById(gallery_id);
@@ -80,11 +80,19 @@ public class GalleryController {
 		return gallery;
 	}
 	
-	@RequestMapping(value="/query.do", method = RequestMethod.GET)
+	@RequestMapping(value="/queryByMerchId.do", method = RequestMethod.GET)
 	@ResponseBody
 	public List<Gallery> queryByMerchId(String merch_id){
 		List<Gallery> list = this.galleryService.queryByMerchId(merch_id);
 		
 		return list;
+	}
+	
+	@RequestMapping(value="/queryByClassifyId.do", method = RequestMethod.GET)
+	@ResponseBody
+	public Gallery queryByClassifyId(String classify_id){
+		Gallery gallery = this.galleryService.queryByClassifyId(classify_id);
+		
+		return gallery;
 	}
 }

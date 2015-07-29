@@ -26,6 +26,14 @@ public interface ChatOffLineMsgService {
 	 * @param chatContent 内容
 	 */
 	public void addOffLine(String fromMobile,String toMobile,String type,String chatContent);
+	/**
+	 * 增加离线信息
+	 * @param fromUserId 发送人用户Id
+	 * @param toUserId 接收人用户Id
+	 * @param type 类型
+	 * @param chatContent 内容
+	 */
+	public void addOffLine2(String fromUserId,String toUserId,String type,String chatContent);
 	
 	/**
 	 * 根据chat_id删除离线信息

@@ -21,7 +21,7 @@ public class ChatOffLineMsg implements Serializable{
 
 	private @Getter @Setter int chat_id;
 	private @Getter @Setter int from_user_id;
-	private @Getter @Setter int to_usre_id;
+	private @Getter @Setter int to_user_id;
 	private @Getter @Setter String from_mobile;
 	private @Getter @Setter String to_mobile;
 	private @Getter @Setter String from_user_name;

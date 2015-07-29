@@ -32,7 +32,7 @@
 	
 	<!-- 按天统计商家用户收藏数 -->
 	<select id="countByDayAndUser" parameterType="FavoriteStat" resultType="FavoriteStat">
-		SELECT SUBSTRING(a.create_time,1,8) stat_date,count(*) favorite_count
+		SELECT SUBSTRING(#{stat_date},1,8) stat_date,count(*) favorite_count
 		FROM tbl_store_user_favorite a LEFT JOIN tbl_store_info b
 		ON a.store_id = b.store_id
 		WHERE a.create_time like CONCAT(#{stat_date},'%')

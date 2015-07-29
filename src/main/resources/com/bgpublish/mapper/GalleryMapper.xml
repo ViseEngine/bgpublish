@@ -6,8 +6,8 @@
 <mapper namespace="com.bgpublish.mapper.GalleryMapper">
 	<!-- 增加图片 -->
 	<insert id="addGallery" parameterType="Gallery">
-		INSERT INTO tbl_merch_gallery (merch_id,name,file_name,path,create_time)
-		VALUES (#{merch_id},#{name},#{file_name},#{path},#{create_time})
+		INSERT INTO tbl_merch_gallery (merch_id,classify_id,name,file_name,path,create_time)
+		VALUES (#{merch_id},#{classify_id},#{name},#{file_name},#{path},date_format(now(),'%Y%m%d%H%i%s'))
 	</insert>
 	
 	<!-- 删除图片 -->
@@ -18,10 +18,13 @@
 	<!-- 更新图片 -->
 	<update id="updateGallery" parameterType="Gallery">
 		UPDATE tbl_merch_gallery
-		SET merch_id=#{merch_id},
-		name=#{name},
-		file_name=#{file_name},
-		path=#{path}
+		<set>
+	      <if test="merch_id gt 0">merch_id = #{merch_id},</if>
+	      <if test="classify_id gt 0">classify_id = #{classify_id},</if>
+	      <if test="name != null">name = #{name},</if>
+	      <if test="file_name != null">file_name = #{file_name},</if>
+	      <if test="path != null">path = #{path},</if>
+	    </set>
 		WHERE gallery_id=#{gallery_id}
 	</update>
 	
@@ -33,5 +36,10 @@
 	<!-- 根据商品ID查询图片 -->
 	<select id="queryByMerchId" parameterType="String" resultType="Gallery">
 		SELECT * FROM tbl_merch_gallery WHERE merch_id=#{merch_id}
+	</select>
+	
+	<!-- 根据商品ID查询图片 -->
+	<select id="queryByClassifyId" parameterType="String" resultType="Gallery">
+		SELECT * FROM tbl_merch_gallery WHERE classify_id=#{classify_id}
 	</select>
 </mapper>

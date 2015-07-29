@@ -61,4 +61,12 @@ public class GalleryServiceImp implements GalleryService {
 	public List<Gallery> queryByMerchId(String merch_id){
 		return this.galleryMapper.queryByMerchId(merch_id);
 	}
+	/**
+	 * 根据分类ID查询图片信息
+	 * @param classify_id 分类ID
+	 * @return
+	 */
+	public Gallery queryByClassifyId(String classify_id){
+		return this.galleryMapper.queryByClassifyId(classify_id);
+	}
 }

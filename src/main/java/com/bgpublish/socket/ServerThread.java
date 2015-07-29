@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.bgpublish.domain.ChatOffLineMsg;
 import com.bgpublish.service.ChatOffLineMsgService;
 
@@ -22,6 +25,7 @@ import com.bgpublish.service.ChatOffLineMsgService;
  *
  */
 public class ServerThread implements Runnable {
+	private static final Log LOG = LogFactory.getLog(ServerThread.class);
 	/** 出错！返回String，描述出错原因 */
 	public static final int EVENT_ERROR = 0;
 	/** 线程结束, 停止运行 */
@@ -48,7 +52,7 @@ public class ServerThread implements Runnable {
 			oos = new ObjectOutputStream(socket.getOutputStream());
 			bConnected = true;
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("IO异常", e);
 		}
 	}
 	public ServerThread(Socket socket,ChatOffLineMsgService chatOffLineMsgService) {
@@ -119,7 +123,7 @@ public class ServerThread implements Runnable {
 						oos.flush();
 					} else {
 						// 保存离线信息
-						this.chatOffLineMsgService.addOffLine(fromUser,toUser,(FileSerial.TYPE_TEXT-1)+"",fileSerial.getFileName());
+						this.chatOffLineMsgService.addOffLine2(fromUser,toUser,(FileSerial.TYPE_TEXT-1)+"",fileSerial.getFileName());
 					}
 
 					break;
@@ -134,9 +138,9 @@ public class ServerThread implements Runnable {
 				}
 			}
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			LOG.error("找不到类异常", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("IO异常", e);
 		}
 	}
 }
