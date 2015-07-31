@@ -4,6 +4,7 @@
 package com.bgpublish.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bgpublish.domain.Gallery;
 
@@ -20,9 +21,9 @@ public interface GalleryMapper {
 	public void addGallery(Gallery gallery);
 	/**
 	 * 删除图片信息
-	 * @param gallery 图片ID
+	 * @param map
 	 */
-	public void deleteGallery(String gallery_id);
+	public void deleteGallery(Map<String,String> map);
 	/**
 	 * 更新图片信息
 	 * @param gallery 图片信息

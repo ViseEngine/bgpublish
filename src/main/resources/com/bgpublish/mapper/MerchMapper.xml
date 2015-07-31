@@ -66,6 +66,31 @@
 	</select>
 	
 	<!-- 根据商品ID查询商品信息 -->
+	<select id="queryMerchByMap" parameterType="Map" resultType="Merch">
+		SELECT * FROM tbl_merch_info 
+		<where>
+			<if test="store_id gt 0">
+				store_id = #{store_id}
+			</if>
+			<if test="name != null">
+				AND name = #{name}
+			</if>
+			<if test="desc != null">
+				AND `desc` = #{desc}
+			</if>
+			<if test="out_published != null">
+				AND out_published = #{out_published}
+			</if>
+			<if test="classify_id gt 0">
+				AND classify_id = #{classify_id}
+			</if>
+		</where>
+		<![CDATA[ 
+		   ORDER BY create_time DESC 
+		]]>
+	</select>
+	
+	<!-- 根据商品ID查询商品信息 -->
 	<select id="queryMerchByStoreId" parameterType="String" resultType="Merch">
 		SELECT * FROM tbl_merch_info WHERE store_id = #{store_id}
 	</select>

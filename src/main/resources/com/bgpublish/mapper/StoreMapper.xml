@@ -6,22 +6,24 @@
 <mapper namespace="com.bgpublish.mapper.StoreMapper">
 	<!-- 增加商家信息 -->
 	<insert id="addStore" parameterType="Store">
-		INSERT INTO tbl_store_info (user_id,name,address,phone,logo,desc,last_modify_time,create_time)
-		VALUES(#{user_id},#{name},#{address},#{phone},#{logo},#{desc},#{last_modify_time},#{create_time})
+		INSERT INTO tbl_store_info (user_id,name,address,phone,logo,`desc`,last_modify_time,create_time)
+		VALUES(#{user_id},#{name},#{address},#{phone},#{logo},#{desc},date_format(now(),'%Y%m%d%H%i%s'),date_format(now(),'%Y%m%d%H%i%s'))
 	</insert>
 	
 	<!-- 更新商家信息 -->
 	<update id="updateStore" parameterType="Store">
 		UPDATE tbl_store_info 
 		<set>
-	      <if test="user_id != null">user_id = #{user_id},</if>
+	      <if test="user_id gt 0">user_id = #{user_id},</if>
 	      <if test="name != null">name = #{name},</if>
 	      <if test="address != null">address = #{address},</if>
 	      <if test="phone != null">phone = #{phone},</if>
 	      <if test="logo != null">logo = #{logo},</if>
-	      <if test="desc != null">desc = #{desc},</if>
-	      <if test="classify_id != null">classify_id = #{classify_id},</if>
-	      <if test="last_modify_time != null">last_modify_time = #{last_modify_time}</if>
+	      <if test="desc != null">`desc` = #{desc},</if>
+	      <if test="classify_id gt 0">classify_id = #{classify_id},</if>
+	      <![CDATA[ 
+		      last_modify_time = date_format(now(),'%Y%m%d%H%i%s') 
+		  ]]>
 	    </set>
 	    WHERE store_id = #{store_id}
 	</update>

@@ -4,6 +4,7 @@
 package com.bgpublish.web;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -60,10 +61,10 @@ public class GalleryController {
 		return HttpUtil.createResponseEntity("更新图片成功!", HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/delete.do", method = RequestMethod.GET)
-	public ResponseEntity<String> deleteGallery(String gallery_id){
+	@RequestMapping(value="/delete.do", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteGallery(@RequestBody Map<String,String> map){
 		try{
-			this.galleryService.deleteGallery(gallery_id);
+			this.galleryService.deleteGallery(map);
 		}catch(Exception e){
 			LOGGER.error("删除图片失败", e);
 			return HttpUtil.createResponseEntity("删除图片失败!", HttpStatus.BAD_REQUEST);

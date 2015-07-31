@@ -4,6 +4,7 @@
 package com.bgpublish.service;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -66,6 +67,14 @@ public class MerchServiceImp implements MerchService {
 	 */
 	public List<Merch> queryMerchByStoreId(String store_id){
 		return this.merchMapper.queryMerchByStoreId(store_id);
+	}
+	/**
+	 * 查询商品信息，会按创建时间倒序
+	 * @param map 查询条件
+	 * @return
+	 */
+	public List<Merch> queryMerchByMap(Map<String,String> map){
+		return this.merchMapper.queryMerchByMap(map);
 	}
 	/**
 	 * 根据用户ID查询商品信息

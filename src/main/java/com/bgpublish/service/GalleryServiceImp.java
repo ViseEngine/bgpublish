@@ -4,6 +4,7 @@
 package com.bgpublish.service;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,10 +34,10 @@ public class GalleryServiceImp implements GalleryService {
 	}
 	/**
 	 * 删除图片信息
-	 * @param gallery 图片信息
+	 * @param map
 	 */
-	public void deleteGallery(String gallery_id){
-		this.galleryMapper.deleteGallery(gallery_id);
+	public void deleteGallery(Map<String,String> map){
+		this.galleryMapper.deleteGallery(map);
 	}
 	/**
 	 * 更新图片信息

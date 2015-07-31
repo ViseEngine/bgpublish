@@ -11,8 +11,19 @@
 	</insert>
 	
 	<!-- 删除图片 -->
-	<delete id="deleteGallery" parameterType="String">
-		DELETE FROM tbl_merch_gallery WHERE gallery_id=#{gallery_id}
+	<delete id="deleteGallery" parameterType="Map">
+		DELETE FROM tbl_merch_gallery 
+		<where>
+			<if test="gallery_id gt 0">
+				gallery_id = #{gallery_id}
+			</if>
+			<if test="merch_id gt 0">
+				merch_id = #{merch_id}
+			</if>
+			<if test="classify_id gt 0">
+				AND classify_id = #{classify_id}
+			</if>
+		</where>
 	</delete>
 	
 	<!-- 更新图片 -->

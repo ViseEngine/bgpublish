@@ -4,6 +4,7 @@
 package com.bgpublish.web;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -113,6 +114,19 @@ public class MerchController {
 	@ResponseBody
 	public List<Merch> queryMerchBy(@RequestBody Merch merch){
 		List<Merch> list = this.merchService.queryMerchBy(merch);
+		
+		return list;
+	}
+	
+	/**
+	 * 查询商品信息，会按创建时间倒序
+	 * @param map 查询条件
+	 * @return
+	 */
+	@RequestMapping(value="/queryMerchByMap.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Merch> queryMerchByMap(@RequestBody Map<String,String> map){
+		List<Merch> list = this.merchService.queryMerchByMap(map);
 		
 		return list;
 	}
