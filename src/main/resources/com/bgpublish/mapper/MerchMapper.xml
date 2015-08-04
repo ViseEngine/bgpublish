@@ -6,8 +6,8 @@
 <mapper namespace="com.bgpublish.mapper.MerchMapper">
 	<!-- 增加商品信息 -->
 	<insert id="addMerch" parameterType="Merch">
-		INSERT INTO tbl_merch_info (store_id,name,`desc`,classify_id,price,in_stock,published_date,out_published,last_modify_time,create_time)
-		VALUES (#{store_id},#{name},#{desc},#{classify_id},#{price},#{in_stock},#{published_date},#{out_published},date_format(now(),'%Y%m%d%H%i%s'),date_format(now(),'%Y%m%d%H%i%s'))
+		INSERT INTO tbl_merch_info (store_id,name,`desc`,classify_id,price,in_stock,published_date,out_published,unit,last_modify_time,create_time)
+		VALUES (#{store_id},#{name},#{desc},#{classify_id},#{price},#{in_stock},#{published_date},#{out_published},#{unit},date_format(now(),'%Y%m%d%H%i%s'),date_format(now(),'%Y%m%d%H%i%s'))
 	</insert>
 	
 	<!-- 更新商品信息 -->
@@ -20,8 +20,9 @@
 	      <if test="classify_id gt 0">classify_id = #{classify_id},</if>
 	      <if test="price != null">price = #{price},</if>
 	      <if test="in_stock != null">in_stock = #{in_stock},</if>
-	      <if test="published_date != null">published_date = #{published_date},</if>
+	      <if test="published_date != null">published_date = date_format(now(),'%Y%m%d%H%i%s'),</if>
 	      <if test="out_published != null">out_published = #{out_published},</if>
+	      <if test="unit != null">unit = #{unit},</if>
 	      <![CDATA[ 
 		      last_modify_time = date_format(now(),'%Y%m%d%H%i%s') 
 		  ]]>
@@ -42,6 +43,7 @@
 		      <if test="item.in_stock != null">in_stock = #{item.in_stock},</if>
 		      <if test="item.published_date != null">published_date = #{item.published_date},</if>
 		      <if test="item.out_published != null">out_published = #{item.out_published},</if>
+		      <if test="item.unit != null">unit = #{item.unit},</if>
 		       <![CDATA[ 
 		       last_modify_time = date_format(now(),'%Y%m%d%H%i%s') 
 		       ]]>

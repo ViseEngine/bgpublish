@@ -24,6 +24,7 @@ public class Merch  implements Serializable{
 	private @Getter @Setter int user_id;
 	private @Getter @Setter String name;
 	private @Getter @Setter String desc;
+	private @Getter @Setter String unit;
 	private @Getter @Setter int classify_id;
 	private @Getter @Setter float price;
 	private @Getter @Setter int in_stock;
