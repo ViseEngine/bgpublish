@@ -21,8 +21,13 @@ public class FileSerial implements Serializable{
 	private @Getter @Setter long fileLength; // 文件长度
 	private @Getter @Setter byte[] fileContent; // 文件内容
 	private @Getter @Setter int type;
-	private @Getter @Setter String toUser;    //接收用户 (手机号码)
-	private @Getter @Setter String fromUser;  //发送用户 （手机号码）
+	private @Getter @Setter String toUserMobile;    //接收用户 (手机号码)
+	private @Getter @Setter String fromUserMobile;  //发送用户 （手机号码）
+	private @Getter @Setter String toUserId;    //接收用户 (ID)
+	private @Getter @Setter String fromUserId;  //发送用户 （ID）
+	private @Getter @Setter String toUserName;    //接收用户 (用户名称)
+	private @Getter @Setter String fromUserName;  //发送用户 （用户名称）
+	private @Getter @Setter String chatTime;  //发送时间
 	
 	public static final int TYPE_ONLINE = -1;// 上线（用户登录上线）
 	public static final int TYPE_OFFLINE = -2;// 下线（用户退出下线）

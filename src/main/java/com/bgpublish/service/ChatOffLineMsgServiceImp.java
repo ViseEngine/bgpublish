@@ -3,7 +3,9 @@
  */
 package com.bgpublish.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -112,12 +114,11 @@ public class ChatOffLineMsgServiceImp implements ChatOffLineMsgService {
 	
 	/**
 	 * 根据发送人和接收人查询离线信息
-	 * @param from_user_id
-	 * @param to_user_id
+	 * @param map
 	 * @return
 	 */
-	public List<ChatOffLineMsg> queryByUserId(String from_user_id,String to_user_id){
-		return chatOffLineMsgMapper.queryByUserId(from_user_id, to_user_id);
+	public List<ChatOffLineMsg> queryByUserId(Map<String,String> map){
+		return chatOffLineMsgMapper.queryByUserId(map);
 	}
 
 	/**
@@ -130,6 +131,10 @@ public class ChatOffLineMsgServiceImp implements ChatOffLineMsgService {
 		User fromUser = userMapper.selectUserByMobile(from_user_mobile);
 		User toUser = userMapper.selectUserByMobile(to_user_mobile);
 		
-		return queryByUserId(String.valueOf(fromUser.getUser_id()), String.valueOf(toUser.getUser_id()));
+		Map<String,String> map = new HashMap<String, String>();
+		map.put("from_user_id", String.valueOf(fromUser.getUser_id()));
+		map.put("to_user_id", String.valueOf(toUser.getUser_id()));
+		
+		return queryByUserId(map);
 	}
 }

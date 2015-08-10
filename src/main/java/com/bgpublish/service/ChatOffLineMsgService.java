@@ -4,6 +4,7 @@
 package com.bgpublish.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bgpublish.domain.ChatOffLineMsg;
 
@@ -55,11 +56,9 @@ public interface ChatOffLineMsgService {
 	
 	/**
 	 * 根据发送人和接收人查询离线信息
-	 * @param from_user_id
-	 * @param to_user_id
 	 * @return
 	 */
-	public List<ChatOffLineMsg> queryByUserId(String from_user_id,String to_user_id);
+	public List<ChatOffLineMsg> queryByUserId(Map<String,String> map);
 	/**
 	 * 根据发送人和接收人查询离线信息
 	 * @param from_user_mobile
