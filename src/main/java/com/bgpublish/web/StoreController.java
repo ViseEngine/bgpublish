@@ -3,6 +3,8 @@
  */
 package com.bgpublish.web;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -86,5 +88,22 @@ public class StoreController {
 		}
 		
 		return HttpUtil.createResponseEntity("删除商店成功!", HttpStatus.OK);
+	}
+	
+	/**
+	 * 按销量大小查询商家信息
+	 * @return 返回商家信息
+	 */
+	@RequestMapping(value="/queryStoreBySalesVolume.do", method = RequestMethod.GET)
+	public List<Store> queryStoreBySalesVolume(){
+		return this.storeService.queryStoreBySalesVolume();
+	}
+	/**
+	 * 按收藏数查询商家信息
+	 * @return 返回商家信息
+	 */
+	@RequestMapping(value="/queryStoreByFavoriteCount.do", method = RequestMethod.GET)
+	public List<Store> queryStoreByFavoriteCount(){
+		return this.storeService.queryStoreByFavoriteCount();
 	}
 }

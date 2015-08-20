@@ -42,4 +42,30 @@
 	<select id="queryStoreByUserId" parameterType="String" resultType="Store">
 		SELECT * FROM tbl_store_info WHERE user_id = #{user_id}
 	</select>
+	
+	<!-- 按销量大小查询商家信息 -->
+	<select id="queryStoreBySalesVolume" resultType="Store">
+		select d.*, ifnull(sales_volume,0) sales_volume
+		from `tbl_store_info` d
+		left join (
+		select c.`store_id`,sum(b.amount) sales_volume
+		from `tbl_order_info` a 
+		join `tbl_order_detail` b on a.`order_id` = b.`order_id`
+		left join  `tbl_merch_info` c on b.`merch_id` = c.`merch_id`
+		where a.`status` = '4'
+		group by c.`store_id`) e
+		on d.`store_id` = e.`store_id`
+		order by sales_volume desc
+	</select>
+	<!-- 按收藏数查询商家信息 -->
+	<select id="queryStoreByFavoriteCount" resultType="Store">
+		select a.*,ifnull(sales_volume,0) sales_volume
+		from  `tbl_store_info` a 
+		left join (
+		select store_id,count(1) sales_volume
+		from `tbl_store_user_favorite` b group by b.`store_id`
+		) c
+		on a.`store_id` = c.`store_id`
+		order by sales_volume desc
+	</select>
 </mapper>

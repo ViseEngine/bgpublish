@@ -193,6 +193,20 @@ public class OrderController {
 		}
 			
 	}
+	/**
+	 * 更新订单信息
+	 * @param order
+	 */
+	@RequestMapping(value="/updateOrderInfo.do",  method = RequestMethod.POST)
+	public ResponseEntity<String> updateOrderInfo(@RequestBody Order order){
+		try{
+			this.orderService.updateOrderInfo(order);//更新订单
+			return HttpUtil.createResponseEntity("更新订单成功!", HttpStatus.OK);
+		}catch (Exception e){
+			LOGGER.error("更新订单失败",e);
+			return HttpUtil.createResponseEntity("更新订单失败!", HttpStatus.BAD_REQUEST);
+		}
+	}
 	
 	/**
 	 * 按天统计订单成交量

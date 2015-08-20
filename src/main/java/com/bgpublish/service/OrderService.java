@@ -60,6 +60,11 @@ public interface OrderService {
 	 * @param orderId
 	 */
 	public void deleteOrder(String orderId);
+	/**
+	 * 更新订单信息
+	 * @param order
+	 */
+	public void updateOrderInfo(Order order);
 	
 	/**
 	 * 逻辑删除订单
@@ -67,11 +72,6 @@ public interface OrderService {
 	 */
 	public void logicDeleteOrder(Order order);
 
-	/**
-	 * 取消订单明细信息
-	 * @param orderId
-	 */
-	public void updateOrderInfo(Order order);
 	/**
 	 * 按天统计订单成交量
 	 * @param map

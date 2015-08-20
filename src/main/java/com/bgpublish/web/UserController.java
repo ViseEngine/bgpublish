@@ -36,10 +36,10 @@ public class UserController {
 	private static final Log LOGGER = LogFactory.getLog(UserController.class);
 
 	//APP Status
-	private enum AppStatus{
+	/*private enum AppStatus{
 		SALERAPP,//0
 		BUYERAPP//1
-	}
+	}*/
 	
 	private @Autowired @Getter @Setter UserService userService;
 
@@ -63,8 +63,8 @@ public class UserController {
 	@RequestMapping(value="/login.do", method = RequestMethod.POST)
 	@ResponseBody
 	public User login(@RequestBody User user) {
-
-		return this.userService.login(user);
+		User login = this.userService.login(user);
+		return login;
 	}
 	
 	/**

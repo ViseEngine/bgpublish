@@ -53,7 +53,7 @@ public class OrderControllerTest {
 		Order orderTest = new Order();
 		orderTest.setAmount_money(new Float(11.2));
 		orderTest.setCurrency_unit("RMB");
-		orderTest.setBuyer_addr_id(2);
+//		orderTest.setBuyer_addr_id(2);
 		orderTest.setBuyer_phone("13599990000");
 		orderTest.setBuyer_mobile("");
 		orderTest.setSend_type("0");
@@ -181,7 +181,7 @@ public class OrderControllerTest {
 		Order order = new Order();
 		order.setOrder_id("2015060700000000015");
 		order.setAmount_money(34);
-		order.setBuyer_addr_id(23);
+//		order.setBuyer_addr_id(23);
 		order.setFreight(14);
 		try {
 	//		Order order = template.postForObject(new URI(this.base.toString() + "/order/getOrderInfoById.do?orderId="+orderId), String.class, Order.class);

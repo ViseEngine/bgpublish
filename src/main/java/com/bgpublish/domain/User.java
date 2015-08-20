@@ -42,4 +42,8 @@ public class User implements Serializable {
 	private @Getter @Setter String we_chat;
 	
 	private @Getter @Setter String old_password;
+	
+	private @Getter @Setter int store_id;
+	
+	private @Getter @Setter String store_name;
 }

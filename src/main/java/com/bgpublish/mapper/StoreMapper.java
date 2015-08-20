@@ -3,6 +3,8 @@
  */
 package com.bgpublish.mapper;
 
+import java.util.List;
+
 import com.bgpublish.domain.Store;
 
 /**
@@ -39,4 +41,14 @@ public interface StoreMapper {
 	 * @return 返回商家信息
 	 */
 	public Store queryStoreByUserId(String user_id);
+	/**
+	 * 按销量大小查询商家信息
+	 * @return 返回商家信息
+	 */
+	public List<Store> queryStoreBySalesVolume();
+	/**
+	 * 按收藏数查询商家信息
+	 * @return 返回商家信息
+	 */
+	public List<Store> queryStoreByFavoriteCount();
 }

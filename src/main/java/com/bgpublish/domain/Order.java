@@ -38,7 +38,6 @@ public class Order implements Serializable{
 	private @Getter @Setter String buyer_name;
 //	private @Getter @Setter String buyer_area;
 //	private @Getter @Setter String buyer_postcode;
-	private @Getter @Setter int buyer_addr_id;//买家收货地址ID
 	private @Getter @Setter String buyer_phone;
 	private @Getter @Setter String buyer_mobile;
 	private @Getter @Setter String send_type;
@@ -61,6 +60,15 @@ public class Order implements Serializable{
 	private @Getter @Setter String buyer_score;
 	private @Getter @Setter String seller_score;
 	private @Getter @Setter String status;
+	
+	//买家地址
+	private @Setter @Getter int town_id;
+	private @Setter @Getter String province_code;//
+	private @Setter @Getter String city_code;//
+	private @Setter @Getter String address;//
+	
+	//买家评价
+	private @Setter @Getter String buyer_advise;//
 	
 	private @Getter @Setter List<OrderDetail> orderDetails;//int
 	

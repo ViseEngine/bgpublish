@@ -33,4 +33,6 @@ public class Merch  implements Serializable{
 	private @Getter @Setter String last_modify_time;
 	private @Getter @Setter String create_time;
 	private @Getter @Setter String order_by_clause;
+	private @Getter @Setter String sm_recommend;
+	private @Getter @Setter String free_shipping;
 }

@@ -9,7 +9,11 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bgpublish.domain.Store;
 import com.bgpublish.domain.User;
+import com.bgpublish.domain.UserLoginHist;
+import com.bgpublish.mapper.StoreMapper;
+import com.bgpublish.mapper.UserLoginHistMapper;
 import com.bgpublish.mapper.UserMapper;
 
 /**
@@ -22,6 +26,8 @@ import com.bgpublish.mapper.UserMapper;
 public class UserServiceImp implements UserService {
 
 	private  @Autowired @Getter @Setter UserMapper userMapper;
+	private  @Autowired @Getter @Setter StoreMapper storeMapper;
+	private  @Autowired @Getter @Setter UserLoginHistMapper userLoginHistMapper;
 
 	/**
 	 * 根据用户Id查询用户信息
@@ -43,7 +49,34 @@ public class UserServiceImp implements UserService {
 	 */
 	@Override
 	public User login(User user){
-		return this.userMapper.login(user);
+		User login = this.userMapper.login(user);
+		UserLoginHist userLoginHist = new UserLoginHist(); 
+		if(login == null){
+			userLoginHist.setUser_id(0);
+			userLoginHist.setUser_name(user.getMobile());
+			userLoginHist.setLogin_info("登录失败,用户信息不存在");
+			this.userLoginHistMapper.addUserLoginHist(userLoginHist);
+			return null;
+		}
+		
+		if("0".equals(user.getUser_type())){//买家登录不用查询商家
+			Store store = this.storeMapper.queryStoreByUserId(String.valueOf(login.getUser_id()));
+			if(store == null){
+				userLoginHist.setUser_id(login.getUser_id());
+				userLoginHist.setUser_name(login.getName());
+				userLoginHist.setLogin_info("登录成功,但用户商家信息不存在");
+				this.userLoginHistMapper.addUserLoginHist(userLoginHist);
+				return login;
+			}
+			login.setStore_id(store.getStore_id());
+			login.setStore_name(store.getName());
+		}
+		
+		userLoginHist.setUser_id(login.getUser_id());
+		userLoginHist.setUser_name(login.getName());
+		userLoginHist.setLogin_info("登录成功");
+		this.userLoginHistMapper.addUserLoginHist(userLoginHist);
+		return login;
 	}
 	
 	/**

@@ -29,4 +29,5 @@ public class Store implements Serializable {
 	private @Getter @Setter String classify_id;
 	private @Getter @Setter String last_modify_time;
 	private @Getter @Setter String create_time;
+	private @Getter @Setter int sales_volume;
 }

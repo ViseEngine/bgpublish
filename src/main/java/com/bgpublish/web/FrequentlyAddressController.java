@@ -39,7 +39,7 @@ public class FrequentlyAddressController {
 	
 	@RequestMapping(value="/query.do", method = RequestMethod.GET)
 	@ResponseBody
-	public List<FrequentlyAddress> queryFrequentlyAddressService(String user_id){
+	public List<FrequentlyAddress> queryFrequentlyAddress(String user_id){
 		List<FrequentlyAddress> list = this.frequentlyAddressService.queryByUserId(user_id);
 		
 		return list;
