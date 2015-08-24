@@ -73,15 +73,15 @@ public class UserController {
 	 * @return 已注册返回true，否则返回false
 	 */
 	@RequestMapping(value="/isregister.do", method = RequestMethod.GET)
-	public ResponseEntity<String> isMobileRegister(@RequestParam String mobile) {
+	public boolean isMobileRegister(@RequestParam String mobile) {
 
 		User user = this.userService.selectUserByMobile(mobile);
 		
 		if(user != null){
-			return HttpUtil.createResponseEntity("手机号码已存在", HttpStatus.OK);
+			return true;
 		}
 		
-		return HttpUtil.createResponseEntity("手机号码不存在", HttpStatus.BAD_REQUEST);
+		return false;
 	}
 	
 	
