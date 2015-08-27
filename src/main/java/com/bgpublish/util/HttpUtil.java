@@ -24,6 +24,14 @@ public class HttpUtil {
         return new ResponseEntity<String>(remessage, status);
     }
 	/**
+	 * 创建OK response响应信息
+	 * @param remessage 简单的返回信息
+	 * @return
+	 */
+	public static ResponseEntity<String> createOkResponseEntity(String remessage) {
+		return createResponseEntity(remessage, HttpStatus.OK);
+	}
+	/**
 	 * 创建response响应信息
 	 * @param user 用户信息
 	 * @param status 响应状态

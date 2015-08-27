@@ -22,7 +22,7 @@
 	<!-- 注册 -->
 	<insert id="register" parameterType="User" >
 		INSERT INTO tbl_user (name,password,mobile,create_time,user_type,qq,we_chat)
-		VALUES(#{name},#{password},#{mobile},#{create_time},#{user_type},#{qq},#{we_chat})
+		VALUES(#{name},#{password},#{mobile},date_format(now(),'%Y%m%d%H%i%s'),#{user_type},#{qq},#{we_chat})
 	</insert>
 	
 	<!-- 修改密码 -->

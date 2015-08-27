@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.bgpublish.mapper.MerchCarMapper">
+	<!-- 加入到购物车中 -->
+	<insert id="addMerchCar" parameterType="MerchCar">
+		INSERT INTO tbl_merch_car (merch_id,buy_num,user_id,create_time)
+		VALUES (#{merch_id},#{buy_num},#{user_id},date_format(now(),'%Y%m%d%H%i%s'))
+	</insert>
+	
+	<!-- 更新购物车的信息 -->
+	<update id="updateMerchCar" parameterType="MerchCar">
+		UPDATE tbl_merch_car 
+		<set>
+	      <if test="merch_id gt 0">merch_id = #{merch_id},</if>
+	      <if test="buy_num != null">buy_num = #{buy_num},</if>
+	      <if test="user_id gt 0">user_id = #{user_id} </if>
+	    </set>
+	    WHERE car_id = #{car_id}
+	</update>
+	
+	<!-- 根据用户Id查询商品信息 -->
+	<select id="queryMerchCarByUser" parameterType="String" resultType="MerchCar">
+		SELECT a.*,b.`name`,b.`desc`,b.`price`
+		 FROM `tbl_merch_car` a LEFT JOIN `tbl_merch_info` b
+		ON a.`merch_id` = b.`merch_id`
+		WHERE a.`user_id`=#{user_id}
+	</select>
+</mapper>

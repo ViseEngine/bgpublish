@@ -66,7 +66,15 @@ public class UserServiceImp implements UserService {
 				userLoginHist.setUser_name(login.getName());
 				userLoginHist.setLogin_info("登录成功,但用户商家信息不存在");
 				this.userLoginHistMapper.addUserLoginHist(userLoginHist);
-				return login;
+				
+				//如果商家不存在，默认插入一条
+				Store tmpStore = new Store();
+				tmpStore.setUser_id(login.getUser_id());
+				tmpStore.setPhone(login.getMobile());
+				tmpStore.setName(login.getName());
+				this.storeMapper.addStore(tmpStore);
+				
+				store = this.storeMapper.queryStoreByUserId(String.valueOf(login.getUser_id()));
 			}
 			login.setStore_id(store.getStore_id());
 			login.setStore_name(store.getName());

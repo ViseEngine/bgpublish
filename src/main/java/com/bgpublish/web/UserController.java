@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bgpublish.domain.User;
 import com.bgpublish.service.UserService;
-import com.bgpublish.util.DateUtil;
 import com.bgpublish.util.HttpUtil;
 
 /**
@@ -95,49 +94,26 @@ public class UserController {
 		
 		//非空检验
 		if("".equals(StringUtils.trimToEmpty(user.getPassword()))){
-			return HttpUtil.createResponseEntity("密码不能为空!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("密码不能为空!");
 		}
-		
-		//密码由前端编码后传入，不再判断
-		/*if(!Validator.isPwdLength(user.getPassword())){
-			return HttpUtil.createResponseEntity("密码长度为6到20位!", HttpStatus.BAD_REQUEST);
-		}*/
-		
-		/*if(!Validator.isPassword(user.getPassword())){
-			return HttpUtil.createResponseEntity("密码必须为数字和字母!", HttpStatus.BAD_REQUEST);
-		}*/
 		
 		if("".equals(StringUtils.trimToEmpty(user.getMobile()))){
-			return HttpUtil.createResponseEntity("手机号码不能为空!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("手机号码不能为空!");
 		}
-		
-		//如果是卖家，要判断商家名称和详细地址
-		/*if(AppStatus.SALERAPP.toString().equals(StringUtils.trimToEmpty(user.getUser_type()))){
-			if("".equals(StringUtils.trimToEmpty(user.getAddress()))){
-				return HttpUtil.createResponseEntity("商家地址不能为空!", HttpStatus.BAD_REQUEST);
-			}
-			
-			if("".equals(StringUtils.trimToEmpty(user.getShop_name()))){
-				return HttpUtil.createResponseEntity("商家名称不能为空!", HttpStatus.BAD_REQUEST);
-			}
-		}*/
-		
-		
-		user.setCreate_time(DateUtil.today("yyyyMMddHHmmss"));
 		
 		User chkUser = this.userService.selectUserByMobile(user.getMobile());
 		if(chkUser != null){
-			return HttpUtil.createResponseEntity("手机号码已注册!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("手机号码已注册!");
 		}
 		
 		try{
 			this.userService.register(user);
 		} catch(Exception e) {
 			LOGGER.error("注册失败",e);
-			return HttpUtil.createResponseEntity("注册失败!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("注册失败!");
 		}
 		
-		return HttpUtil.createResponseEntity("注册成功!", HttpStatus.OK);
+		return HttpUtil.createOkResponseEntity("注册成功!");
 	}
 	
 	/**
