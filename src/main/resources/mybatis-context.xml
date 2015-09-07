@@ -30,6 +30,20 @@
         <property name="dataSource" ref="dataSource" />
         <property name="mapperLocations" value="classpath*:com/bgpulish/mapper/*.xml"/>
         <property name="typeAliasesPackage" value="com.bgpublish.domain"/>
+        <!-- 配置Mybatis的插件plugin-->
+	    <property name="plugins">
+	        <array>
+	        <!-- 分页插件 -->
+	            <bean class="com.github.pagehelper.PageHelper">
+		            <property name="properties">
+			          <value>
+			            dialect=mysql
+			            reasonable=true
+			          </value>
+			        </property>
+	            </bean>
+	        </array>
+	    </property>
     </bean>
     
     <!-- 加载mybatis的实体类 -->
@@ -37,4 +51,5 @@
         <property name="basePackage" value="com.bgpublish.mapper"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
+    
 </beans>

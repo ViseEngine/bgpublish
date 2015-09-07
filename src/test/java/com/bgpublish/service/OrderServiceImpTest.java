@@ -36,7 +36,7 @@ public class OrderServiceImpTest {
 
 	private @Autowired @Getter @Setter OrderService orderService;
 	
-	@Test
+	/*@Test
 	public void testGetCompletedOrderInfo(){
 		Order order = new Order();
 		order.setBuyer_user_id(3);
@@ -94,5 +94,14 @@ public class OrderServiceImpTest {
 		List<OrderStat> orderStat = orderService.countMoneyByDayHour(map);
 		Assert.assertNotNull(orderStat);
 		System.err.println(orderStat.size());
+	}*/
+	
+	@Test
+	public void testGetInOrderInfoByPage(){
+		Order order = new Order();
+		List<Order> list = orderService.getInOrderInfoByPage(order);
+		
+		Assert.assertNotNull(list);
+		System.err.println(list.size());
 	}
 }

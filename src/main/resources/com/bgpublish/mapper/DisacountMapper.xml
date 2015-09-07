@@ -6,7 +6,7 @@
 <mapper namespace="com.bgpublish.mapper.DisacountMapper">
 	<insert id="addDisacount" parameterType="MerchDisacount">
 		INSERT INTO tbl_merch_disacount_info(merch_id,disacount_money,disacount,disacount_date,effective_date,create_time)
-		VALUES(#{merch_id},#{disacount_money},#{disacount},#{disacount_date},#{effective_date},#{create_time})
+		VALUES(#{merch_id},#{disacount_money},#{disacount},#{disacount_date},#{effective_date},date_format(now(),'%Y%m%d%H%i%s'))
 	</insert>
 	
 	<!-- 根据ID删除商品优惠信息 -->
@@ -17,11 +17,13 @@
 	<!-- 更新商品优惠信息 -->
 	<update id="updateDisacount" parameterType="MerchDisacount">
 		UPDATE tbl_merch_disacount_info
-		SET merch_id=#{merch_id},
-		disacount_money=#{disacount_money},
-		disacount=#{disacount},
-		disacount_date=#{disacount_date},
-		effective_date=#{effective_date}
+		<set>
+	      <if test="merch_id gt 0">merch_id = #{merch_id},</if>
+	      <if test="disacount_money != null">disacount_money = #{disacount_money},</if>
+	      <if test="disacount != null">disacount = #{disacount},</if>
+	      <if test="disacount_date != null">disacount_date = #{disacount_date},</if>
+	      <if test="effective_date != null">effective_date = #{effective_date}</if>
+	    </set>
 		WHERE disacount_id=#{disacount_id}
 	</update>
 	

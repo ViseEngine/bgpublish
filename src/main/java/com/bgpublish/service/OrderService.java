@@ -47,6 +47,12 @@ public interface OrderService {
 	 * @return
 	 */
 	public List<Order> getInOrderInfo(Order order);
+	/**
+	 * 获取进行中的订单(分页)
+	 * @param order
+	 * @return
+	 */
+	public List<Order> getInOrderInfoByPage(Order order);
 	
 	/**
 	 * 通过订单ID获取订单明细信息

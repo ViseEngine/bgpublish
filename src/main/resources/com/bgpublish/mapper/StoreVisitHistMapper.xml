@@ -7,7 +7,7 @@
 	<!-- 增加商家访问信息 -->
 	<insert id="addStoreVisitHist" parameterType="StoreVisitHist">
 		INSERT INTO tbl_store_visit_hist (store_id,user_id,create_time)
-		VALUES(#{store_id},#{user_id},#{create_time})
+		VALUES(#{store_id},#{user_id},date_format(now(),'%Y%m%d%H%i%s'))
 	</insert>
 	
 	<!-- 根据用户ID查询商家访问信息 -->

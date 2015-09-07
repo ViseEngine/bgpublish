@@ -8,7 +8,10 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bgpublish.domain.StoreVisitHist;
 import com.bgpublish.domain.VisitStat;
 import com.bgpublish.service.StoreVisitHistService;
+import com.bgpublish.util.HttpUtil;
 
 /**
  * 商家访问量Web
@@ -26,6 +30,7 @@ import com.bgpublish.service.StoreVisitHistService;
 @RestController
 @RequestMapping(value="/sgams/storevisit")
 public class StoreVisitHistController {
+	private static final Log LOGGER = LogFactory.getLog(StoreVisitHistController.class);
 
 	private @Autowired @Getter @Setter StoreVisitHistService storeVisitHistService;
 	
@@ -34,8 +39,15 @@ public class StoreVisitHistController {
 	 * @param storeVisitHist
 	 */
 	@RequestMapping(value="/addStoreVisitHist.do", method = RequestMethod.POST)
-	public void addStoreVisitHist(@RequestBody StoreVisitHist storeVisitHist){
-		this.storeVisitHistService.addStoreVisitHist(storeVisitHist);
+	public ResponseEntity<String> addStoreVisitHist(@RequestBody StoreVisitHist storeVisitHist){
+		try{
+			this.storeVisitHistService.addStoreVisitHist(storeVisitHist);
+		}catch(Exception e){
+			LOGGER.error("新增商家访问记录失败", e);
+			return HttpUtil.createOkResponseEntity("新增商家访问记录失败!");
+		}
+		
+		return HttpUtil.createOkResponseEntity("新增商家访问记录成功!");
 	}
 	/**
 	 * 根据用户ID查询商家访问信息

@@ -16,6 +16,8 @@ import com.bgpublish.domain.Order;
 import com.bgpublish.domain.OrderDetail;
 import com.bgpublish.domain.OrderStat;
 import com.bgpublish.mapper.OrderMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * 订单服务信息实现类
@@ -85,6 +87,20 @@ public class OrderServiceImp implements OrderService {
 	 */
 	public List<Order> getInOrderInfo(Order order){
 		List<Order> inOrderList = this.orderMapper.getInOrderInfo(order);
+		return inOrderList;
+	}
+	/**
+	 * 获取进行中的订单
+	 * @param order
+	 * @return
+	 */
+	public List<Order> getInOrderInfoByPage(Order order){
+		//获取第1页，10条内容，默认查询总数count
+		PageHelper.startPage(1, 10);
+		List<Order> inOrderList = this.orderMapper.getInOrderInfo(order);
+		//用PageInfo对结果进行包装
+		PageInfo page = new PageInfo(inOrderList);
+		
 		return inOrderList;
 	}
 	
