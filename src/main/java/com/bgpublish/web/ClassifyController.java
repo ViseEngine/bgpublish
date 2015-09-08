@@ -59,6 +59,14 @@ public class ClassifyController {
 		
 		return list;
 	}
+	
+	@RequestMapping(value="/querybyuserid.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Classify> queryClassifyByUserId(String user_id){
+		List<Classify> list = this.classifyService.queryClassifyByUserId(user_id);
+		
+		return list;
+	}
 
 	@RequestMapping(value="/queryby.do", method = RequestMethod.POST)
 	@ResponseBody

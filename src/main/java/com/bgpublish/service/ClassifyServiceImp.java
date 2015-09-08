@@ -89,4 +89,12 @@ public class ClassifyServiceImp implements ClassifyService {
 	public List<Classify> queryClassifyByType(String classify_type) {
 		return this.classifyMapper.queryClassifyByType(classify_type);
 	}
+	/**
+	 * 根据用户ID查询所有分类
+	 * @param user_id
+	 * @return 分类
+	 */
+	public List<Classify> queryClassifyByUserId(String user_id){
+		return this.classifyMapper.queryClassifyByUserId(user_id);
+	}
 }

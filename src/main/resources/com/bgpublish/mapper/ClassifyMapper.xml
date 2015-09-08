@@ -6,7 +6,7 @@
 <mapper namespace="com.bgpublish.mapper.ClassifyMapper">
 	<!-- 增加分类 -->
 	<insert id="addClassify" parameterType="Classify">
-		INSERT INTO tbl_classify_info (name,`desc`,classify_type) VALUES (#{name},#{desc},#{classify_type})
+		INSERT INTO tbl_classify_info (name,`desc`,classify_type,user_id) VALUES (#{name},#{desc},#{classify_type},#{user_id})
 	</insert>
 	
 	<!-- 删除分类 -->
@@ -20,6 +20,7 @@
 		<set>
 	      <if test="name != null">name = #{name},</if>
 	      <if test="desc != null">`desc` = #{desc},</if>
+	      <if test="user_id gt 0">user_id = #{user_id},</if>
 	      <if test="classify_type != null">classify_type = #{classify_type}</if>
 	    </set>
 	    WHERE classify_id = #{classify_id}
@@ -52,6 +53,9 @@
             <if test="name != null">
                 AND name = #{name}
             </if>
+            <if test="user_id gt 0">
+                AND user_id = #{user_id}
+            </if>
             <if test="classify_type != null">
                 AND classify_type = #{classify_type}
             </if>
@@ -60,5 +64,10 @@
 	<!-- 根据分类类型查询所有分类  -->
 	<select id="queryClassifyByType" resultType="Classify" parameterType="String">
 		select * from tbl_classify_info where classify_type=#{classify_type}
+	</select>
+	
+	<!-- 根据用户ID查询所有分类  -->
+	<select id="queryClassifyByUserId" resultType="Classify" parameterType="String">
+		select * from tbl_classify_info where user_id=#{user_id}
 	</select>
 </mapper>

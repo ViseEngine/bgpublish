@@ -56,4 +56,10 @@ public interface ClassifyMapper {
 	 * @return 分类
 	 */
 	public List<Classify> queryClassifyByType(String classify_type);
+	/**
+	 * 根据用户ID查询所有分类
+	 * @param user_id
+	 * @return 分类
+	 */
+	public List<Classify> queryClassifyByUserId(String user_id);
 }
