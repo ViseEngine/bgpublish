@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.bgpublish.domain.Classify;
 import com.bgpublish.mapper.ClassifyMapper;
+import com.github.pagehelper.PageHelper;
 
 /**
  * 分类服务接口实现类
@@ -95,6 +96,17 @@ public class ClassifyServiceImp implements ClassifyService {
 	 * @return 分类
 	 */
 	public List<Classify> queryClassifyByUserId(String user_id){
+		return this.classifyMapper.queryClassifyByUserId(user_id);
+	}
+	/**
+	 * 根据用户ID查询所有分类
+	 * @param user_id
+	 * @param start
+	 * @param limit
+	 * @return 分类
+	 */
+	public List<Classify> queryClassifyByUserIdPage(String user_id,int start,int limit){
+		PageHelper.startPage(start, limit);
 		return this.classifyMapper.queryClassifyByUserId(user_id);
 	}
 }

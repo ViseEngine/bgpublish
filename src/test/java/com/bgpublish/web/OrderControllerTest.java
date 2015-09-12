@@ -2,7 +2,6 @@ package com.bgpublish.web;
 
 import static org.junit.Assert.fail;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -60,24 +59,19 @@ public class OrderControllerTest {
 		orderTest.setSend_no("012345");
 		orderTest.setInvoice_need("0");
 		orderTest.setPay_type("0");
-		orderTest.setStatus("0");
+		orderTest.setStatus("1");
 		Integer merid = null;
 		String merName = null;
 		String unit = null;
 		Integer amount = null;
 		Float price = null;
 		
-		try {
-			orderTest.setBuyer_name(new String("王大帅".getBytes("ISO-8859-1"),"utf-8"));
-			merid = new Integer(1);
-			merName = new String("商品名称".getBytes("ISO-8859-1"),"utf-8");
-			unit = new String("瓶".getBytes("ISO-8859-1"),"utf-8");
-			amount = 1;
-			price = 30F;
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		orderTest.setBuyer_name("王大帅");
+		merid = new Integer(1);
+		merName = "商品名称";
+		unit = "瓶";
+		amount = 1;
+		price = 30F;
 	
 		/*
 		List<Integer> merIdList = new ArrayList<Integer>();

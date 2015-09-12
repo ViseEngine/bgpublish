@@ -70,7 +70,7 @@ public class Order implements Serializable{
 	//买家评价
 	private @Setter @Getter String buyer_advise;//
 	
-	private @Getter @Setter List<OrderDetail> orderDetails;//int
+	private @Getter @Setter List<OrderDetail> orderDetails;//订单详情
 	
 	/*
 	private @Getter @Setter List<Integer> merch_ids;//int

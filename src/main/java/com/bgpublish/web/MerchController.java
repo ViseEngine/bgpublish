@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,10 +57,10 @@ public class MerchController {
 			this.merchService.updateMerch(merch);
 		}catch(Exception e){
 			LOGGER.error("更新商品失败", e);
-			return HttpUtil.createResponseEntity("更新商品失败!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("更新商品失败!");
 		}
 		
-		return HttpUtil.createResponseEntity("更新商品成功!", HttpStatus.OK);
+		return HttpUtil.createOkResponseEntity("更新商品成功!");
 	}
 	
 	@RequestMapping(value="/deletebyid.do", method = RequestMethod.GET)
@@ -67,11 +68,11 @@ public class MerchController {
 		try{
 			this.merchService.deleteMerchById(merch_id);
 		}catch(Exception e){
-			e.printStackTrace();
-			return HttpUtil.createResponseEntity("删除商品失败!", HttpStatus.BAD_REQUEST);
+			LOGGER.error("删除商品失败!", e);
+			return HttpUtil.createOkResponseEntity("删除商品失败!");
 		}
 		
-		return HttpUtil.createResponseEntity("删除商品成功!", HttpStatus.OK);
+		return HttpUtil.createOkResponseEntity("删除商品成功!");
 	}
 	
 	@RequestMapping(value="/deletebystoreid.do", method = RequestMethod.GET)
@@ -114,6 +115,14 @@ public class MerchController {
 	@ResponseBody
 	public List<Merch> queryMerchBy(@RequestBody Merch merch){
 		List<Merch> list = this.merchService.queryMerchBy(merch);
+		
+		return list;
+	}
+	
+	@RequestMapping(value="/querybypage.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Merch> queryMerchByPage(@RequestBody Merch merch,@RequestParam int start,@RequestParam int limit){
+		List<Merch> list = this.merchService.queryMerchByPage(merch,start,limit);
 		
 		return list;
 	}

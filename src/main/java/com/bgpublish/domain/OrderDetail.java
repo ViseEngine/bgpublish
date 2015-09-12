@@ -1,6 +1,7 @@
 package com.bgpublish.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,5 @@ public class OrderDetail implements Serializable{
 	private @Getter @Setter String unit;
 	private @Getter @Setter float price;
 	
-	
-	
+	private @Getter @Setter List<MerchGallery> merchGallerys;//商品图片
 }

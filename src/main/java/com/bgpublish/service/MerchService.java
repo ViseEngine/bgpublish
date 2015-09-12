@@ -65,6 +65,14 @@ public interface MerchService {
 	 */
 	public List<Merch> queryMerchBy(Merch merch);
 	/**
+	 * 根据输入的条件（包括用户ID、是否下架、分类等）查询商品信息
+	 * @param merch 商品信息
+	 * @param start 开始
+	 * @param limit 条数
+	 * @return
+	 */
+	public List<Merch> queryMerchByPage(Merch merch,int start, int limit);
+	/**
 	 * 批量更新商品信息
 	 * @param merchList 商品列表
 	 * @return 更新状态

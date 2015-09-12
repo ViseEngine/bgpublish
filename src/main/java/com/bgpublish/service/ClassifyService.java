@@ -62,4 +62,12 @@ public interface ClassifyService {
 	 * @return 分类
 	 */
 	public List<Classify> queryClassifyByUserId(String user_id);
+	/**
+	 * 根据用户ID查询所有分类
+	 * @param user_id
+	 * @param start
+	 * @param limit
+	 * @return 分类
+	 */
+	public List<Classify> queryClassifyByUserIdPage(String user_id,int start,int limit);
 }

@@ -26,4 +26,5 @@ public class Classify implements Serializable{
 	private @Getter @Setter String desc;
 	private @Getter @Setter String classify_type;
 	private @Getter @Setter int classify_num;
+	private @Getter @Setter String classify_image;//图片的文件名
 }

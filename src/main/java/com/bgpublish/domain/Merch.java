@@ -35,4 +35,5 @@ public class Merch  implements Serializable{
 	private @Getter @Setter String order_by_clause;
 	private @Getter @Setter String sm_recommend;
 	private @Getter @Setter String free_shipping;
+	private @Getter @Setter int sales_volume;
 }

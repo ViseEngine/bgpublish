@@ -104,7 +104,8 @@
 	</select>
 	<!-- 根据输入的条件（包括用户ID、是否下架、分类等）查询商品信息 -->
 	<select id="queryMerchBy" parameterType="Merch" resultType="Merch">
-		SELECT a.* FROM tbl_merch_info a LEFT JOIN tbl_store_info b ON a.store_id = b.store_id 
+		SELECT a.*,(select count(1) from tbl_order_detail c where c.merch_id = a.merch_id) sales_volume
+		FROM tbl_merch_info a LEFT JOIN tbl_store_info b ON a.store_id = b.store_id 
 		<where>
 			<if test="user_id gt 0">
 				b.user_id = #{user_id}

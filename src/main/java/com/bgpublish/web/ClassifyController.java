@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -67,6 +68,14 @@ public class ClassifyController {
 		
 		return list;
 	}
+	
+	@RequestMapping(value="/querybyuseridpage.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Classify> queryClassifyByUserIdPage(@RequestParam String user_id,@RequestParam int start,@RequestParam int limit){
+		List<Classify> list = this.classifyService.queryClassifyByUserIdPage(user_id,start,limit);
+		
+		return list;
+	}
 
 	@RequestMapping(value="/queryby.do", method = RequestMethod.POST)
 	@ResponseBody
@@ -114,9 +123,9 @@ public class ClassifyController {
 			this.classifyService.deleteClassifyById(classify_id);
 		}catch(Exception e){
 			LOGGER.error("删除分类失败!", e);
-			return HttpUtil.createResponseEntity("删除分类失败!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("删除分类失败!");
 		}
 		
-		return HttpUtil.createResponseEntity("删除分类成功!", HttpStatus.OK);
+		return HttpUtil.createOkResponseEntity("删除分类成功!");
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bgpublish.domain.Merch;
@@ -109,12 +110,43 @@ public class OrderController {
 	}
 	
 	/**
+	 * 获取已关闭的订单
+	 * @return
+	 */
+	@RequestMapping(value="/getClosedOrderInfo.do", method = RequestMethod.POST)
+	public List<Order> getClosedOrderInfo(@RequestBody Order order){
+		return this.orderService.getClosedOrderInfo(order);
+	}
+	/**
+	 * 获取已关闭的订单(分页)
+	 * @param order
+	 * @param start 起始位置
+	 * @param limit 每页显示数据数
+	 * @return
+	 */
+	@RequestMapping(value="/getClosedOrderInfoPage.do", method = RequestMethod.POST)
+	public List<Order> getClosedOrderInfoPage(@RequestBody Order order,@RequestParam int start,@RequestParam int limit){
+		return this.orderService.getClosedOrderInfoPage(order,start,limit);
+	}
+	
+	/**
 	 * 获取已完成的订单
 	 * @return
 	 */
 	@RequestMapping(value="/getCompletedOrderInfo.do", method = RequestMethod.POST)
 	public List<Order> getCompletedOrderInfo(@RequestBody Order order){
 		return this.orderService.getCompletedOrderInfo(order);
+	}
+	/**
+	 * 获取已完成的订单(分页)
+	 * @param order
+	 * @param start 起始位置
+	 * @param limit 每页显示数据数
+	 * @return
+	 */
+	@RequestMapping(value="/getCompletedOrderInfoPage.do", method = RequestMethod.POST)
+	public List<Order> getCompletedOrderInfoPage(@RequestBody Order order,@RequestParam int start,@RequestParam int limit){
+		return this.orderService.getCompletedOrderInfoPage(order,start,limit);
 	}
 	
 	/**
@@ -125,7 +157,17 @@ public class OrderController {
 	public List<Order> getInOrderInfo(@RequestBody Order order){
 		return this.orderService.getInOrderInfo(order);
 	}
-	
+	/**
+	 * 获取进行中的订单(分页)
+	 * @param order
+	 * @param start 起始位置
+	 * @param limit 每页显示数据数
+	 * @return
+	 */
+	@RequestMapping(value="/getInOrderInfoByPage.do", method = RequestMethod.POST)
+	public List<Order> getInOrderInfoByPage(@RequestBody Order order,@RequestParam int start,@RequestParam int limit){
+		return this.orderService.getInOrderInfoByPage(order,start,limit);
+	}
 	/**
 	 * 逻辑删除订单
 	 */

@@ -36,11 +36,33 @@ public interface OrderService {
 	 */
 	public Order getOrderInfoById(String orderId);
 	/**
+	 * 获取已关闭的订单
+	 * @param order
+	 * @return
+	 */
+	public List<Order> getClosedOrderInfo(Order order);
+	/**
+	 * 获取已关闭的订单
+	 * @param order
+	 * @param start 起始位置
+	 * @param limit 每页显示数据数
+	 * @return
+	 */
+	public List<Order> getClosedOrderInfoPage(Order order,int start,int limit);
+	/**
 	 * 获取已完成的订单
 	 * @param order
 	 * @return
 	 */
 	public List<Order> getCompletedOrderInfo(Order order);
+	/**
+	 * 获取已完成的订单
+	 * @param order
+	 * @param start 起始位置
+	 * @param limit 每页显示数据数
+	 * @return
+	 */
+	public List<Order> getCompletedOrderInfoPage(Order order,int start,int limit);
 	/**
 	 * 获取进行中的订单
 	 * @param order
@@ -50,9 +72,11 @@ public interface OrderService {
 	/**
 	 * 获取进行中的订单(分页)
 	 * @param order
+	 * @param start 起始位置
+	 * @param limit 每页显示数据数
 	 * @return
 	 */
-	public List<Order> getInOrderInfoByPage(Order order);
+	public List<Order> getInOrderInfoByPage(Order order,int start,int limit);
 	
 	/**
 	 * 通过订单ID获取订单明细信息

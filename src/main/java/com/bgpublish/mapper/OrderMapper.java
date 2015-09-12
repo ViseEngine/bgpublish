@@ -37,6 +37,12 @@ public interface OrderMapper {
 	 */
 	public Order getOrderInfoById(String orderId);
 	/**
+	 * 获取已关闭的订单
+	 * @param order
+	 * @return
+	 */
+	public List<Order> getClosedOrderInfo(Order order);
+	/**
 	 * 获取已完成的订单
 	 * @param order
 	 * @return

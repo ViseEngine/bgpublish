@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.bgpublish.domain.Merch;
 import com.bgpublish.mapper.MerchMapper;
+import com.github.pagehelper.PageHelper;
 
 /**
  * @author ps
@@ -92,6 +93,17 @@ public class MerchServiceImp implements MerchService {
 	 */
 	@Override
 	public List<Merch> queryMerchBy(Merch merch) {
+		return this.merchMapper.queryMerchBy(merch);
+	}
+	/**
+	 * 根据输入的条件（包括用户ID、是否下架、分类等）查询商品信息
+	 * @param merch 商品信息
+	 * @param start 开始
+	 * @param limit 条数
+	 * @return
+	 */
+	public List<Merch> queryMerchByPage(Merch merch,int start, int limit){
+		PageHelper.startPage(start, limit);
 		return this.merchMapper.queryMerchBy(merch);
 	}
 

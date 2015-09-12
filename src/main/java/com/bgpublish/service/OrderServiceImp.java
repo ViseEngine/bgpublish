@@ -17,7 +17,6 @@ import com.bgpublish.domain.OrderDetail;
 import com.bgpublish.domain.OrderStat;
 import com.bgpublish.mapper.OrderMapper;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 
 /**
  * 订单服务信息实现类
@@ -70,13 +69,43 @@ public class OrderServiceImp implements OrderService {
 	public List<OrderDetail> getOrderDetailsById(String orderId) {
 		return this.orderMapper.getOrderDetailsById(orderId);
 	}
-
+	/**
+	 * 获取已关闭的订单
+	 * @param order
+	 * @return
+	 */
+	public List<Order> getClosedOrderInfo(Order order){
+		return this.orderMapper.getClosedOrderInfo(order);
+	}
+	/**
+	 * 获取已关闭的订单
+	 * @param order
+	 * @param start 起始位置
+	 * @param limit 每页显示数据数
+	 * @return
+	 */
+	public List<Order> getClosedOrderInfoPage(Order order,int start,int limit){
+		PageHelper.startPage(start, limit);
+		return this.orderMapper.getClosedOrderInfo(order);
+	}
 	/**
 	 * 获取已完成的订单
 	 * @param order
 	 * @return
 	 */
 	public List<Order> getCompletedOrderInfo(Order order){
+		List<Order> completedOrderList = this.orderMapper.getCompletedOrderInfo(order);
+		return completedOrderList;
+	}
+	/**
+	 * 获取已完成的订单
+	 * @param order
+	 * @param start 起始位置
+	 * @param limit 每页显示数据数
+	 * @return
+	 */
+	public List<Order> getCompletedOrderInfoPage(Order order,int start,int limit){
+		PageHelper.startPage(start, limit);
 		List<Order> completedOrderList = this.orderMapper.getCompletedOrderInfo(order);
 		return completedOrderList;
 	}
@@ -90,17 +119,16 @@ public class OrderServiceImp implements OrderService {
 		return inOrderList;
 	}
 	/**
-	 * 获取进行中的订单
+	 * 获取进行中的订单(分页)
 	 * @param order
+	 * @param start 起始位置
+	 * @param limit 每页显示数据数
 	 * @return
 	 */
-	public List<Order> getInOrderInfoByPage(Order order){
+	public List<Order> getInOrderInfoByPage(Order order,int start,int limit){
 		//获取第1页，10条内容，默认查询总数count
-		PageHelper.startPage(1, 10);
+		PageHelper.startPage(start, limit);
 		List<Order> inOrderList = this.orderMapper.getInOrderInfo(order);
-		//用PageInfo对结果进行包装
-		PageInfo page = new PageInfo(inOrderList);
-		
 		return inOrderList;
 	}
 	

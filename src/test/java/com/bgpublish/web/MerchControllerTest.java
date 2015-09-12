@@ -60,17 +60,12 @@ public class MerchControllerTest {
 		String create_time = "20150609000000";
 
 		
-		try {
-			merch_id = new Integer(9990);
-			store_id = new Integer(209990);
-			name = new String("商品名称".getBytes("ISO-8859-1"),"utf-8");
-			classify_id = 1;
-			price = 30F;
-			
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		merch_id = new Integer(9990);
+		store_id = new Integer(209990);
+//		name = new String("商品名称".getBytes("ISO-8859-1"),"utf8");
+		name = "商品名称";
+		classify_id = 1;
+		price = 30F;
 		
 		List<Merch> merchList = new ArrayList<Merch>();
 		for (int i = 0; i < 5; i++) {
@@ -163,6 +158,24 @@ public class MerchControllerTest {
 	@Test
 	public void testSetMerchService() {
 		fail("Not yet implemented");
+	}
+	
+	@Test
+	public void testGueryMerchByPage() {
+		try {
+			
+			//使用了对象的方式传入request，因此controller的参数必须带上@RequestBody
+			Merch merch = new Merch();
+			merch.setUser_id(1);
+			merch.setOut_published("0");
+			String json = template.postForObject(new URI(this.base.toString() + "/merch/querybypage.do?start=3&limit=2"), merch, String.class);
+		
+			
+		} catch (RestClientException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -68,5 +68,19 @@ public class ClassifyControllerTest {
 		List<HashMap<String, String>> list = JsonUtil.parse2ListMap(response.getBody());
 		System.err.println(list.toString());
 	}
-
+	@Test
+	public void testQueryClassifyByPage() {
+		
+		//测试queryClassifyBy方法是否可用
+		ResponseEntity<String> response =
+				template.getForEntity(this.base.toString() + "/querybyuseridpage.do?user_id=1&start=1&limit=2", String.class);
+		
+		assertEquals(HttpStatus.OK , response.getStatusCode());
+		
+		System.err.println(response.getBody());
+		
+		//把json 转换为list<map>
+		/*List<HashMap<String, String>> list = JsonUtil.parse2ListMap(response.getBody());
+		System.err.println(list.toString());*/
+	}
 }
