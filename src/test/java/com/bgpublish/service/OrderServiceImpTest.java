@@ -113,4 +113,16 @@ public class OrderServiceImpTest {
 		Assert.assertNotNull(list);
 		System.err.println(list.size());
 	}
+	@Test
+	public void testSearchOrderInfo(){
+		Map<String,Object> condition = new HashMap<String,Object>();
+		condition.put("order_id", "2015071800061200000000006");
+		condition.put("merch_name", "2015071800061200000000006");
+		condition.put("buyer_mobile", "2015071800061200000000006");
+		condition.put("buyer_name", "2015071800061200000000006");
+		List<Order> list = orderService.searchOrderInfo(condition);
+		
+		Assert.assertNotNull(list);
+		System.err.println(list.size());
+	}
 }

@@ -36,4 +36,14 @@ public interface DisacountMapper {
 	 * @param merch_id 商品ID
 	 */
 	public List<MerchDisacount> queryByMerchId(String merch_id);
+	/**
+	 * 根据商品ID查询商品优惠信息,查询所有
+	 * @param merch_id 商品ID
+	 */
+	public List<MerchDisacount> queryAllByMerchId(String merch_id);
+	/**
+	 * 根据商品ID查询商品优惠信息，查询一条记录
+	 * @param merch_id 商品ID
+	 */
+	public MerchDisacount queryFirstByMerchId(String merch_id);
 }

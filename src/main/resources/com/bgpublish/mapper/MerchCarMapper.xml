@@ -22,10 +22,40 @@
 	</update>
 	
 	<!-- 根据用户Id查询商品信息 -->
-	<select id="queryMerchCarByUser" parameterType="String" resultType="MerchCar">
-		SELECT a.*,b.`name`,b.`desc`,b.`price`
-		 FROM `tbl_merch_car` a LEFT JOIN `tbl_merch_info` b
-		ON a.`merch_id` = b.`merch_id`
-		WHERE a.`user_id`=#{user_id}
+	<select id="queryMerchCarByUser" parameterType="String" resultMap="merchCarResultMap">
+		<![CDATA[ 
+			SELECT a.*,b.name,b.`desc`,b.price,c.*,
+			(select name from tbl_merch_gallery where merch_id = a.merch_id limit 1) image_name
+			FROM tbl_merch_car a 
+			LEFT JOIN tbl_merch_info b ON a.merch_id = b.merch_id
+			LEFT JOIN tbl_merch_disacount_info c on a.merch_id = c.merch_id 
+			and c.disacount_date <= date_format(now(),'%Y%m%d%')
+			and c.effective_date >= date_format(now(),'%Y%m%d%')
+			WHERE a.user_id=#{user_id}
+		]]>
+		
 	</select>
+	<!-- 商品信息、优惠信息等  -->
+	<resultMap type="MerchCar" id="merchCarResultMap">
+		<id column="car_id" property="car_id"/>
+		<result column="merch_id" property="merch_id"/>
+		<result column="buy_num" property="buy_num"/>
+		<result column="create_time" property="create_time"/>
+		
+		<result column="name" property="name"/>
+		<result column="price" property="price"/>
+		<result column="desc" property="desc"/>
+		<result column="image_name" property="image_name"/>
+		
+		<!-- 商品优惠信息 -->
+		<collection property="merchDisacounts" column="merch_id" notNullColumn="disacount_id" ofType="MerchDisacount">
+			<id column="disacount_id" property="disacount_id"/>
+			<result column="merch_id" property="merch_id"/>
+			<result column="disacount_money" property="disacount_money"/>
+			<result column="disacount" property="disacount"/>
+			<result column="disacount_date" property="disacount_date"/>
+			<result column="effective_date" property="effective_date"/>
+			<result column="create_time" property="create_time"/>
+		</collection>
+	</resultMap>
 </mapper>

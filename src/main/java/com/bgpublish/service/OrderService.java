@@ -77,6 +77,12 @@ public interface OrderService {
 	 * @return
 	 */
 	public List<Order> getInOrderInfoByPage(Order order,int start,int limit);
+	/**
+	 * 搜索订单
+	 * @param conditions
+	 * @return
+	 */
+	public List<Order> searchOrderInfo(Map<String,Object> conditions);
 	
 	/**
 	 * 通过订单ID获取订单明细信息

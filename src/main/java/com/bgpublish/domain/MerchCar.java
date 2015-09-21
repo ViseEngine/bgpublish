@@ -4,6 +4,7 @@
 package com.bgpublish.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -28,5 +29,8 @@ public class MerchCar implements Serializable{
 	private @Getter @Setter String name;
 	private @Getter @Setter String desc;
 	private @Getter @Setter float price;
-
+	
+	private @Getter @Setter String image_name;
+	
+	private @Getter @Setter List<MerchDisacount> merchDisacounts;
 }

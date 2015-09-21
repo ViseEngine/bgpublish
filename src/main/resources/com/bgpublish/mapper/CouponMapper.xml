@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.bgpublish.mapper.CouponMapper">
+	<insert id="addCoupon" parameterType="Coupon">
+		INSERT INTO tbl_coupon_info(store_id,`desc`,coupon_money,min_order_money,coupon_total,coupon_limit,start_time,end_time,create_time)
+		VALUES(#{store_id},#{desc},#{coupon_money},#{min_order_money},#{coupon_total},#{coupon_limit},#{start_time},#{end_time},date_format(now(),'%Y%m%d%H%i%s'))
+	</insert>
+	
+	<!-- 根据ID删除优惠券信息 -->
+	<delete id="deleteCouponById"  parameterType="String" >
+		DELETE FROM tbl_coupon_info WHERE coupon_id=#{coupon_id}
+	</delete>
+	
+	<!-- 更新优惠券信息 -->
+	<update id="updateCoupon" parameterType="Coupon">
+		UPDATE tbl_coupon_info
+		<set>
+	      <if test="store_id != null">store_id = #{store_id},</if>
+	      <if test="desc != null">`desc` = #{desc},</if>
+	      <if test="coupon_money != null">coupon_money = #{coupon_money},</if>
+	      <if test="min_order_money != null">min_order_money = #{min_order_money},</if>
+	      <if test="coupon_total != null">coupon_total = #{coupon_total},</if>
+	      <if test="coupon_limit != null">coupon_limit = #{coupon_limit},</if>
+	      <if test="start_time != null">start_time = #{start_time},</if>
+	      <if test="end_time != null">end_time = #{end_time}</if>
+	    </set>
+		WHERE coupon_id=#{coupon_id}
+	</update>
+	
+	<!-- 根据商品ID查询优惠信息 -->
+	<select id="queryByCouponId" parameterType="String" resultType="Coupon">
+	 	<![CDATA[ 
+		SELECT a.*, (select count(1) from tbl_user_coupon_info where coupon_id = a.coupon_id) has_coupon_num
+		FROM tbl_coupon_info a
+		WHERE a.coupon_id=#{coupon_id}
+		]]>
+	</select>
+	<!-- 根据用户ID查询优惠信息 -->
+	<select id="queryByUserId" parameterType="String" resultType="Coupon">
+	 	<![CDATA[ 
+		SELECT a.*, (select count(1) from tbl_user_coupon_info where coupon_id = a.coupon_id) has_coupon_num
+		FROM tbl_coupon_info a LEFT JOIN tbl_store_info b on a.store_id = b.store_id and b.user_id = #{user_id}
+		]]>
+	</select>
+</mapper>

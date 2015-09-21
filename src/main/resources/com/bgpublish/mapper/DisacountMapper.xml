@@ -29,6 +29,24 @@
 	
 	<!-- 根据商品ID查询商品优惠信息 -->
 	<select id="queryByMerchId" parameterType="String" resultType="MerchDisacount">
+	 	<![CDATA[ 
 		SELECT * FROM tbl_merch_disacount_info WHERE merch_id=#{merch_id}
+		and effective_date >= date_format(now(),'%Y%m%d') 
+		and disacount_date <= date_format(now(),'%Y%m%d')
+		]]>
+	</select>
+	<!-- 根据商品ID查询商品优惠信息，查询所有 -->
+	<select id="queryAllByMerchId" parameterType="String" resultType="MerchDisacount">
+		<![CDATA[ 
+		SELECT * FROM tbl_merch_disacount_info WHERE merch_id=#{merch_id}
+		]]>
+	</select>
+	<!-- 根据商品ID查询商品优惠信息,只查询一条记录 -->
+	<select id="queryFirstByMerchId" parameterType="String" resultType="MerchDisacount">
+		<![CDATA[ 
+		SELECT * FROM tbl_merch_disacount_info WHERE merch_id=#{merch_id}
+		and effective_date >= date_format(now(),'%Y%m%d') 
+		and disacount_date <= date_format(now(),'%Y%m%d') limit 1
+		]]>
 	</select>
 </mapper>

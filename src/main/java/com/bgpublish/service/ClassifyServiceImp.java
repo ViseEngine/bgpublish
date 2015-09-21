@@ -109,4 +109,12 @@ public class ClassifyServiceImp implements ClassifyService {
 		PageHelper.startPage(start, limit);
 		return this.classifyMapper.queryClassifyByUserId(user_id);
 	}
+	/**
+	 * 根据商家ID查询所有分类
+	 * @param store_id
+	 * @return 分类
+	 */
+	public List<Classify> queryClassifyByStoreId(String store_id){
+		return this.classifyMapper.queryClassifyByStoreId(store_id);
+	}
 }

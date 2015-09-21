@@ -103,9 +103,16 @@
 		WHERE b.user_id = #{user_id}
 	</select>
 	<!-- 根据输入的条件（包括用户ID、是否下架、分类等）查询商品信息 -->
-	<select id="queryMerchBy" parameterType="Merch" resultType="Merch">
-		SELECT a.*,(select count(1) from tbl_order_detail c where c.merch_id = a.merch_id) sales_volume
-		FROM tbl_merch_info a LEFT JOIN tbl_store_info b ON a.store_id = b.store_id 
+	<select id="queryMerchBy" parameterType="Merch" resultMap="merchResultMap">
+		<![CDATA[ 
+		    SELECT a.*,(select count(1) from tbl_order_detail c where c.merch_id = a.merch_id) sales_volume,
+			(select name from tbl_merch_gallery where merch_id = a.merch_id limit 1) image_name,c.*
+			FROM tbl_merch_info a 
+			LEFT JOIN tbl_store_info b ON a.store_id = b.store_id 
+			LEFT JOIN tbl_merch_disacount_info c on a.merch_id = c.merch_id 
+			and c.disacount_date <= date_format(now(),'%Y%m%d')
+			and c.effective_date >= date_format(now(),'%Y%m%d')
+		]]>
 		<where>
 			<if test="user_id gt 0">
 				b.user_id = #{user_id}
@@ -121,4 +128,31 @@
 			ORDER BY ${order_by_clause}
 		</if>
 	</select>
+	<!-- 商品信息、优惠信息等  -->
+	<resultMap type="Merch" id="merchResultMap">
+		<id column="merch_id" property="merch_id"/>
+		<result column="store_id" property="store_id"/>
+		<result column="name" property="name"/>
+		<result column="desc" property="desc"/>
+		<result column="classify_id" property="classify_id"/>
+		<result column="price" property="price"/>
+		<result column="in_stock" property="in_stock"/>
+		<result column="published_date" property="published_date"/>
+		<result column="unit" property="unit"/>
+		<result column="out_published" property="out_published"/>
+		<result column="sm_recommend" property="sm_recommend"/>
+		<result column="free_shipping" property="free_shipping"/>
+		<result column="last_modify_time" property="last_modify_time"/>
+		<result column="create_time" property="create_time"/>
+		<!-- 商品优惠信息 -->
+		<collection property="merchDisacounts" column="merch_id" notNullColumn="disacount_id" ofType="MerchDisacount">
+			<id column="disacount_id" property="disacount_id"/>
+			<result column="merch_id" property="merch_id"/>
+			<result column="disacount_money" property="disacount_money"/>
+			<result column="disacount" property="disacount"/>
+			<result column="disacount_date" property="disacount_date"/>
+			<result column="effective_date" property="effective_date"/>
+			<result column="create_time" property="create_time"/>
+		</collection>
+	</resultMap>
 </mapper>

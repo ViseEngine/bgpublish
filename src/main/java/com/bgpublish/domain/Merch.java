@@ -4,6 +4,7 @@
 package com.bgpublish.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +25,7 @@ public class Merch  implements Serializable{
 	private @Getter @Setter int user_id;
 	private @Getter @Setter String name;
 	private @Getter @Setter String desc;
-	private @Getter @Setter String unit;
+	private @Getter @Setter String unit;//单位
 	private @Getter @Setter int classify_id;
 	private @Getter @Setter float price;
 	private @Getter @Setter int in_stock;
@@ -36,4 +37,9 @@ public class Merch  implements Serializable{
 	private @Getter @Setter String sm_recommend;
 	private @Getter @Setter String free_shipping;
 	private @Getter @Setter int sales_volume;
+	private @Getter @Setter String image_name;
+	private @Getter @Setter float weight;//重量
+	private @Getter @Setter String standard;//规格
+	
+	private @Getter @Setter List<MerchDisacount> merchDisacounts;
 }

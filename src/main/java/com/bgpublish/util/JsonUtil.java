@@ -70,4 +70,28 @@ public class JsonUtil {
 
         return list;
     }
+    
+    /**
+	 * 把json转换为对象
+	 * @param json
+	 * @param valueType
+	 * @return
+	 */
+	public static <T> T  parse2Object(String json,Class<T> valueType){
+		JsonFactory factory = new JsonFactory();
+		ObjectMapper mapper = new ObjectMapper(factory);
+		T t = null;
+		try {
+			t = mapper.readValue(json, valueType);
+		} catch (JsonParseException e) {
+			LOGGER.error("json转换出错", e);
+		} catch (JsonMappingException e) {
+			LOGGER.error("json转换出错", e);
+		} catch (IOException e) {
+			LOGGER.error("io出错", e);
+		}
+
+
+		return t;
+	}
 }

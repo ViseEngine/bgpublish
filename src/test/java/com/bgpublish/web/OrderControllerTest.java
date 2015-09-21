@@ -6,7 +6,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -207,8 +209,21 @@ public class OrderControllerTest {
 	}
 
 	@Test
-	public void testSetMerchService() {
-		fail("Not yet implemented");
+	public void testSearchOrderInfo() {
+		Map<String,Object> condition = new HashMap<String,Object>();
+//		condition.put("order_id", "2015071800061200000000006");
+//		condition.put("merch_name", "2015071800061200000000006");
+//		condition.put("buyer_mobile", "2015071800061200000000006");
+//		condition.put("buyer_name", "2015071800061200000000006");
+		
+		try {
+			String orderStr = template.postForObject(new URI(this.base.toString() + "/order/searchOrderInfo.do"), condition, String.class);
+			System.err.println(orderStr);
+		} catch (RestClientException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

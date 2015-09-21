@@ -169,6 +169,15 @@ public class OrderController {
 		return this.orderService.getInOrderInfoByPage(order,start,limit);
 	}
 	/**
+	 * 搜索订单
+	 * @param conditions
+	 * @return
+	 */
+	@RequestMapping(value="/searchOrderInfo.do", method = RequestMethod.POST)
+	public List<Order> searchOrderInfo(@RequestBody Map<String,Object> conditions){
+		return this.orderService.searchOrderInfo(conditions);
+	}
+	/**
 	 * 逻辑删除订单
 	 */
 	@RequestMapping(value="/logicDeleteOrder.do",  method = RequestMethod.POST)

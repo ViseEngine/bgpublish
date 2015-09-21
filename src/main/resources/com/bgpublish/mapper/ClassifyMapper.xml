@@ -68,11 +68,22 @@
 	
 	<!-- 根据用户ID查询所有分类  -->
 	<select id="queryClassifyByUserId" resultType="Classify" parameterType="String">
+		<![CDATA[
 		select a.*,(select count(1) from tbl_merch_info b 
 			where b.classify_id = a.classify_id) classify_num,
-		c.name classify_image
-		from  tbl_classify_info a left join tbl_merch_gallery c
-		on a.classify_id = c.classify_id
+		(select name from tbl_merch_gallery where classify_id = a.classify_id limit 1) classify_image
+		from  tbl_classify_info a 
 		where a.classify_type='1' and a.user_id=#{user_id}
+		]]>
+	</select>
+	<!-- 根据商家ID查询该商家的所有分类  -->
+	<select id="queryClassifyByStoreId" resultType="Classify" parameterType="String">
+		<![CDATA[ 
+		select a.*,(select count(1) from tbl_merch_info 
+			where classify_id = a.classify_id) classify_num,
+		(select name from tbl_merch_gallery where classify_id = a.classify_id limit 1) classify_image
+		from  tbl_classify_info a left join tbl_store_info b on a.user_id = b.user_id and b.store_id=#{store_id}
+		where a.classify_type='1' and b.store_id=#{store_id}
+		]]>
 	</select>
 </mapper>

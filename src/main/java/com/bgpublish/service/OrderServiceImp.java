@@ -131,7 +131,14 @@ public class OrderServiceImp implements OrderService {
 		List<Order> inOrderList = this.orderMapper.getInOrderInfo(order);
 		return inOrderList;
 	}
-	
+	/**
+	 * 搜索订单
+	 * @param conditions
+	 * @return
+	 */
+	public List<Order> searchOrderInfo(Map<String,Object> conditions){
+		return this.orderMapper.searchOrderInfo(conditions);
+	}
 	/**
 	 * 根据订单ID删除订单
 	 * @param orderId

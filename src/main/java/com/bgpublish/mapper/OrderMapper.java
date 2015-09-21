@@ -54,7 +54,12 @@ public interface OrderMapper {
 	 * @return
 	 */
 	public List<Order> getInOrderInfo(Order order);
-
+	/**
+	 * 搜索订单
+	 * @param conditions
+	 * @return
+	 */
+	public List<Order> searchOrderInfo(Map<String,Object> conditions);
 	/**
 	 * 根据订单ID获取订单明细信息
 	 * @param orderId

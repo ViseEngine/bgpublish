@@ -39,4 +39,14 @@ public class DateUtilTest {
 		
 		System.err.println(min);
 	}
+	
+	@Test
+	public void testCompareTo(){
+		String start_time = "20150917212300";
+		Date d = DateUtil.parseDate(start_time, new String[]{"yyyyMMddHHmmss"});
+		
+		if(d.compareTo(new Date()) < 0){
+			System.err.println(1);
+		}
+	}
 }

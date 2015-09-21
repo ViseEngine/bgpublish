@@ -54,4 +54,18 @@ public class DisacountServiceImp implements DisacountService {
 	public List<MerchDisacount> queryByMerchId(String merch_id){
 		return this.disacountMapper.queryByMerchId(merch_id);
 	}
+	/**
+	 * 根据商品ID查询商品优惠信息,查询所有
+	 * @param merch_id 商品ID
+	 */
+	public List<MerchDisacount> queryAllByMerchId(String merch_id){
+		return this.disacountMapper.queryAllByMerchId(merch_id);
+	}
+	/**
+	 * 根据商品ID查询商品优惠信息，查询一条记录
+	 * @param merch_id 商品ID
+	 */
+	public MerchDisacount queryFirstByMerchId(String merch_id){
+		return this.disacountMapper.queryFirstByMerchId(merch_id);
+	}
 }

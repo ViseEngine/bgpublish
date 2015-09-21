@@ -50,7 +50,7 @@
 		</where>
 	    order by order_id desc
 	</select> -->
-	<select id="getClosedOrderInfo" resultMap="orderResultMap1" parameterType="Order">
+	<select id="getClosedOrderInfo" resultMap="orderResultMap" parameterType="Order">
 	    select a.*,b.*,c.* from tbl_order_info a
 	    left join tbl_order_detail b on a.order_id = b.order_id
 	    left join tbl_merch_gallery c on b.merch_id = c.merch_id
@@ -67,7 +67,7 @@
 	</select>
 	
 	<!-- 查询订单详情,为了解决那些一对多的关系呀，写那么多字段能否有简便点方法呢？ -->
-	<resultMap type="Order" id="orderResultMap1">
+	<resultMap type="Order" id="orderResultMap">
 		<id column="order_id" property="order_id"/>
 		<result column="amount_money" property="amount_money"/>
 		<result column="buyer_user_id" property="buyer_user_id"/>
@@ -111,7 +111,7 @@
 			<result column="amount" property="amount"/>
 			<result column="unit" property="unit"/>
 			<result column="price" property="price"/>
-			<collection property="merchGallerys" column="merch_id" ofType="MerchGallery">
+			<collection property="merchGallerys" column="merch_id" notNullColumn="gallery_id" ofType="MerchGallery">
 				<id column="merch_id" property="merch_id"/>
 				<result column="gallery_id" property="gallery_id"/>
 				<result column="classify_id" property="classify_id"/>
@@ -125,40 +125,65 @@
 	
 	<!-- 获取已完成订单基本信息 -->
 	<select id="getCompletedOrderInfo" resultMap="orderResultMap" parameterType="Order">
-	    select * from tbl_order_info
+	    select a.*,b.*,c.* from tbl_order_info a
+	    left join tbl_order_detail b on a.order_id = b.order_id
+	    left join tbl_merch_gallery c on b.merch_id = c.merch_id
 	    <where>
-	    	<![CDATA[ status='4'  ]]>
+	    	<![CDATA[ a.status='4'  ]]>
 			<if test="buyer_user_id gt 0">
-				AND buyer_user_id = #{buyer_user_id}
+				AND a.buyer_user_id = #{buyer_user_id}
 			</if>
 			<if test="seller_user_id gt 0">
-				AND seller_user_id = #{seller_user_id}
+				AND a.seller_user_id = #{seller_user_id}
 			</if>
 		</where>
-	    order by order_id desc
+	    order by a.order_id desc
 	</select>
 	
 	<!-- 获取进行中订单基本信息 -->
 	<select id="getInOrderInfo" resultMap="orderResultMap" parameterType="Order">
-	    select * from tbl_order_info  
+	    select a.*,b.*,c.* from tbl_order_info a
+	    left join tbl_order_detail b on a.order_id = b.order_id
+	    left join tbl_merch_gallery c on b.merch_id = c.merch_id
 	    <where>
-	    	<![CDATA[ status not in ('4','5','6')  ]]>
+	    	<![CDATA[ a.status not in ('4','5','6')  ]]>
 			<if test="buyer_user_id gt 0">
-				AND buyer_user_id = #{buyer_user_id}
+				AND a.buyer_user_id = #{buyer_user_id}
 			</if>
 			<if test="seller_user_id gt 0">
-				AND seller_user_id = #{seller_user_id}
+				AND a.seller_user_id = #{seller_user_id}
 			</if>
 		</where>
-	    order by order_id desc
+	    order by a.order_id desc
+	</select>
+	<!-- 搜索订单 -->
+	<select id="searchOrderInfo" resultMap="orderResultMap" parameterType="Map">
+	    select a.*,b.*,c.* from tbl_order_info a
+	    left join tbl_order_detail b on a.order_id = b.order_id
+	    left join tbl_merch_gallery c on b.merch_id = c.merch_id
+	    <where>
+	    	<if test="order_id != null or merch_name != null or buyer_mobile != null or buyer_name != null">
+				(
+					a.order_id = #{order_id} or b.merch_name = #{merch_name}
+					or a.buyer_mobile = #{buyer_mobile} or a.buyer_name = #{buyer_name}
+				)
+			</if>
+			<if test="buyer_user_id gt 0">
+				AND a.buyer_user_id = #{buyer_user_id}
+			</if>
+			<if test="seller_user_id gt 0">
+				AND a.seller_user_id = #{seller_user_id}
+			</if>
+		</where>
+	    order by a.order_id desc
 	</select>
 	
 	<!-- 查询订单详情 -->
-	<resultMap type="Order" id="orderResultMap">
+	<!-- <resultMap type="Order" id="orderResultMap">
 		<id column="order_id" property="order_id"/>
-		<!-- 使用select属性这种方式，性能上有问题，以后需要优化的地方 -->
+		使用select属性这种方式，性能上有问题，以后需要优化的地方
 		<collection property="orderDetails" column="order_id" ofType="OrderDetail" select="getOrderDetailsById"></collection>
-	</resultMap>
+	</resultMap> -->
 	
 	<!-- 更新订单信息 -->
 	<update id="updateOrderInfo" parameterType="Order">
