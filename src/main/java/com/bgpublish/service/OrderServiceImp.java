@@ -132,6 +132,22 @@ public class OrderServiceImp implements OrderService {
 		return inOrderList;
 	}
 	/**
+	 * 统计已完成订单 
+	 * @param order
+	 * @return
+	 */
+	public int countCompletedOrder(Order order){
+		return this.orderMapper.countCompletedOrder(order);
+	}
+	/**
+	 * 统计进行中订单
+	 * @param order
+	 * @return
+	 */
+	public int countInOrderInfo(Order order){
+		return this.orderMapper.countInOrderInfo(order);
+	}
+	/**
 	 * 搜索订单
 	 * @param conditions
 	 * @return

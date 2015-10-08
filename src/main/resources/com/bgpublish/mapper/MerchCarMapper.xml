@@ -21,6 +21,18 @@
 	    WHERE car_id = #{car_id}
 	</update>
 	
+	<!-- 更新商品数量 -->
+	<update id="updateMerchCarBy" parameterType="MerchCar">
+		UPDATE tbl_merch_car SET buy_num = #{buy_num}
+	    WHERE merch_id = #{merch_id} and user_id = #{user_id}
+	</update>
+	
+	<!-- 删除购物车信息 -->
+	<delete id="deleteMerchCarBy" parameterType="MerchCar">
+		DELETE FROM tbl_merch_car
+		WHERE merch_id = #{merch_id} and user_id = #{user_id}
+	</delete>
+	
 	<!-- 根据用户Id查询商品信息 -->
 	<select id="queryMerchCarByUser" parameterType="String" resultMap="merchCarResultMap">
 		<![CDATA[ 
@@ -42,10 +54,23 @@
 		<result column="buy_num" property="buy_num"/>
 		<result column="create_time" property="create_time"/>
 		
-		<result column="name" property="name"/>
-		<result column="price" property="price"/>
-		<result column="desc" property="desc"/>
 		<result column="image_name" property="image_name"/>
+		<association property="merch" javaType="Merch">
+	    	<id property="merch_id" column="merch_id"/>
+	    	<result column="store_id" property="store_id"/>
+			<result column="name" property="name"/>
+			<result column="desc" property="desc"/>
+			<result column="classify_id" property="classify_id"/>
+			<result column="price" property="price"/>
+			<result column="in_stock" property="in_stock"/>
+			<result column="published_date" property="published_date"/>
+			<result column="unit" property="unit"/>
+			<result column="out_published" property="out_published"/>
+			<result column="sm_recommend" property="sm_recommend"/>
+			<result column="free_shipping" property="free_shipping"/>
+			<result column="last_modify_time" property="last_modify_time"/>
+			<result column="create_time" property="create_time"/>
+	    </association>
 		
 		<!-- 商品优惠信息 -->
 		<collection property="merchDisacounts" column="merch_id" notNullColumn="disacount_id" ofType="MerchDisacount">

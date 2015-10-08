@@ -23,12 +23,11 @@ public class MerchCar implements Serializable{
 	
 	private @Getter @Setter int car_id;
 	private @Getter @Setter int merch_id;
+	private @Getter @Setter int user_id;
 	private @Getter @Setter int buy_num;
 	private @Getter @Setter String create_time;
 	
-	private @Getter @Setter String name;
-	private @Getter @Setter String desc;
-	private @Getter @Setter float price;
+	private @Getter @Setter Merch merch;
 	
 	private @Getter @Setter String image_name;
 	

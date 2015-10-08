@@ -2,7 +2,6 @@ package com.bgpublish.web;
 
 import static org.junit.Assert.fail;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;

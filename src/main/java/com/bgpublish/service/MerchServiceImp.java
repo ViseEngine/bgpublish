@@ -3,6 +3,7 @@
  */
 package com.bgpublish.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bgpublish.domain.Merch;
+import com.bgpublish.mapper.GalleryMapper;
 import com.bgpublish.mapper.MerchMapper;
 import com.github.pagehelper.PageHelper;
 
@@ -24,6 +26,7 @@ import com.github.pagehelper.PageHelper;
 public class MerchServiceImp implements MerchService {
 	
 	private @Autowired @Getter @Setter MerchMapper merchMapper;
+	private @Autowired @Getter @Setter GalleryMapper galleryMapper;
 
 	/**
 	 * 添加商品
@@ -45,6 +48,13 @@ public class MerchServiceImp implements MerchService {
 	 */
 	public void deleteMerchById(String merch_id){
 		this.merchMapper.deleteMerchById(merch_id);
+		
+		//删除图片
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("merch_id", merch_id);
+		this.galleryMapper.deleteGallery(map);
+		
+		
 	}
 	/**
 	 * 根据商家ID删除商品

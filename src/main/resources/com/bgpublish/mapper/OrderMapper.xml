@@ -156,6 +156,35 @@
 		</where>
 	    order by a.order_id desc
 	</select>
+	<!-- 统计已完成订单 -->
+	<select id="countCompletedOrder" resultType="Integer" parameterType="Order">
+	    select count(1) from tbl_order_info a
+	    <where>
+	    	<![CDATA[ a.status='4'  ]]>
+			<if test="buyer_user_id gt 0">
+				AND a.buyer_user_id = #{buyer_user_id}
+			</if>
+			<if test="seller_user_id gt 0">
+				AND a.seller_user_id = #{seller_user_id}
+			</if>
+		</where>
+	    order by a.order_id desc
+	</select>
+	
+	<!-- 统计进行中订单 -->
+	<select id="countInOrderInfo" resultType="Integer" parameterType="Order">
+	    select count(1) from tbl_order_info a
+	    <where>
+	    	<![CDATA[ a.status not in ('4','5','6')  ]]>
+			<if test="buyer_user_id gt 0">
+				AND a.buyer_user_id = #{buyer_user_id}
+			</if>
+			<if test="seller_user_id gt 0">
+				AND a.seller_user_id = #{seller_user_id}
+			</if>
+		</where>
+	    order by a.order_id desc
+	</select>
 	<!-- 搜索订单 -->
 	<select id="searchOrderInfo" resultMap="orderResultMap" parameterType="Map">
 	    select a.*,b.*,c.* from tbl_order_info a

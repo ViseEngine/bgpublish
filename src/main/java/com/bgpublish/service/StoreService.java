@@ -51,4 +51,14 @@ public interface StoreService {
 	 * @return 返回商家信息
 	 */
 	public List<Store> queryStoreByFavoriteCount();
+	/**
+	 * 按销量大小查询商家信息(分页)
+	 * @return 返回商家信息
+	 */
+	public List<Store> queryStoreBySalesVolume(int start,int limit);
+	/**
+	 * 按收藏数查询商家信息(分页)
+	 * @return 返回商家信息
+	 */
+	public List<Store> queryStoreByFavoriteCount(int start,int limit);
 }

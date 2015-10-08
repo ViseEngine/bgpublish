@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.bgpublish.domain.Store;
 import com.bgpublish.mapper.StoreMapper;
+import com.github.pagehelper.PageHelper;
 
 /**
  * 商家服务信息实现类
@@ -79,6 +80,22 @@ public class StoreServiceImp implements StoreService {
 	 * @return 返回商家信息
 	 */
 	public List<Store> queryStoreByFavoriteCount(){
+		return this.storeMapper.queryStoreByFavoriteCount();
+	}
+	/**
+	 * 按销量大小查询商家信息(分页)
+	 * @return 返回商家信息
+	 */
+	public List<Store> queryStoreBySalesVolume(int start,int limit){
+		PageHelper.startPage(start, limit);
+		return this.storeMapper.queryStoreBySalesVolume();
+	}
+	/**
+	 * 按收藏数查询商家信息(分页)
+	 * @return 返回商家信息
+	 */
+	public List<Store> queryStoreByFavoriteCount(int start,int limit){
+		PageHelper.startPage(start, limit);
 		return this.storeMapper.queryStoreByFavoriteCount();
 	}
 }

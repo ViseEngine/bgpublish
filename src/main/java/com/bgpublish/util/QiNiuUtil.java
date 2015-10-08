@@ -1,5 +1,7 @@
 package com.bgpublish.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONException;
 
 import com.qiniu.api.auth.AuthException;
@@ -10,6 +12,8 @@ import com.qiniu.api.rs.PutPolicy;
 import com.qiniu.api.rs.RSClient;
 
 public class QiNiuUtil {
+	private static final Log LOGGER = LogFactory.getLog(QiNiuUtil.class);
+
 	//访问key
 	public static final String accessKey="-fEnz8U73A56AiBnDAxDca7zQKOhXqKW3ewg5Dnt";
 	//密钥key
@@ -46,7 +50,8 @@ public class QiNiuUtil {
 			Mac mac = new Mac(accessKey, secretKey);
 			url = getPolicy.makeRequest(url, mac);
 			return url;
-		} catch (AuthException e) {
+		} catch (Exception e) {
+			LOGGER.error("获取downloadurl失败",e);
 			return "";
 		}
 	}

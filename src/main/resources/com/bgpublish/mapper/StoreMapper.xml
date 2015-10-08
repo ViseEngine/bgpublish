@@ -6,8 +6,8 @@
 <mapper namespace="com.bgpublish.mapper.StoreMapper">
 	<!-- 增加商家信息 -->
 	<insert id="addStore" parameterType="Store">
-		INSERT INTO tbl_store_info (user_id,name,address,phone,logo,`desc`,last_modify_time,create_time)
-		VALUES(#{user_id},#{name},#{address},#{phone},#{logo},#{desc},date_format(now(),'%Y%m%d%H%i%s'),date_format(now(),'%Y%m%d%H%i%s'))
+		INSERT INTO tbl_store_info (user_id,name,person,address,phone,logo,`desc`,last_modify_time,create_time)
+		VALUES(#{user_id},#{name},#{person},#{address},#{phone},#{logo},#{desc},date_format(now(),'%Y%m%d%H%i%s'),date_format(now(),'%Y%m%d%H%i%s'))
 	</insert>
 	
 	<!-- 更新商家信息 -->
@@ -16,6 +16,7 @@
 		<set>
 	      <if test="user_id gt 0">user_id = #{user_id},</if>
 	      <if test="name != null">name = #{name},</if>
+	      <if test="person != null">person = #{person},</if>
 	      <if test="address != null">address = #{address},</if>
 	      <if test="phone != null">phone = #{phone},</if>
 	      <if test="logo != null">logo = #{logo},</if>

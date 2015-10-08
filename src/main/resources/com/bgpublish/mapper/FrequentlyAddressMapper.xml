@@ -6,8 +6,8 @@
 <mapper namespace="com.bgpublish.mapper.FrequentlyAddressMapper">
 	<!-- 增加常用地址 -->
 	<insert id="addFrequentlyAddress" parameterType="FrequentlyAddress">
-		INSERT INTO tbl_frequently_address(user_id,province_code,city_code,town_id,address,mobile,user_name,create_time) 
-		VALUES (#{user_id},#{province_code},#{city_code},#{town_id},#{address},#{mobile},#{user_name},date_format(now(),'%Y%m%d%H%i%s'))
+		INSERT INTO tbl_frequently_address(user_id,province,city,town,address,mobile,user_name,create_time) 
+		VALUES (#{user_id},#{province},#{city},#{town},#{address},#{mobile},#{user_name},date_format(now(),'%Y%m%d%H%i%s'))
 	</insert>
 	<!-- 删除常用地址 -->
 	<delete id="deleteFrequentlyAddressById" parameterType="String">
@@ -18,9 +18,9 @@
 		UPDATE tbl_frequently_address 
 		<set>
 	      <if test="user_id gt 0">user_id = #{user_id},</if>
-	      <if test="province_code != null">province_code = #{province_code},</if>
-	      <if test="city_code != null">city_code = #{city_code},</if>
-	      <if test="town_id gt 0">town_id = #{town_id},</if>
+	      <if test="province != null">province = #{province},</if>
+	      <if test="city != null">city = #{city},</if>
+	      <if test="town != null">town = #{town},</if>
 	      <if test="address != null">address = #{address},</if>
 	      <if test="mobile != null">mobile = #{mobile},</if>
 	      <if test="user_name != null">user_name = #{user_name}</if>

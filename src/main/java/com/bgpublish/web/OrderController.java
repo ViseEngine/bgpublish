@@ -169,6 +169,24 @@ public class OrderController {
 		return this.orderService.getInOrderInfoByPage(order,start,limit);
 	}
 	/**
+	 * 统计已完成订单 
+	 * @param order
+	 * @return
+	 */
+	@RequestMapping(value="/countCompletedOrder.do", method = RequestMethod.POST)
+	public int countCompletedOrder(@RequestBody Order order){
+		return this.orderService.countCompletedOrder(order);
+	}
+	/**
+	 * 统计进行中订单
+	 * @param order
+	 * @return
+	 */
+	@RequestMapping(value="/countInOrderInfo.do", method = RequestMethod.POST)
+	public int countInOrderInfo(@RequestBody Order order){
+		return this.orderService.countInOrderInfo(order);
+	}
+	/**
 	 * 搜索订单
 	 * @param conditions
 	 * @return

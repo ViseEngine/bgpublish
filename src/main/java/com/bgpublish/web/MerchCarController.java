@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -65,13 +66,43 @@ public class MerchCarController {
 		return HttpUtil.createOkResponseEntity("更新购物车商品信息成功!");
 	}
 	/**
+	 * 更新购物车中的购买数量等信息
+	 * @param merchCar
+	 */
+	@RequestMapping(value="/updateMerchCarBy.do", method = RequestMethod.POST)
+	public ResponseEntity<String> updateMerchCarBy(@RequestBody MerchCar merchCar){
+		try{
+			this.merchCarService.updateMerchCarBy(merchCar);
+		}catch(Exception e){
+			LOGGER.error("更新购物车商品信息失败", e);
+			return HttpUtil.createOkResponseEntity("更新购物车商品信息失败!");
+		}
+		
+		return HttpUtil.createOkResponseEntity("更新购物车商品信息成功!");
+	}
+	/**
+	 * 删除购物车商品信息
+	 * @param merchCar
+	 */
+	@RequestMapping(value="/deleteMerchCarBy.do", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteMerchCarBy(@RequestBody MerchCar merchCar){
+		try{
+			this.merchCarService.deleteMerchCarBy(merchCar);
+		}catch(Exception e){
+			LOGGER.error("删除购物车商品信息失败", e);
+			return HttpUtil.createOkResponseEntity("删除购物车商品信息失败!");
+		}
+		
+		return HttpUtil.createOkResponseEntity("删除购物车商品信息成功!");
+	}
+	/**
 	 * 根据用户查询该用户的购物车中商品信息
 	 * @param user_id
 	 * @return 
 	 */
 	@RequestMapping(value="/queryMerchCarByUser.do", method = RequestMethod.GET)
 	@ResponseBody
-	public List<MerchCar> queryMerchCarByUser(String user_id){
+	public List<MerchCar> queryMerchCarByUser(@RequestParam String user_id){
 		return this.merchCarService.queryMerchCarByUser(user_id);
 	}
 }

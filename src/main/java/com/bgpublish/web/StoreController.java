@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,10 +60,10 @@ public class StoreController {
 			this.storeService.addStore(store);
 		}catch(Exception e){
 			LOGGER.error("注册商店失败!", e);
-			return HttpUtil.createResponseEntity("注册商店失败!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("注册商店失败!");
 		}
 		
-		return HttpUtil.createResponseEntity("注册商店成功!", HttpStatus.OK);
+		return HttpUtil.createOkResponseEntity("注册商店成功!");
 	}
 	
 	@RequestMapping(value="/modify.do", method = RequestMethod.POST)
@@ -105,5 +106,21 @@ public class StoreController {
 	@RequestMapping(value="/queryStoreByFavoriteCount.do", method = RequestMethod.GET)
 	public List<Store> queryStoreByFavoriteCount(){
 		return this.storeService.queryStoreByFavoriteCount();
+	}
+	/**
+	 * 按销量大小查询商家信息(分页)
+	 * @return 返回商家信息
+	 */
+	@RequestMapping(value="/queryStoreBySalesVolumePage.do", method = RequestMethod.GET)
+	public List<Store> queryStoreBySalesVolume(@RequestParam int start,@RequestParam int limit){
+		return this.storeService.queryStoreBySalesVolume(start,limit);
+	}
+	/**
+	 * 按收藏数查询商家信息(分页)
+	 * @return 返回商家信息
+	 */
+	@RequestMapping(value="/queryStoreByFavoriteCountPage.do", method = RequestMethod.GET)
+	public List<Store> queryStoreByFavoriteCount(@RequestParam int start,@RequestParam int limit){
+		return this.storeService.queryStoreByFavoriteCount(start,limit);
 	}
 }

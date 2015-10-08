@@ -24,6 +24,16 @@ public interface MerchCarService {
 	 */
 	public void updateMerchCar(MerchCar merchCar);
 	/**
+	 * 更新购买数量
+	 * @param merchCar
+	 */
+	public void updateMerchCarBy(MerchCar merchCar);
+	/**
+	 * 删除购物车商品信息
+	 * @param merchCar
+	 */
+	public void deleteMerchCarBy(MerchCar merchCar);
+	/**
 	 * 根据用户查询该用户的购物车中商品信息
 	 * @param user_id
 	 * @return 

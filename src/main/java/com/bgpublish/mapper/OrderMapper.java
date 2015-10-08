@@ -55,6 +55,18 @@ public interface OrderMapper {
 	 */
 	public List<Order> getInOrderInfo(Order order);
 	/**
+	 * 统计已完成订单 
+	 * @param order
+	 * @return
+	 */
+	public int countCompletedOrder(Order order);
+	/**
+	 * 统计进行中订单
+	 * @param order
+	 * @return
+	 */
+	public int countInOrderInfo(Order order);
+	/**
 	 * 搜索订单
 	 * @param conditions
 	 * @return
