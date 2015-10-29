@@ -4,6 +4,7 @@
 package com.bgpublish.web;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -122,5 +123,14 @@ public class CouponController {
 	public List<Coupon> queryByUserIdPage(@RequestParam String user_id,@RequestParam int start,@RequestParam int limit){
 		
 		return this.couponService.queryByUserIdPage(user_id,start,limit);
+	}
+	/**
+	 * 根据ID查询我的优惠券信息
+	 * @param map 参数
+	 */
+	@RequestMapping(value="/queryByCouponUserId.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Coupon> queryByCouponUserId(@RequestBody Map<String,String> map){
+		return this.couponService.queryByCouponUserId(map);
 	}
 }

@@ -46,4 +46,6 @@ public class User implements Serializable {
 	private @Getter @Setter int store_id;
 	
 	private @Getter @Setter String store_name;
+	
+	private @Getter @Setter String photo;
 }

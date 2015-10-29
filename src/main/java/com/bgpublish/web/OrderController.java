@@ -10,7 +10,6 @@ import lombok.Setter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +21,8 @@ import com.bgpublish.domain.Merch;
 import com.bgpublish.domain.Order;
 import com.bgpublish.domain.OrderDetail;
 import com.bgpublish.domain.OrderStat;
+import com.bgpublish.domain.ResponseInfo;
+import com.bgpublish.domain.User;
 import com.bgpublish.service.MerchService;
 import com.bgpublish.service.OrderService;
 import com.bgpublish.util.HttpUtil;
@@ -40,37 +41,46 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value="/createOrder.do", method = RequestMethod.POST)
-	public ResponseEntity<String> createOrder(@RequestBody Order order){
+	public ResponseEntity<ResponseInfo> createOrder(@RequestBody Order order){
 		
+		String orderId = "";
 		try{
 			
-			List<OrderDetail> otailList = order.getOrderDetails();
+			List<OrderDetail> detailList = order.getOrderDetails();
 			List<Merch> merchList = new ArrayList<Merch>(); 
 			
-			if(null == merchList || merchList.size()==0){
-				return HttpUtil.createResponseEntity("请先选择购买商品!", HttpStatus.BAD_REQUEST);
+			if(null == detailList || detailList.isEmpty()){
+				return HttpUtil.failure("请先选择购买商品!");
 			}
+			//反查商家用户ID和名称
+			OrderDetail detail = detailList.get(0);
+			User user = merchService.queryUserById(detail.getMerch_id()+"");
+			order.setSeller_user_id(user.getUser_id());
+			order.setSeller_user_name(user.getName());
 			
 			this.orderService.createOrder(order);
-			String orderId = order.getOrder_id();
+			orderId = order.getOrder_id();
 			
-			for (int i = 0; i < otailList.size(); i++) {
+			
+			for (int i = 0; i < detailList.size(); i++) {
 				
-				otailList.get(i).setOrder_id(orderId);
-				int merId = otailList.get(i).getMerch_id();//商品ID
-				int amount =  otailList.get(i).getAmount();//订购商品数量
+				OrderDetail orderDetail = detailList.get(i);
+				
+				orderDetail.setOrder_id(orderId);
+				int merId = orderDetail.getMerch_id();//商品ID
+				int amount =  orderDetail.getAmount();//订购商品数量
 				//获取商品信息
 				Merch merch =  this.merchService.queryMerchById(String.valueOf(merId));
 				
 				//判断商品是否下架
 				if(null == merch || "1".equals(merch.getOut_published())){
 					this.orderService.deleteOrder(orderId);//删除相应订单
-					return HttpUtil.createResponseEntity("商品:"+merch.getName()+"已下架!", HttpStatus.BAD_REQUEST);
+					return HttpUtil.failure("商品:"+merch.getName()+"已下架!");
 				}
 				//判断商品库存是否充足
-				if(merch.getIn_stock()< amount){
+				if(merch.getIn_stock() < amount){
 					this.orderService.deleteOrder(orderId);//删除相应订单
-					return HttpUtil.createResponseEntity("商品:"+merch.getName()+"库存不足!", HttpStatus.BAD_REQUEST);
+					return HttpUtil.failure("商品:"+merch.getName()+"库存不足!");
 				}
 				
 				Merch merchUpdate = new Merch();//商品更新对象,用于更新商品库存
@@ -83,16 +93,16 @@ public class OrderController {
 				
 			}
 			//批量生成订单明细信息
-			this.orderService.createOrderDetailBatch(otailList);
+			this.orderService.createOrderDetailBatch(detailList);
 			//批量更新商品信息
 			this.merchService.updateMerchBatch(merchList);
 			
 		} catch(Exception e) {
 			LOGGER.error("订单生成失败",e);
-			return HttpUtil.createResponseEntity("订单生成失败!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.failure("订单生成失败!", e.getMessage());
 		}
 		
-		return HttpUtil.createResponseEntity("订单生成成功!", HttpStatus.OK);
+		return HttpUtil.success( "订单生成成功!", orderId);
 	}
 	
 	
@@ -204,10 +214,10 @@ public class OrderController {
 			this.orderService.logicDeleteOrder(order);
 		}catch(Exception e) {
 			LOGGER.error("订单删除失败",e);
-			return HttpUtil.createResponseEntity("订单删除失败!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("订单删除失败!");
 		}
 		
-		return HttpUtil.createResponseEntity("订单删除成功!", HttpStatus.OK);
+		return HttpUtil.createOkResponseEntity("订单删除成功!");
 		
 	}
 	
@@ -252,13 +262,13 @@ public class OrderController {
 				this.orderService.updateOrderInfo(order);//更新订单
 			}catch(Exception e) {
 				LOGGER.error("订单取消失败",e);
-				return HttpUtil.createResponseEntity("订单取消失败!", HttpStatus.BAD_REQUEST);
+				return HttpUtil.createOkResponseEntity("订单取消失败!");
 			}
 			
-			return HttpUtil.createResponseEntity("订单取消成功!", HttpStatus.OK);
+			return HttpUtil.createOkResponseEntity("订单取消成功!");
 
 		}else{
-			return HttpUtil.createResponseEntity("商品已发货，无法取消订单!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("商品已发货，无法取消订单!");
 		}
 			
 	}
@@ -270,10 +280,10 @@ public class OrderController {
 	public ResponseEntity<String> updateOrderInfo(@RequestBody Order order){
 		try{
 			this.orderService.updateOrderInfo(order);//更新订单
-			return HttpUtil.createResponseEntity("更新订单成功!", HttpStatus.OK);
+			return HttpUtil.createOkResponseEntity("更新订单成功!");
 		}catch (Exception e){
 			LOGGER.error("更新订单失败",e);
-			return HttpUtil.createResponseEntity("更新订单失败!", HttpStatus.BAD_REQUEST);
+			return HttpUtil.createOkResponseEntity("更新订单失败!");
 		}
 	}
 	

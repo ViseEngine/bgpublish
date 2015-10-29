@@ -29,5 +29,6 @@ public class Coupon implements Serializable{
 	private @Setter @Getter String create_time;
 	private @Setter @Getter String desc;
 	private @Setter @Getter int has_coupon_num;
+	private @Setter @Getter int user_coupon_id;
 	
 }

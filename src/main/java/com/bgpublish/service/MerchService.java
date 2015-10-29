@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bgpublish.domain.Merch;
+import com.bgpublish.domain.User;
 
 /**
  * 商品服务接口
@@ -40,6 +41,12 @@ public interface MerchService {
 	 * @return
 	 */
 	public Merch queryMerchById(String merch_id);
+	/**
+	 * 根据商品ID查询商家用户信息
+	 * @param merch_id 商品ID
+	 * @return
+	 */
+	public User queryUserById(String merch_id);
 	/**
 	 * 根据商家ID查询商品信息
 	 * @param store_id 商家ID

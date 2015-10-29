@@ -36,13 +36,14 @@
 	<!-- 根据用户Id查询商品信息 -->
 	<select id="queryMerchCarByUser" parameterType="String" resultMap="merchCarResultMap">
 		<![CDATA[ 
-			SELECT a.*,b.name,b.`desc`,b.price,c.*,
+			SELECT a.*,b.*,c.*,d.name store_name,
 			(select name from tbl_merch_gallery where merch_id = a.merch_id limit 1) image_name
 			FROM tbl_merch_car a 
 			LEFT JOIN tbl_merch_info b ON a.merch_id = b.merch_id
 			LEFT JOIN tbl_merch_disacount_info c on a.merch_id = c.merch_id 
 			and c.disacount_date <= date_format(now(),'%Y%m%d%')
 			and c.effective_date >= date_format(now(),'%Y%m%d%')
+			LEFT JOIN tbl_store_info d ON b.store_id = d.store_id
 			WHERE a.user_id=#{user_id}
 		]]>
 		

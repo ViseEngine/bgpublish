@@ -19,15 +19,34 @@
 		SELECT * FROM tbl_user WHERE mobile = #{mobile}
 	</select>
 	
+	<!-- 根据手机号码查询用户信息 -->
+	<select id="queryUserByMobile" resultType="User">
+		SELECT * FROM tbl_user WHERE mobile = #{mobile} AND user_type = #{user_type}
+	</select>
+	
 	<!-- 注册 -->
 	<insert id="register" parameterType="User" >
-		INSERT INTO tbl_user (name,password,mobile,create_time,user_type,qq,we_chat)
-		VALUES(#{name},#{password},#{mobile},date_format(now(),'%Y%m%d%H%i%s'),#{user_type},#{qq},#{we_chat})
+		INSERT INTO tbl_user (name,password,mobile,create_time,user_type,qq,we_chat,photo)
+		VALUES(#{name},#{password},#{mobile},date_format(now(),'%Y%m%d%H%i%s'),#{user_type},#{qq},#{we_chat},#{photo})
 	</insert>
 	
 	<!-- 修改密码 -->
 	<update id="updatePassWord" parameterType="User">
 		UPDATE tbl_user SET password = #{password} WHERE user_id = #{user_id}
+	</update>
+	
+	<!-- 修改用户信息 -->
+	<update id="updateUser" parameterType="User">
+		UPDATE tbl_user 
+		<set>
+	      <if test="name != null">name = #{name},</if>
+	      <if test="password != null">password = #{password},</if>
+	      <if test="mobile != null">mobile = #{mobile},</if>
+	      <if test="qq != null">qq = #{qq},</if>
+	      <if test="photo != null">photo = #{photo},</if>
+	      <if test="we_chat != null">we_chat = #{we_chat}</if>
+	    </set>
+	    WHERE user_id = #{user_id}
 	</update>
 
 	<!-- 忘记密码 -->
@@ -43,5 +62,10 @@
 	<!-- 用于忘记密码后返回一个boolean，用于controller层判断是否成功 -->
 	<select id="checkForgetPassword" parameterType="User" resultType="int">
 		SELECT count(*) FROM tbl_user WHERE mobile = #{mobile} AND password = #{password}  AND user_type = #{user_type}
+	</select>
+	
+	<!-- 根据store_id查询用户信息 -->
+	<select id="queryByStoreId" parameterType="String" resultType="User">
+		select a.* from tbl_user a left join tbl_store_info b on a.user_id=b.user_id where  b.store_id= #{store_id}
 	</select>
 </mapper>

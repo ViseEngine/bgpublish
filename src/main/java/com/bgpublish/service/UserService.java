@@ -35,6 +35,13 @@ public interface UserService {
 	 */
 	public User selectUserByMobile(String mobile);
 	/**
+	 * 根据手机号码查询用户信息
+	 * @param mobile 手机号码
+	 * @param user_type 用户类型
+	 * @return 返回User对象
+	 */
+	public User queryUserByMobile(String mobile, String user_type);
+	/**
 	 * 注册用户
 	 * @param user 用户信息
 	 */
@@ -46,9 +53,20 @@ public interface UserService {
 	 */
 	public boolean updatePassWord(User user);
 	/**
+	 * 修改用户信息
+	 * @param user 用户信息
+	 */
+	public void updateUser(User user);
+	/**
 	 * 忘记密码
 	 * @param user 忘记密码
 	 * @return true-修改密码成功
 	 */
 	public boolean forgetPassword(User user);
+	/**
+	 * 根据store_id 查询用户信息
+	 * @param store_id
+	 * @return
+	 */
+	public User queryByStoreId(String store_id);
 }

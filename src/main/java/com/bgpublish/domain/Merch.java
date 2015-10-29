@@ -37,6 +37,7 @@ public class Merch  implements Serializable{
 	private @Getter @Setter String sm_recommend;
 	private @Getter @Setter String free_shipping;
 	private @Getter @Setter int sales_volume;
+	private @Getter @Setter String store_name;
 	private @Getter @Setter String image_name;
 	private @Getter @Setter float weight;//重量
 	private @Getter @Setter String standard;//规格

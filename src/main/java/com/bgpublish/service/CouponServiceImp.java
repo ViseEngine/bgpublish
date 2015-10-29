@@ -4,6 +4,7 @@
 package com.bgpublish.service;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -82,5 +83,12 @@ public class CouponServiceImp implements CouponService {
 	public List<Coupon> queryByUserIdPage(String user_id,int start,int limit){
 		PageHelper.startPage(start, limit);
 		return this.couponMapper.queryByUserId(user_id);
+	}
+	/**
+	 * 根据ID查询我的优惠券信息
+	 * @param map 参数
+	 */
+	public List<Coupon> queryByCouponUserId(Map<String,String> map){
+		return this.couponMapper.queryByCouponUserId(map);
 	}
 }

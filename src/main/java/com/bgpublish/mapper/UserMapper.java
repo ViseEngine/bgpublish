@@ -3,6 +3,8 @@
  */
 package com.bgpublish.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.bgpublish.domain.User;
 
 /**
@@ -31,6 +33,13 @@ public interface UserMapper {
 	 */
 	public User selectUserByMobile(String mobile);
 	/**
+	 * 根据手机号码查询用户信息
+	 * @param mobile 手机号码
+	 * @param user_type 用户类型
+	 * @return 返回User对象
+	 */
+	public User queryUserByMobile(@Param("mobile")String mobile, @Param("user_type")String user_type);
+	/**
 	 * 注册用户
 	 * @param user 用户信息
 	 */
@@ -40,6 +49,11 @@ public interface UserMapper {
 	 * @param user 用户信息
 	 */
 	public void updatePassWord(User user);
+	/**
+	 * 修改用户信息
+	 * @param user 用户信息
+	 */
+	public void updateUser(User user);
 	/**
 	 * 忘记密码
 	 * @param user 用户信息
@@ -59,4 +73,11 @@ public interface UserMapper {
 	 * @return
 	 */
 	public int checkForgetPassword(User user);
+	
+	/**
+	 * 根据store_id 查询用户信息
+	 * @param store_id
+	 * @return
+	 */
+	public User queryByStoreId(String store_id);
 }

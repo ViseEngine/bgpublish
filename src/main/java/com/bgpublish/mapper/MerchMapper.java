@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bgpublish.domain.Merch;
+import com.bgpublish.domain.User;
 
 /**
  * 商品mapper
@@ -40,6 +41,12 @@ public interface MerchMapper {
 	 * @return
 	 */
 	public Merch queryMerchById(String merch_id);
+	/**
+	 * 根据商品ID查询商家用户信息
+	 * @param merch_id 商品ID
+	 * @return
+	 */
+	public User queryUserById(String merch_id);
 	
 	/**
 	 * 根据商家ID查询商品信息

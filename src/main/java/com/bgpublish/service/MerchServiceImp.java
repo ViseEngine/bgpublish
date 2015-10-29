@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bgpublish.domain.Merch;
+import com.bgpublish.domain.User;
 import com.bgpublish.mapper.GalleryMapper;
 import com.bgpublish.mapper.MerchMapper;
 import com.github.pagehelper.PageHelper;
@@ -70,6 +71,14 @@ public class MerchServiceImp implements MerchService {
 	 */
 	public Merch queryMerchById(String merch_id){
 		return this.merchMapper.queryMerchById(merch_id);
+	}
+	/**
+	 * 根据商品ID查询商家用户信息
+	 * @param merch_id 商品ID
+	 * @return
+	 */
+	public User queryUserById(String merch_id){
+		return this.merchMapper.queryUserById(merch_id);
 	}
 	/**
 	 * 根据商家ID查询商品信息

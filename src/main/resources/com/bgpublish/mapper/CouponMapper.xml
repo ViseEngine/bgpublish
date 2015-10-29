@@ -45,4 +45,15 @@
 		FROM tbl_coupon_info a LEFT JOIN tbl_store_info b on a.store_id = b.store_id and b.user_id = #{user_id}
 		]]>
 	</select>
+	<!-- 根据用户ID查询我的优惠信息 -->
+	<select id="queryByCouponUserId" parameterType="Map" resultType="Coupon">
+	 	<![CDATA[ 
+	 	SELECT a.*,b.user_coupon_id
+		FROM tbl_coupon_info a ,tbl_user_coupon_info b,tbl_store_info c
+		where a.store_id=c.store_id and a.coupon_id=b.coupon_id 
+		and c.store_id=#{store_id} and b.user_id=#{buyer_user_id}
+		and a.start_time <= date_format(now(),'%Y%m%d%H%i%s')
+		and a.end_time >= date_format(now(),'%Y%m%d%H%i%s')
+		]]>
+	</select>
 </mapper>

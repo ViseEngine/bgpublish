@@ -67,6 +67,15 @@
 		SELECT * FROM tbl_merch_info WHERE merch_id = #{merch_id}
 	</select>
 	
+	<!-- 根据商品ID查询商家用户信息 -->
+	<select id="queryUserById" parameterType="String" resultType="User">
+		<![CDATA[
+		select a.* from tbl_user a left join tbl_store_info b on a.user_id = b.user_id
+		left join tbl_merch_info c on b.store_id = c.store_id
+		where c.merch_id = #{merch_id}
+		]]>
+	</select>
+	
 	<!-- 根据商品ID查询商品信息 -->
 	<select id="queryMerchByMap" parameterType="Map" resultType="Merch">
 		SELECT * FROM tbl_merch_info 
@@ -105,7 +114,7 @@
 	<!-- 根据输入的条件（包括用户ID、是否下架、分类等）查询商品信息 -->
 	<select id="queryMerchBy" parameterType="Merch" resultMap="merchResultMap">
 		<![CDATA[ 
-		    SELECT a.*,(select count(1) from tbl_order_detail c where c.merch_id = a.merch_id) sales_volume,
+		    SELECT a.*,b.name store_name,(select count(1) from tbl_order_detail c where c.merch_id = a.merch_id) sales_volume,
 			(select name from tbl_merch_gallery where merch_id = a.merch_id limit 1) image_name,c.*
 			FROM tbl_merch_info a 
 			LEFT JOIN tbl_store_info b ON a.store_id = b.store_id 
@@ -145,6 +154,8 @@
 		<result column="last_modify_time" property="last_modify_time"/>
 		<result column="create_time" property="create_time"/>
 		
+		<result column="store_name" property="store_name"/>
+		<result column="sales_volume" property="sales_volume"/>
 		<result column="image_name" property="image_name"/>
 		<!-- 商品优惠信息 -->
 		<collection property="merchDisacounts" column="merch_id" notNullColumn="disacount_id" ofType="MerchDisacount">

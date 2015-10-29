@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bgpublish.domain.ResponseInfo;
 import com.bgpublish.domain.User;
 import com.bgpublish.service.UserService;
 import com.bgpublish.util.HttpUtil;
@@ -71,10 +72,27 @@ public class UserController {
 	 * @param mobile 用户手机号码
 	 * @return 已注册返回true，否则返回false
 	 */
-	@RequestMapping(value="/isregister.do", method = RequestMethod.GET)
-	public boolean isMobileRegister(@RequestParam String mobile) {
+	@RequestMapping(value="/isMobileExist.do", method = RequestMethod.GET)
+	public boolean isMobileExist(@RequestParam String mobile) {
 
 		User user = this.userService.selectUserByMobile(mobile);
+		
+		if(user != null){
+			return true;
+		}
+		
+		return false;
+	}
+	/**
+	 * 判断手机号是否已被注册
+	 * @param mobile 用户手机号码
+	 * @param user_type 用户类型
+	 * @return 已注册返回true，否则返回false
+	 */
+	@RequestMapping(value="/isRegister.do", method = RequestMethod.GET)
+	public boolean isRegister(@RequestParam String mobile,@RequestParam String user_type) {
+		
+		User user = this.userService.queryUserByMobile(mobile, user_type);
 		
 		if(user != null){
 			return true;
@@ -139,19 +157,44 @@ public class UserController {
 		}
 		return HttpUtil.createResponseEntity("修改密码失败", HttpStatus.BAD_REQUEST);
 	}
-	
+	/**
+	 * 修改用户信息
+	 * @param user 用户信息
+	 */
+	@RequestMapping(value="/updateUser.do", method = RequestMethod.POST)
+	public ResponseEntity<ResponseInfo> updateUser(@RequestBody User user){
+		try{
+			this.userService.updateUser(user);
+		}catch(Exception e){
+			LOGGER.error("修改失败!",e);
+			return HttpUtil.failure("修改失败!", false);
+		}
+		
+		return HttpUtil.success( "修改成功!", true);
+	}
 	/**
 	 * 忘记密码
 	 * @param user 用户信息
 	 */
 	@RequestMapping(value="/forgetpwd.do", method = RequestMethod.POST)
-	public ResponseEntity<String> forgetPassword(@RequestBody User user){
+	public ResponseEntity<ResponseInfo> forgetPassword(@RequestBody User user){
 		
 		boolean existed = this.userService.forgetPassword(user);
 		
 		if(existed){
-			return HttpUtil.createResponseEntity("修改密码成功", HttpStatus.OK);
+			return HttpUtil.createOkResponse(ResponseInfo.SUCCESS, "找回密码成功");
 		}
-		return HttpUtil.createResponseEntity("修改密码失败", HttpStatus.BAD_REQUEST);
+		return HttpUtil.createOkResponse(ResponseInfo.FAILURE, "找回密码失败");
+	}
+	
+	/**
+	 * 根据store_id 查询用户信息
+	 * @param store_id
+	 * @return
+	 */
+	@RequestMapping(value="/queryByStoreId.do", method = RequestMethod.GET)
+	@ResponseBody
+	public User queryByStoreId(@RequestParam String store_id){
+		return this.userService.queryByStoreId(store_id);
 	}
 }

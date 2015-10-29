@@ -4,6 +4,7 @@
 package com.bgpublish.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bgpublish.domain.Coupon;
 
@@ -55,4 +56,9 @@ public interface CouponService {
 	 * @param limit
 	 */
 	public List<Coupon> queryByUserIdPage(String user_id,int start,int limit);
+	/**
+	 * 根据ID查询我的优惠券信息
+	 * @param map 参数
+	 */
+	public List<Coupon> queryByCouponUserId(Map<String,String> map);
 }

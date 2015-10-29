@@ -29,6 +29,7 @@ public class MerchCar implements Serializable{
 	
 	private @Getter @Setter Merch merch;
 	
+	private @Getter @Setter String store_name;
 	private @Getter @Setter String image_name;
 	
 	private @Getter @Setter List<MerchDisacount> merchDisacounts;

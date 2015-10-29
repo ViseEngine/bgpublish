@@ -4,6 +4,7 @@
 package com.bgpublish.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bgpublish.domain.Coupon;
 
@@ -41,4 +42,9 @@ public interface CouponMapper {
 	 * @param user_id 商品ID
 	 */
 	public List<Coupon> queryByUserId(String user_id);
+	/**
+	 * 根据ID查询我的优惠券信息
+	 * @param map 参数
+	 */
+	public List<Coupon> queryByCouponUserId(Map<String,String> map);
 }

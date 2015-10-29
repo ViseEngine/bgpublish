@@ -14,7 +14,7 @@
 	    send_type,freight,invoice_need,invoice_title,pay_type,buyer_pay_time,trad_time,trad_finish_time,update_time,status,province_code,city_code,town_id,address,buyer_advise) 
 	    VALUES(#{order_id},#{amount_money},#{buyer_user_id},#{buyer_user_name},#{seller_user_id},#{seller_user_name},#{currency_unit},#{buyer_name},#{buyer_phone},#{buyer_mobile},
 				#{send_type},#{freight},#{invoice_need},#{invoice_title},#{pay_type},#{buyer_pay_time},date_format(now(),'%Y%m%d%H%i%s'),#{trad_finish_time},
-				#{update_time},#{status},#{province_code},#{city_code},#{town_id},#{address},#{buyer_advise})
+				date_format(now(),'%Y%m%d%H%i%s'),#{status},#{province_code},#{city_code},#{town_id},#{address},#{buyer_advise})
 		]]>
 	</insert>
 	
