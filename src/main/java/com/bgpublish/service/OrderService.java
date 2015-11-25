@@ -109,6 +109,11 @@ public interface OrderService {
 	 */
 	public void deleteOrder(String orderId);
 	/**
+	 * 更新订单状态信息
+	 * @param order
+	 */
+	public void updateOrderStatus(Order order);
+	/**
 	 * 更新订单信息
 	 * @param order
 	 */

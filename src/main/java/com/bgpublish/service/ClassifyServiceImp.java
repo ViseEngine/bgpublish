@@ -106,7 +106,9 @@ public class ClassifyServiceImp implements ClassifyService {
 	 * @return 分类
 	 */
 	public List<Classify> queryClassifyByUserIdPage(String user_id,int start,int limit){
-		PageHelper.startPage(start, limit);
+		int pageNum = start / limit + 1;
+		
+		PageHelper.startPage(pageNum, limit);
 		return this.classifyMapper.queryClassifyByUserId(user_id);
 	}
 	/**

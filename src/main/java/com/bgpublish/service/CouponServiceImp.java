@@ -63,7 +63,9 @@ public class CouponServiceImp implements CouponService {
 	 * @param limit
 	 */
 	public List<Coupon> queryByCouponIdPage(String coupon_id,int start,int limit){
-		PageHelper.startPage(start, limit);
+		int pageNum = start / limit + 1;
+		
+		PageHelper.startPage(pageNum, limit);
 		return this.couponMapper.queryByCouponId(coupon_id);
 	}
 	
@@ -81,7 +83,9 @@ public class CouponServiceImp implements CouponService {
 	 * @param limit
 	 */
 	public List<Coupon> queryByUserIdPage(String user_id,int start,int limit){
-		PageHelper.startPage(start, limit);
+		int pageNum = start / limit + 1;
+		
+		PageHelper.startPage(pageNum, limit);
 		return this.couponMapper.queryByUserId(user_id);
 	}
 	/**

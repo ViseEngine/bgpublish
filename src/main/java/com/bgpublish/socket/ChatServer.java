@@ -18,7 +18,6 @@ import lombok.Setter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.bgpublish.service.ChatOffLineMsgService;
 import com.bgpublish.util.ServerConfig;
@@ -29,7 +28,7 @@ import com.bgpublish.util.ServerConfig;
  * @author ps
  *
  */
-@Service
+//@Service
 public class ChatServer {
 	private static final Log LOG = LogFactory.getLog(ChatServer.class);
 

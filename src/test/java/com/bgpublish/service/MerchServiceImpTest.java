@@ -3,6 +3,7 @@
  */
 package com.bgpublish.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -39,5 +40,22 @@ public class MerchServiceImpTest {
 		List<Merch> merchLists = merchService.queryMerchBy(merch);
 		
 		Assert.assertNotNull(merchLists);
+	}
+	
+	@Test
+	public void testBatchUpdate(){
+		List<Merch> merchList = new ArrayList<Merch>(); 
+		
+		for (int i = 1; i <= 3; i++) {
+			Merch merchUpdate = new Merch();//商品更新对象,用于更新商品库存
+			merchUpdate.setMerch_id(1);
+			merchUpdate.setIn_stock(117);
+			merchUpdate.setClassify_id(4);
+			merchUpdate.setPrice(63.2f);
+			merchUpdate.setStore_id(1);
+			merchList.add(merchUpdate);
+		}
+		
+		merchService.updateMerchBatch(merchList);
 	}
 }

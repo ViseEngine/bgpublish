@@ -39,8 +39,8 @@
 		      <if test="item.name != null">name = #{item.name},</if>
 		      <if test="item.desc != null">`desc` = #{item.desc},</if>
 		      <if test="item.classify_id gt 0">classify_id = #{item.classify_id},</if>
-		      <if test="item.price != null">price = #{item.price},</if>
-		      <if test="item.in_stock != null">in_stock = #{item.in_stock},</if>
+		      <if test="item.price gt 0">price = #{item.price},</if>
+		      <if test="item.in_stock gt 0">in_stock = #{item.in_stock},</if>
 		      <if test="item.published_date != null">published_date = #{item.published_date},</if>
 		      <if test="item.out_published != null">out_published = #{item.out_published},</if>
 		      <if test="item.unit != null">unit = #{item.unit},</if>

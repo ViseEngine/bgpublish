@@ -87,7 +87,9 @@ public class StoreServiceImp implements StoreService {
 	 * @return 返回商家信息
 	 */
 	public List<Store> queryStoreBySalesVolume(int start,int limit){
-		PageHelper.startPage(start, limit);
+		int pageNum = start / limit + 1;
+		
+		PageHelper.startPage(pageNum, limit);
 		return this.storeMapper.queryStoreBySalesVolume();
 	}
 	/**
@@ -95,7 +97,9 @@ public class StoreServiceImp implements StoreService {
 	 * @return 返回商家信息
 	 */
 	public List<Store> queryStoreByFavoriteCount(int start,int limit){
-		PageHelper.startPage(start, limit);
+		int pageNum = start / limit + 1;
+		
+		PageHelper.startPage(pageNum, limit);
 		return this.storeMapper.queryStoreByFavoriteCount();
 	}
 }

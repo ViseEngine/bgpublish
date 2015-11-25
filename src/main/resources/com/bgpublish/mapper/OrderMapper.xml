@@ -6,9 +6,6 @@
 <mapper namespace="com.bgpublish.mapper.OrderMapper">
 	<!-- 生成订单-->
 	<insert id="createOrder" parameterType="Order" >
-	    <selectKey keyProperty="order_id" resultType="String" order="BEFORE">  
-             select getOrderId()  
-   		 </selectKey> 
 	    <![CDATA[
 	    INSERT INTO tbl_order_info (order_id,amount_money,buyer_user_id,buyer_user_name,seller_user_id,seller_user_name,currency_unit, buyer_name,buyer_phone,buyer_mobile,
 	    send_type,freight,invoice_need,invoice_title,pay_type,buyer_pay_time,trad_time,trad_finish_time,update_time,status,province_code,city_code,town_id,address,buyer_advise) 
@@ -214,11 +211,21 @@
 		<collection property="orderDetails" column="order_id" ofType="OrderDetail" select="getOrderDetailsById"></collection>
 	</resultMap> -->
 	
+	<!-- 更新订单状态信息 -->
+	<update id="updateOrderStatus" parameterType="Order">
+		UPDATE tbl_order_info 
+		<set>
+	      <if test="status != null">status = #{status},</if>
+	      <![CDATA[ UPDATE_TIME = date_format(now(),'%Y%m%d%H%i%s') ]]>
+	    </set>
+	    WHERE order_id = #{order_id}
+	</update>
+	
 	<!-- 更新订单信息 -->
 	<update id="updateOrderInfo" parameterType="Order">
 		UPDATE tbl_order_info 
 		<set>
-	      <if test="amount_money != null">amount_money = #{amount_money},</if>
+	      <if test="amount_money gte 0">amount_money = #{amount_money},</if>
 	      <if test="buyer_user_id  gt  0">buyer_user_id = #{buyer_user_id},</if>
 	      <if test="buyer_user_name != null">buyer_user_name = #{buyer_user_name},</if>
 	      <if test="seller_user_id gt 0">seller_user_id = #{seller_user_id},</if>
@@ -230,7 +237,7 @@
 	      <if test="send_type != null">send_type = #{send_type}</if>
 	      <if test="send_no != null">send_no = #{send_no},</if>
 	      <if test="send_time != null">send_time = #{send_time},</if>
-	      <if test="freight != null">freight = #{freight},</if>
+	      <if test="freight gte 0">freight = #{freight},</if>
 	      <if test="invoice_need != null">invoice_need = #{invoice_need},</if>
 	      <if test="invoice_title != null">invoice_title = #{invoice_title}</if>
 	      <if test="pay_type != null">pay_type = #{pay_type},</if>

@@ -122,7 +122,9 @@ public class MerchServiceImp implements MerchService {
 	 * @return
 	 */
 	public List<Merch> queryMerchByPage(Merch merch,int start, int limit){
-		PageHelper.startPage(start, limit);
+		int pageNum = start / limit + 1;
+		
+		PageHelper.startPage(pageNum, limit);
 		return this.merchMapper.queryMerchBy(merch);
 	}
 
