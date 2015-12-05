@@ -26,6 +26,12 @@ public interface MerchMapper {
 	 */
 	public void updateMerch(Merch merch);
 	/**
+	 * 根据ID查询商家信息
+	 * @param merchIds
+	 * @return
+	 */
+	public List<Map<String,Object>> queryStoreByMerchId(List<String> merchIds);
+	/**
 	 * 根据商品ID删除商品
 	 * @param merch_id 商品ID
 	 */

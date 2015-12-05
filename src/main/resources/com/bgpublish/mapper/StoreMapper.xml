@@ -69,4 +69,15 @@
 		on a.`store_id` = c.`store_id`
 		order by sales_volume desc
 	</select>
+	<!-- 按访问数查询商家信息 -->
+	<select id="queryStoreByVisitCount" resultType="Store">
+		select a.*,ifnull(sales_volume,0) sales_volume
+		from  `tbl_store_info` a 
+		left join (
+		select store_id,count(1) sales_volume
+		from `tbl_store_visit_hist` b group by b.`store_id`
+		) c
+		on a.`store_id` = c.`store_id`
+		order by sales_volume desc
+	</select>
 </mapper>

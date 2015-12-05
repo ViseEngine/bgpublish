@@ -5,6 +5,7 @@ package com.bgpublish.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -57,5 +58,25 @@ public class MerchServiceImpTest {
 		}
 		
 		merchService.updateMerchBatch(merchList);
+	}
+	
+	@Test
+	public void testQueryStoreByMerchId(){
+		List<String> list = new ArrayList<String>();
+		for (int i = 1; i < 10; i++) {
+			list.add("" + i);
+		}
+		
+		List<Map<String, Object>> storeInfos = merchService.queryStoreByMerchId(list);
+		Assert.assertNotNull(storeInfos);
+		
+//		list.clear();
+//		storeInfos = merchService.queryStoreByMerchId(list);
+//		Assert.assertNotNull(storeInfos);
+		
+		list.clear();
+		list.add("1");
+		storeInfos = merchService.queryStoreByMerchId(list);
+		Assert.assertNotNull(storeInfos);
 	}
 }

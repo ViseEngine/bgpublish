@@ -4,6 +4,7 @@
 package com.bgpublish.service;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -41,6 +42,13 @@ public class MerchCarServiceImp implements MerchCarService {
 	 * 更新购买数量
 	 * @param merchCar
 	 */
+	public void updateMerchCarAppendBuyNum(MerchCar merchCar){
+		this.merchCarMapper.updateMerchCarAppendBuyNum(merchCar);
+	}
+	/**
+	 * 更新购买数量
+	 * @param merchCar
+	 */
 	public void updateMerchCarBy(MerchCar merchCar){
 		this.merchCarMapper.updateMerchCarBy(merchCar);
 	}
@@ -59,5 +67,12 @@ public class MerchCarServiceImp implements MerchCarService {
 	public List<MerchCar> queryMerchCarByUser(String user_id){
 		return this.merchCarMapper.queryMerchCarByUser(user_id);
 	}
-
+	/**
+	 * 判断用户ID和商品ID是否存在于购物车中
+	 * @param map
+	 * @return
+	 */
+	public int countByUserAndMerchId(Map<String, Object> map){
+		return this.merchCarMapper.countByUserAndMerchId(map);
+	}
 }

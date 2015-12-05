@@ -101,7 +101,7 @@ public class OrderControllerTest {
 		*/
 		
 		List<OrderDetail> otailList = new ArrayList<OrderDetail>();
-		for (int i = 0; i < 5; i++) {
+		/*for (int i = 0; i < 5; i++) {
 			OrderDetail otail = new OrderDetail();
 			otail.setMerch_id(merid+i);
 			otail.setMerch_name(merName+merid);
@@ -109,8 +109,23 @@ public class OrderControllerTest {
 			otail.setUnit(unit+i);
 			otail.setPrice(price+i);
 			otailList.add(otail);
-		}
+		}*/
 		
+		OrderDetail otail = new OrderDetail();
+		otail.setMerch_id(1);
+		otail.setMerch_name(merName+merid);
+		otail.setAmount(amount+2);
+		otail.setUnit(unit+3);
+		otail.setPrice(price+4);
+		otailList.add(otail);
+		
+		otail = new OrderDetail();
+		otail.setMerch_id(26);
+		otail.setMerch_name(merName+merid);
+		otail.setAmount(amount+1);
+		otail.setUnit(unit+1);
+		otail.setPrice(price+1);
+		otailList.add(otail);
 		orderTest.setOrderDetails(otailList);
 		
 		//测试selectUser方法是否可用

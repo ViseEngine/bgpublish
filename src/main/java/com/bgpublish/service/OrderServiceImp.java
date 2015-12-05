@@ -5,7 +5,6 @@ package com.bgpublish.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,6 @@ import com.bgpublish.domain.Order;
 import com.bgpublish.domain.OrderDetail;
 import com.bgpublish.domain.OrderStat;
 import com.bgpublish.mapper.OrderMapper;
-import com.bgpublish.util.DateUtil;
 import com.github.pagehelper.PageHelper;
 
 /**
@@ -39,18 +37,7 @@ public class OrderServiceImp implements OrderService {
 	
 	@Override
 	public void createOrder(Order order) {
-		order.setOrder_id(DateUtil.currentTime() + randomSeq());
 		this.orderMapper.createOrder(order);
-	}
-	
-	//生成11位随机数
-	private String randomSeq() {
-		Random random = new Random(System.currentTimeMillis());
-		StringBuilder sb = new StringBuilder(11);
-		for (int i = 0; i < 11; i++) {
-			sb.append("" + random.nextInt(10));
-		}
-		return sb.toString();
 	}
 	
 	/**
@@ -81,6 +68,14 @@ public class OrderServiceImp implements OrderService {
 	@Override
 	public List<OrderDetail> getOrderDetailsById(String orderId) {
 		return this.orderMapper.getOrderDetailsById(orderId);
+	}
+	/**
+	 * 根据ID获取订单的信息
+	 * @param orderId
+	 * @return
+	 */
+	public Order getDetailsById(String orderId){
+		return this.orderMapper.getDetailsById(orderId);
 	}
 	/**
 	 * 获取已关闭的订单

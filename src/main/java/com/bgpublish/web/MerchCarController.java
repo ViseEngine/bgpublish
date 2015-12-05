@@ -3,7 +3,9 @@
  */
 package com.bgpublish.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bgpublish.domain.MerchCar;
+import com.bgpublish.domain.ResponseInfo;
 import com.bgpublish.service.MerchCarService;
 import com.bgpublish.util.HttpUtil;
 
@@ -49,6 +52,38 @@ public class MerchCarController {
 		}
 		
 		return HttpUtil.createOkResponseEntity("添加到购物车成功!");
+	}
+	/**
+	 * 批量添加商品到购物车中，
+	 * 如果在购物车中存在，即只累加数量
+	 * @param merchCar
+	 */
+	@RequestMapping(value="/batchAddMerchCar.do", method = RequestMethod.POST)
+	public ResponseEntity<ResponseInfo> batchAddMerchCar(@RequestBody List<MerchCar> merchCars){
+		
+		if(merchCars == null || merchCars.isEmpty()){
+			return HttpUtil.failure("商品信息为空，保存失败！");
+		}
+		
+		try{
+			Map<String, Object> map = new HashMap<String, Object>();
+			for (MerchCar merchCar : merchCars) {
+				map.put("user_id", merchCar.getUser_id());
+				map.put("merch_id", merchCar.getMerch_id());
+				int count = this.merchCarService.countByUserAndMerchId(map);
+				
+				if(count <= 0){//如果不存在就添加
+					this.merchCarService.addMerchCar(merchCar);
+				}else{//否则更新其数量
+					this.merchCarService.updateMerchCarAppendBuyNum(merchCar);
+				}
+			}
+		}catch(Exception e){
+			LOGGER.error("添加到购物车失败", e);
+			return HttpUtil.failure("添加到购物车失败!");
+		}
+		
+		return HttpUtil.success("添加到购物车成功!");
 	}
 	/**
 	 * 更新购物车中的购买数量等信息

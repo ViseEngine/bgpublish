@@ -10,6 +10,20 @@
 		VALUES (#{store_id},#{name},#{desc},#{classify_id},#{price},#{in_stock},#{published_date},#{out_published},#{unit},date_format(now(),'%Y%m%d%H%i%s'),date_format(now(),'%Y%m%d%H%i%s'))
 	</insert>
 	
+	<!-- 根据merch_id查询商家号 -->
+	<select id="queryStoreByMerchId" resultType="Map" parameterType="java.util.List">
+		<![CDATA[
+			 select a.merch_id,a.store_id,b.name store_name,c.user_id,c.name user_name 
+			 from tbl_merch_info a 
+			 left join tbl_store_info b on a.store_id=b.store_id 
+			 left join tbl_user c on b.user_id=c.user_id 
+			 where a.merch_id in 
+		]]>
+		<foreach item="item" index="index" collection="list"  open="(" separator="," close=")">
+              #{item}
+        </foreach>
+	</select>
+	
 	<!-- 更新商品信息 -->
 	<update id="updateMerch" parameterType="Merch">
 		UPDATE tbl_merch_info 

@@ -39,4 +39,13 @@ public class MerchCarServiceImpTest {
 		
 		Assert.assertNotNull(merchCarLists);
 	}
+	
+	@Test
+	public void testDeleteMerchCarBy(){
+		MerchCar merchCar = new MerchCar();
+		merchCar.setUser_id(11);
+		merchCarService.deleteMerchCarBy(merchCar);
+		
+		
+	}
 }

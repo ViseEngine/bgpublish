@@ -4,6 +4,7 @@
 package com.bgpublish.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bgpublish.domain.MerchCar;
 
@@ -28,6 +29,11 @@ public interface MerchCarMapper {
 	 * 更新购买数量
 	 * @param merchCar
 	 */
+	public void updateMerchCarAppendBuyNum(MerchCar merchCar);
+	/**
+	 * 更新购买数量
+	 * @param merchCar
+	 */
 	public void updateMerchCarBy(MerchCar merchCar);
 	/**
 	 * 删除购物车商品信息
@@ -40,4 +46,10 @@ public interface MerchCarMapper {
 	 * @return 
 	 */
 	public List<MerchCar> queryMerchCarByUser(String user_id);
+	/**
+	 * 判断用户ID和商品ID是否存在于购物车中
+	 * @param map
+	 * @return
+	 */
+	public int countByUserAndMerchId(Map<String, Object> map);
 }

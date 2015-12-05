@@ -37,6 +37,14 @@ public class MerchServiceImp implements MerchService {
 		this.merchMapper.addMerch(merch);
 	}
 	/**
+	 * 根据ID查询商家信息
+	 * @param merchIds
+	 * @return
+	 */
+	public List<Map<String,Object>> queryStoreByMerchId(List<String> merchIds){
+		return this.merchMapper.queryStoreByMerchId(merchIds);
+	}
+	/**
 	 * 更新商品
 	 * @param merch
 	 */

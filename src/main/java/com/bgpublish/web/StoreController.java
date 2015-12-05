@@ -108,6 +108,14 @@ public class StoreController {
 		return this.storeService.queryStoreByFavoriteCount();
 	}
 	/**
+	 * 按人气数查询商家信息
+	 * @return 返回商家信息
+	 */
+	@RequestMapping(value="/queryStoreByVisitCount.do", method = RequestMethod.GET)
+	public List<Store> queryStoreByVisitCount(){
+		return this.storeService.queryStoreByVisitCount();
+	}
+	/**
 	 * 按销量大小查询商家信息(分页)
 	 * @return 返回商家信息
 	 */
@@ -122,5 +130,13 @@ public class StoreController {
 	@RequestMapping(value="/queryStoreByFavoriteCountPage.do", method = RequestMethod.GET)
 	public List<Store> queryStoreByFavoriteCount(@RequestParam int start,@RequestParam int limit){
 		return this.storeService.queryStoreByFavoriteCount(start,limit);
+	}
+	/**
+	 * 按人气数查询商家信息(分页)
+	 * @return 返回商家信息
+	 */
+	@RequestMapping(value="/queryStoreByVisitCountPage.do", method = RequestMethod.GET)
+	public List<Store> queryStoreByVisitCount(@RequestParam int start,@RequestParam int limit){
+		return this.storeService.queryStoreByVisitCount(start,limit);
 	}
 }

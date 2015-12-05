@@ -33,6 +33,17 @@
 	    select * from tbl_order_detail where order_id = #{orderId}
 	</select>
 	
+	<!-- 获取订单明细信息 -->
+	<select id="getDetailsById"  resultMap="orderResultMap2" parameterType="String">
+		<![CDATA[ 
+	    select a.*,b.order_id order_detail_id, b.merch_id, b.merch_name, b.amount, b.unit, b.price,
+	    c.gallery_id, c.merch_id gallery_merch_id, c.classify_id, c.name, c.file_name, c.path, c.create_time
+	    from tbl_order_info a
+		join tbl_order_detail b on a.order_id = b.order_id
+		left join tbl_merch_gallery c on b.merch_id = c.merch_id
+	    where a.order_id=#{orderId}
+	    ]]>
+	</select>
 	<!-- 获取已关闭订单基本信息 -->
 	<!-- <select id="getClosedOrderInfo" resultMap="orderResultMap" parameterType="Order">
 	    select * from tbl_order_info
@@ -63,6 +74,63 @@
 	    order by a.order_id desc
 	</select>
 	
+	<!-- 
+		查询订单详情,为了解决那些一对多的关系呀，写那么多字段能否有简便点方法呢？ 
+		Collection查询集合只出现一条数据,解决方法，在sql中为相同名称的字段增加
+		别名的同时，在collection中去年id元素
+	-->
+	<resultMap type="Order" id="orderResultMap2">
+		<id column="order_id" property="order_id"/>
+		<result column="amount_money" property="amount_money"/>
+		<result column="buyer_user_id" property="buyer_user_id"/>
+		<result column="buyer_user_name" property="buyer_user_name"/>
+		<result column="seller_user_id" property="seller_user_id"/>
+		<result column="seller_user_name" property="seller_user_name"/>
+		<result column="currency_unit" property="currency_unit"/>
+		<result column="buyer_name" property="buyer_name"/>
+		<result column="buyer_phone" property="buyer_phone"/>
+		<result column="buyer_mobile" property="buyer_mobile"/>
+		<result column="send_type" property="send_type"/>
+		<result column="send_no" property="send_no"/>
+		<result column="send_time" property="send_time"/>
+		<result column="freight" property="freight"/>
+		<result column="invoice_need" property="invoice_need"/>
+		<result column="invoice_title" property="invoice_title"/>
+		<result column="pay_type" property="pay_type"/>
+		<result column="buyer_pay_time" property="buyer_pay_time"/>
+		<result column="trad_time" property="trad_time"/>
+		<result column="trad_finish_time" property="trad_finish_time"/>
+		<result column="update_time" property="update_time"/>
+		<result column="seller_deliver_time"  property="seller_deliver_time"/>
+		<result column="buyer_confirm_time"  property="buyer_confirm_time"/>
+		<result column="seller_del" property="seller_del"/>
+		<result column="buyer_del" property="buyer_del"/>
+		<result column="buyer_del_time" property="buyer_del_time"/>
+		<result column="seller_del_time" property="seller_del_time"/>
+		<result column="buyer_score" property="buyer_score"/>
+		<result column="seller_score" property="seller_score"/>
+		<result column="status" property="status"/>
+		<result column="province_code" property="province_code"/>
+		<result column="city_code" property="city_code"/>
+		<result column="town_id" property="town_id"/>
+		<result column="address" property="address"/>
+		<result column="buyer_advise" property="buyer_advise"/>
+		<collection property="orderDetails" column="order_detail_id" ofType="OrderDetail">
+			<result column="merch_id" property="merch_id"/>
+			<result column="merch_name" property="merch_name"/>
+			<result column="amount" property="amount"/>
+			<result column="unit" property="unit"/>
+			<result column="price" property="price"/>
+			<collection property="merchGallerys" column="gallery_merch_id" notNullColumn="gallery_id" ofType="MerchGallery">
+				<result column="gallery_id" property="gallery_id"/>
+				<result column="classify_id" property="classify_id"/>
+				<result column="name" property="name"/>
+				<result column="file_name" property="file_name"/>
+				<result column="path" property="path"/>
+				<result column="create_time" property="create_time"/>
+			</collection>
+		</collection>
+	</resultMap>
 	<!-- 查询订单详情,为了解决那些一对多的关系呀，写那么多字段能否有简便点方法呢？ -->
 	<resultMap type="Order" id="orderResultMap">
 		<id column="order_id" property="order_id"/>
@@ -216,6 +284,7 @@
 		UPDATE tbl_order_info 
 		<set>
 	      <if test="status != null">status = #{status},</if>
+	      <if test="trad_finish_time != null">trad_finish_time = #{trad_finish_time},</if>
 	      <![CDATA[ UPDATE_TIME = date_format(now(),'%Y%m%d%H%i%s') ]]>
 	    </set>
 	    WHERE order_id = #{order_id}
@@ -286,7 +355,7 @@
 	
 	<!-- 删除商品明细信息 -->
 	<delete id="deleteOrderTailById" parameterType="String">
-			delete from tbl_order_detail where order_id= #{orderId}
+		delete from tbl_order_detail where order_id= #{orderId}
 	</delete>
 	
 	

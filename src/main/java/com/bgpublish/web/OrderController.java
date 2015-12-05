@@ -1,8 +1,10 @@
 package com.bgpublish.web;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,10 +24,10 @@ import com.bgpublish.domain.Order;
 import com.bgpublish.domain.OrderDetail;
 import com.bgpublish.domain.OrderStat;
 import com.bgpublish.domain.ResponseInfo;
-import com.bgpublish.domain.User;
 import com.bgpublish.service.MerchService;
 import com.bgpublish.service.OrderService;
 import com.bgpublish.util.HttpUtil;
+import com.bgpublish.util.StringUtil;
 
 @RestController
 @RequestMapping(value="/sgams/order")
@@ -35,6 +37,38 @@ public class OrderController {
 	private @Autowired @Getter @Setter OrderService orderService;
 	private @Autowired @Getter @Setter MerchService merchService;
 
+	//把商家与商品信息中只找出商家Id
+	private Set<String> getFromStoreInfos(List<Map<String, Object>> storeInfos){
+		Set<String> set = new HashSet<String>();
+		for (int i = 0; i < storeInfos.size(); i++) {
+			Map<String, Object> map = storeInfos.get(i);
+			String store_id = String.valueOf(map.get("store_id"));
+			set.add(store_id);
+		}
+		return set;
+	}
+	//查询信息
+	private Map<String, Object> findInList(List<Map<String, Object>> storeInfos, String storeId){
+		for (int i = 0; i < storeInfos.size(); i++) {
+			Map<String, Object> map = storeInfos.get(i);
+			String store_id = String.valueOf(map.get("store_id"));
+			if(store_id.equals(storeId)){
+				return map;
+			}
+		}
+		return null;
+	}
+	private boolean isInList(List<Map<String, Object>> storeInfos, String storeId, String merchId){
+		for (int i = 0; i < storeInfos.size(); i++) {
+			Map<String, Object> map = storeInfos.get(i);
+			String store_id = String.valueOf(map.get("store_id"));
+			String merch_id = String.valueOf(map.get("merch_id"));
+			if(store_id.equals(storeId) && merch_id.equals(merchId)){
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
 	 * 生成订单以及订单明细
 	 * @param order
@@ -47,55 +81,71 @@ public class OrderController {
 		try{
 			
 			List<OrderDetail> detailList = order.getOrderDetails();
-			List<Merch> merchList = new ArrayList<Merch>(); 
 			
 			if(null == detailList || detailList.isEmpty()){
 				return HttpUtil.failure("请先选择购买商品!");
 			}
-			//反查商家用户ID和名称
-			OrderDetail detail = detailList.get(0);
-			User user = merchService.queryUserById(detail.getMerch_id()+"");
-			order.setSeller_user_id(user.getUser_id());
-			order.setSeller_user_name(user.getName());
-			
-			this.orderService.createOrder(order);
-			orderId = order.getOrder_id();
-			
-			
+			//根据商品Id查询出商家
+			List<String> merchIds = new ArrayList<String>();
 			for (int i = 0; i < detailList.size(); i++) {
-				
 				OrderDetail orderDetail = detailList.get(i);
-				
-				orderDetail.setOrder_id(orderId);
-				int merId = orderDetail.getMerch_id();//商品ID
-				int amount =  orderDetail.getAmount();//订购商品数量
-				//获取商品信息
-				Merch merch =  this.merchService.queryMerchById(String.valueOf(merId));
-				
-				//判断商品是否下架
-				if(null == merch || "1".equals(merch.getOut_published())){
-					this.orderService.deleteOrder(orderId);//删除相应订单
-					return HttpUtil.failure("商品:"+merch.getName()+"已下架!");
-				}
-				//判断商品库存是否充足
-				if(merch.getIn_stock() < amount){
-					this.orderService.deleteOrder(orderId);//删除相应订单
-					return HttpUtil.failure("商品:"+merch.getName()+"库存不足!");
-				}
-				
-				Merch merchUpdate = new Merch();//商品更新对象,用于更新商品库存
-				merchUpdate.setMerch_id(merId);
-				merchUpdate.setIn_stock((merch.getIn_stock()-amount));
-				merchUpdate.setClassify_id(merch.getClassify_id());
-				merchUpdate.setPrice(merch.getPrice());
-				merchUpdate.setStore_id(merch.getStore_id());
-				merchList.add(merchUpdate);
-				
+				merchIds.add(orderDetail.getMerch_id() + "");
 			}
-			//批量生成订单明细信息
-			this.orderService.createOrderDetailBatch(detailList);
-			//批量更新商品信息
-			this.merchService.updateMerchBatch(merchList);
+			//查询出商品与商家的信息
+			List<Map<String, Object>> storeInfos = merchService.queryStoreByMerchId(merchIds);
+			Set<String> storeIds = getFromStoreInfos(storeInfos);
+			for (String storeId : storeIds) {
+				
+				Map<String, Object> map = findInList(storeInfos, storeId);
+				order.setSeller_user_id(Integer.parseInt(String.valueOf(map.get("user_id"))));
+				order.setSeller_user_name(String.valueOf(map.get("user_name")));
+				
+				//生成订单号
+				orderId = StringUtil.randomSeq();
+				order.setOrder_id(orderId);
+				
+				List<OrderDetail> details = new ArrayList<OrderDetail>();
+				List<Merch> merchList = new ArrayList<Merch>();
+				for (int i = 0; i < detailList.size(); i++) {
+					OrderDetail orderDetail = detailList.get(i);
+					
+					int merId = orderDetail.getMerch_id();//商品ID
+					if(isInList(storeInfos, storeId, merId+"")){
+						orderDetail.setOrder_id(orderId);
+						details.add(orderDetail);
+						int amount =  orderDetail.getAmount();//订购商品数量
+						//获取商品信息
+						Merch merch =  this.merchService.queryMerchById(String.valueOf(merId));
+						
+						//判断商品是否下架
+						if(null == merch || "1".equals(merch.getOut_published())){
+							return HttpUtil.failure("商品:"+merch.getName()+"已下架!");
+						}
+						//判断商品库存是否充足
+						if(merch.getIn_stock() < amount){
+							return HttpUtil.failure("商品:"+merch.getName()+"库存不足!");
+						}
+						
+						Merch merchUpdate = new Merch();//商品更新对象,用于更新商品库存
+						merchUpdate.setMerch_id(merId);
+						merchUpdate.setIn_stock((merch.getIn_stock()-amount));
+						merchUpdate.setClassify_id(merch.getClassify_id());
+						merchUpdate.setPrice(merch.getPrice());
+						merchUpdate.setStore_id(merch.getStore_id());
+						merchList.add(merchUpdate);
+					}
+				}
+				
+				
+				if(!details.isEmpty()){
+					//最后才生成订单吧
+					this.orderService.createOrder(order);
+					//批量生成订单明细信息
+					this.orderService.createOrderDetailBatch(details);
+					//批量更新商品信息
+					this.merchService.updateMerchBatch(merchList);
+				}
+			}
 			
 		} catch(Exception e) {
 			LOGGER.error("订单生成失败",e);
@@ -112,13 +162,23 @@ public class OrderController {
 	 * @return
 	 */
 	@RequestMapping(value="/getOrderInfoById.do", method = RequestMethod.GET)
-	public Order getOrderInfoById(String orderId){
+	public Order getOrderInfoById(@RequestParam String orderId){
 		Order order = this.orderService.getOrderInfoById(orderId);
 		List<OrderDetail> otailList = this.orderService.getOrderDetailsById(orderId);
 		order.setOrderDetails(otailList);
 		return order;
 	}
 	
+	/**
+	 * 根据ID获取订单的信息
+	 * @param orderId
+	 * @return
+	 */
+	@RequestMapping(value="/getDetailsById.do", method = RequestMethod.GET)
+	public Order getDetailsById(@RequestParam String orderId){
+		Order detailsById = this.orderService.getDetailsById(orderId);
+		return detailsById;
+	}
 	/**
 	 * 获取已关闭的订单
 	 * @return

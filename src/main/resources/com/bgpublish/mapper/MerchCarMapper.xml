@@ -20,6 +20,15 @@
 	    </set>
 	    WHERE car_id = #{car_id}
 	</update>
+	<!-- 根据user_id和merch_id更新购物车的信息 -->
+	<update id="updateMerchCarAppendBuyNum" parameterType="MerchCar">
+		<![CDATA[ 
+		UPDATE tbl_merch_car 
+		SET buy_num = buy_num + #{buy_num}
+	    WHERE user_id = #{user_id}
+	    and merch_id = #{merch_id}
+	    ]]>
+	</update>
 	
 	<!-- 更新商品数量 -->
 	<update id="updateMerchCarBy" parameterType="MerchCar">
@@ -30,7 +39,14 @@
 	<!-- 删除购物车信息 -->
 	<delete id="deleteMerchCarBy" parameterType="MerchCar">
 		DELETE FROM tbl_merch_car
-		WHERE merch_id = #{merch_id} and user_id = #{user_id}
+		<where>
+			<if test="merch_id gt 0">
+				merch_id = #{merch_id}
+			</if>
+			<if test="user_id gt 0">
+				AND user_id = #{user_id}
+			</if>
+		</where>
 	</delete>
 	
 	<!-- 根据用户Id查询商品信息 -->
@@ -47,6 +63,16 @@
 			WHERE a.user_id=#{user_id}
 		]]>
 		
+	</select>
+	
+	<!-- 根据用户Id和商品ID查询商品信息 -->
+	<select id="countByUserAndMerchId" parameterType="Map"  resultType="int">
+		<![CDATA[ 
+			SELECT  count(1) car_count
+			FROM tbl_merch_car a  
+			WHERE a.user_id=#{user_id} 
+			and a.merch_id=#{merch_id}
+		]]>
 	</select>
 	<!-- 商品信息、优惠信息等  -->
 	<resultMap type="MerchCar" id="merchCarResultMap">

@@ -51,4 +51,9 @@ public interface StoreMapper {
 	 * @return 返回商家信息
 	 */
 	public List<Store> queryStoreByFavoriteCount();
+	/**
+	 * 按人气数查询商家信息
+	 * @return 返回商家信息
+	 */
+	public List<Store> queryStoreByVisitCount();
 }

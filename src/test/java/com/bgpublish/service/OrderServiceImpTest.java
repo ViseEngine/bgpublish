@@ -125,4 +125,10 @@ public class OrderServiceImpTest {
 		Assert.assertNotNull(list);
 		System.err.println(list.size());
 	}
+	
+	@Test
+	public void testGetDetailInfo(){
+		Order order = orderService.getDetailsById("2015113016142979922491780");
+		System.err.println(order);
+	}
 }

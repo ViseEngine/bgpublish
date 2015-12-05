@@ -83,6 +83,13 @@ public class StoreServiceImp implements StoreService {
 		return this.storeMapper.queryStoreByFavoriteCount();
 	}
 	/**
+	 * 按人气数查询商家信息
+	 * @return 返回商家信息
+	 */
+	public List<Store> queryStoreByVisitCount(){
+		return this.storeMapper.queryStoreByVisitCount();
+	}
+	/**
 	 * 按销量大小查询商家信息(分页)
 	 * @return 返回商家信息
 	 */
@@ -101,5 +108,17 @@ public class StoreServiceImp implements StoreService {
 		
 		PageHelper.startPage(pageNum, limit);
 		return this.storeMapper.queryStoreByFavoriteCount();
+	}
+	
+	/**
+	 * 按人气数查询商家信息
+	 * @return 返回商家信息
+	 */
+	public List<Store> queryStoreByVisitCount(int start,int limit){
+		int pageNum = start / limit + 1;
+		
+		PageHelper.startPage(pageNum, limit);
+		
+		return this.storeMapper.queryStoreByVisitCount();
 	}
 }
